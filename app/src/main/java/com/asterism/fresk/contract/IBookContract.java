@@ -65,7 +65,7 @@ public interface IBookContract {
          * @param bookList 被移除的BookBean集合
          * @param listener 监听器
          */
-        boolean restoreBooks(List<BookBean> bookList, OnNormalListener listener);
+        void restoreBooks(List<BookBean> bookList, OnNormalListener listener);
 
         /**
          * 修改数据库内书籍信息
@@ -73,7 +73,7 @@ public interface IBookContract {
          * @param bookBean 欲更改的书籍实体类
          * @param listener 监听器
          */
-        boolean alterBookInfo(BookBean bookBean, OnNormalListener listener);
+        void alterBookInfo(BookBean bookBean, OnNormalListener listener);
     }
 
     interface OnBookBeanListener {
