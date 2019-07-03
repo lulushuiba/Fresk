@@ -93,4 +93,19 @@ public class BookTypeDao {
         }
         return beanList;
     }
+
+    /**
+     * 根据类型名查询记录
+     *
+     * @return 返回所有记录实体类集合
+     */
+    public List<BookTypeBean> selectAllByName(String name) {
+        List<BookTypeBean> beanList = null;
+        try {
+            beanList = dao.queryBuilder().where().eq("type", name).query();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return beanList;
+    }
 }
