@@ -38,7 +38,7 @@ public class AddBookPresenter extends BasePresenter<IAddBookContract.View>
 
         bookBean.setFilePath(path);
         bookBean.setAddDate(DateUtils.getNowToString());
-        bookBean.setLastChapter("还没看过");
+        bookBean.setLastChapter("从未阅读");
         bookBean.setName(FileUtils.getFileNameByPath(path));
         bookBean.setReadDate(DateUtils.getNowToString());
         bookBean.setReadProgress(0);
