@@ -1,7 +1,9 @@
 package com.asterism.fresk.presenter;
 
 import android.annotation.SuppressLint;
+import android.os.Environment;
 
+import com.asterism.fresk.R;
 import com.asterism.fresk.contract.IAddBookContract;
 import com.asterism.fresk.dao.BookDao;
 import com.asterism.fresk.dao.BookTypeDao;
@@ -12,7 +14,9 @@ import com.asterism.fresk.util.FileUtils;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import io.reactivex.Observable;
@@ -49,20 +53,19 @@ public class AddBookPresenter extends BasePresenter<IAddBookContract.View>
         // 根据不同的类型处理书籍封面
         switch (bookTypeBean.getType()) {
             case "txt":
-                picPath = "txt封面图片路径";
+                picPath = "android.resource://" + mView.getContext().getPackageName() + "/" + R.raw.txt;
                 break;
             case "pdf":
-                picPath = "pdf封面图片路径";
+                picPath = "android.resource://" + mView.getContext().getPackageName() + "/" + R.raw.pdf;
                 break;
             case "epub":
-                picPath = "epub封面图片路径";
+                picPath = "android.resource://" + mView.getContext().getPackageName() + "/" + R.raw.epub;
                 break;
             case "mobi":
-                picPath = "mobi封面图片路径";
+                picPath = "android.resource://" + mView.getContext().getPackageName() + "/" + R.raw.mobi;
                 break;
         }
         bookBean.setPicName(picPath);
-
         return bookBean;
     }
 
@@ -127,6 +130,22 @@ public class AddBookPresenter extends BasePresenter<IAddBookContract.View>
      */
     @Override
     public void getFilesInDir(File currentDir, IAddBookContract.OnGetFilesListener listener) {
+        File root = new File(Environment.getExternalStorageDirectory().getPath());
+        File[] currentFiles;
+
+        if (!root.exists()) {
+            mView.showWarningToast("目录不存在！");
+            return;
+        }
+
+        currentDir = root;
+        currentFiles = root.listFiles();
+        List<Map<String, Object>> itemList = new ArrayList<>();
+
+        for (File file : currentFiles) {
+            Map<String, Object> map = new HashMap<>();
+
+        }
 
     }
 
