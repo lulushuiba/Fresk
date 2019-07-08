@@ -15,7 +15,7 @@ public class FileUtils {
      *
      * @return 返回文件后缀名字符串（不包括点）
      */
-    public static String getSuffixNameByFileName(String fileName) {
+    public static String getFileSuffixName(String fileName) {
         //去掉首尾的空格
         fileName = fileName.trim();
         String s[] = fileName.split("\\.");
@@ -32,7 +32,7 @@ public class FileUtils {
      *
      * @return 返回文件名称字符串（不包括后缀名）
      */
-    public static String getFileNameByPath(String path) {
+    public static String getFileSimpleName(String path) {
         //去掉首尾的空格
         path = path.trim();
         String s[] = path.split("\\.");

@@ -1,11 +1,11 @@
 package com.asterism.fresk.contract;
 
-import com.asterism.fresk.dao.bean.BookTypeBean;
-
 import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import io.reactivex.Observer;
 
 /**
  * 添加书籍模块合约接口
@@ -59,10 +59,10 @@ public interface IAddBookContract {
         /**
          * 扫描储存设备内所有书籍
          *
-         * @param BookTypeSet 欲扫描的文件类型格式后缀名集合
-         * @param listener  监听器
+         * @param typeNameSet 欲扫描的文件类型格式后缀名集合
+         * @param observer    订阅观察者
          */
-        void scanBooks(Set<BookTypeBean> BookTypeSet, OnGetFilesListener listener);
+        void scanBooks(Set<String> typeNameSet, Observer<String> observer);
     }
 
     interface OnAddBooksListener {
