@@ -28,6 +28,13 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
+/**
+ * 添加书籍中介类
+ *
+ * @author Ashinch
+ * @email Glaxyinfinite@outlook.com
+ * @date on 2019-07-08 13:56
+ */
 public class AddBookPresenter extends BasePresenter<IAddBookContract.View>
         implements IAddBookContract.Presenter {
 
