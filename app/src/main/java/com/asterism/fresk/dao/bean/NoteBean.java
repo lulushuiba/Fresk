@@ -3,6 +3,13 @@ package com.asterism.fresk.dao.bean;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+/**
+ * 笔记表实体类
+ *
+ * @author Ashinch
+ * @email Glaxyinfinite@outlook.com
+ * @date on 2019-07-09 09:13
+ */
 @DatabaseTable(tableName = "tb_note")
 public class NoteBean {
 
