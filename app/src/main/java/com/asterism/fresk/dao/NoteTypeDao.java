@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * 笔记标签表访问器类
+ * 笔记类型表访问器类
  *
  * @author Ashinch
  * @email Glaxyinfinite@outlook.com
