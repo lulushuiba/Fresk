@@ -12,7 +12,9 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
@@ -34,6 +36,9 @@ public class BookPresenter extends BasePresenter<IBookContract.View>
     @SuppressLint("CheckResult")
     @Override
     public void getAllBooks(final IBookContract.OnBookBeanListener listener) {
+        // 显示正在加载
+        mView.showLoading();
+
         // 创建被观察者，传递List<BookBean>类型事件
         Observable<List<BookBean>> BookObservable
                 = Observable.create(new ObservableOnSubscribe<List<BookBean>>() {
@@ -42,9 +47,10 @@ public class BookPresenter extends BasePresenter<IBookContract.View>
                 // 初始化书籍类型表访问器
                 BookDao bookDao = new BookDao(mView.getContext());
                 emitter.onNext(bookDao.selectAll());
+                emitter.onComplete();
             }
         });
-        
+
         // 处理于IO子线程
         BookObservable.subscribeOn(Schedulers.io())
                 // 响应于Android主线程
@@ -53,6 +59,8 @@ public class BookPresenter extends BasePresenter<IBookContract.View>
                 .subscribe(new Consumer<List<BookBean>>() {
                     @Override
                     public void accept(List<BookBean> bookBeans) throws Exception {
+                        // 隐藏正在加载
+                        mView.hideLoading();
                         if (bookBeans != null) {
                             listener.onSuccess(bookBeans);
                         } else {
@@ -72,6 +80,9 @@ public class BookPresenter extends BasePresenter<IBookContract.View>
     @Override
     public void removeBooksInDatabase(final List<BookBean> bookList,
                                       final IBookContract.OnBookBeanListener listener) {
+        // 显示正在移除
+        mView.showRemoving();
+
         // 创建被观察者，传递List<BookBean>类型事件
         Observable<List<BookBean>> BookObservable
                 = Observable.create(new ObservableOnSubscribe<List<BookBean>>() {
@@ -79,16 +90,12 @@ public class BookPresenter extends BasePresenter<IBookContract.View>
             public void subscribe(ObservableEmitter<List<BookBean>> emitter) throws Exception {
                 // 初始化书籍表访问器
                 BookDao bookDao = new BookDao(mView.getContext());
-
-                if (bookList != null) {
-                    for (int i = 0; i < bookList.size(); i++) {
-                        BookBean bookBean = bookList.get(i);
-                        // 执行书籍类型表访问器删除操作
-                        bookDao.delete(bookBean);
-                    }
-                    emitter.onNext(bookList);
+                for (BookBean bookBean : bookList) {
+                    // 执行书籍类型表访问器删除操作
+                    bookDao.delete(bookBean);
                 }
-
+                emitter.onNext(bookList);
+                emitter.onComplete();
             }
         });
 
@@ -100,7 +107,9 @@ public class BookPresenter extends BasePresenter<IBookContract.View>
                 .subscribe(new Consumer<List<BookBean>>() {
                     @Override
                     public void accept(List<BookBean> bookBeans) throws Exception {
-                        listener.onSuccess(bookList);
+                        // 隐藏正在移除
+                        mView.hideRemoving();
+                        listener.onSuccess(bookBeans);
                     }
                 });
     }
@@ -126,30 +135,47 @@ public class BookPresenter extends BasePresenter<IBookContract.View>
     public void restoreBooks(final List<BookBean> bookList,
                              final IBookContract.OnNormalListener listener) {
         // 创建被观察者，传递List<BookBean>类型事件
-        Observable<List<BookBean>> BookObservable = Observable.create(new ObservableOnSubscribe<List<BookBean>>() {
+        Observable<BookBean> BookObservable = Observable.create(new ObservableOnSubscribe<BookBean>() {
             @Override
-            public void subscribe(ObservableEmitter<List<BookBean>> emitter) throws Exception {
-                if (bookList != null) {
-                    for (int i = 0; i < bookList.size(); i++) {
-                        // 初始化书籍表访问器
-                        BookDao bookDao = new BookDao(mView.getContext());
-                        BookBean bookBean = bookList.get(i);
-                        // 执行书籍类型表访问器添加操作
-                        bookDao.insert(bookBean);
-                    }
-                    emitter.onNext(bookList);
+            public void subscribe(ObservableEmitter<BookBean> emitter) throws Exception {
+                // 初始化书籍表访问器
+                BookDao bookDao = new BookDao(mView.getContext());
+                for (BookBean bookBean : bookList) {
+                    // 执行书籍类型表访问器添加操作
+                    bookDao.insert(bookBean);
+                    emitter.onNext(bookBean);
                 }
+                emitter.onComplete();
             }
         });
-        
+
         // 处理于IO子线程
         BookObservable.subscribeOn(Schedulers.io())
                 // 响应于Android主线程
                 .observeOn(AndroidSchedulers.mainThread())
                 // 设置订阅的响应事件
-                .subscribe(new Consumer<List<BookBean>>() {
+                .subscribe(new Observer<BookBean>() {
                     @Override
-                    public void accept(List<BookBean> bookBeans) throws Exception {
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BookBean bookBean) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        // 隐藏正在移除
+                        mView.hideRemoving();
+                        listener.onError();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        // 隐藏正在移除
+                        mView.hideRemoving();
                         listener.onSuccess();
                     }
                 });
@@ -166,7 +192,8 @@ public class BookPresenter extends BasePresenter<IBookContract.View>
     public void alterBookInfo(final BookBean bookBean,
                               final IBookContract.OnNormalListener listener) {
         // 创建被观察者，传递BookBean类型事件
-        Observable<BookBean> BookObservable = Observable.create(new ObservableOnSubscribe<BookBean>() {
+        Observable<BookBean> BookObservable
+                = Observable.create(new ObservableOnSubscribe<BookBean>() {
             @Override
             public void subscribe(ObservableEmitter<BookBean> emitter) throws Exception {
                 // 初始化书籍表访问器
@@ -174,8 +201,9 @@ public class BookPresenter extends BasePresenter<IBookContract.View>
                 if (bookBean != null) {
                     // 执行书籍类型表访问器修改操作
                     bookDao.update(bookBean);
-                    emitter.onNext(bookBean);
                 }
+                emitter.onNext(bookBean);
+                emitter.onComplete();
             }
         });
 
@@ -187,8 +215,19 @@ public class BookPresenter extends BasePresenter<IBookContract.View>
                 .subscribe(new Consumer<BookBean>() {
                     @Override
                     public void accept(BookBean bookBean) throws Exception {
-                        listener.onSuccess();
+                        if (bookBean != null) {
+                            listener.onSuccess();
+                        } else {
+                            listener.onError();
+                        }
                     }
                 });
     }
 }
+/**
+ * 优化代码
+ *
+ * @reviser Ashinch
+ * @email Glaxyinfinite@outlook.com
+ * @date on 2019-07-09 21:45
+ */
