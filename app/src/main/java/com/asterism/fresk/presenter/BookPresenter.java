@@ -34,8 +34,6 @@ public class BookPresenter extends BasePresenter<IBookContract.View>
     @SuppressLint("CheckResult")
     @Override
     public void getAllBooks(final IBookContract.OnBookBeanListener listener) {
-
-
         // 创建被观察者，传递List<BookBean>类型事件
         Observable<List<BookBean>> BookObservable
                 = Observable.create(new ObservableOnSubscribe<List<BookBean>>() {
@@ -46,6 +44,7 @@ public class BookPresenter extends BasePresenter<IBookContract.View>
                 emitter.onNext(bookDao.selectAll());
             }
         });
+        
         // 处理于IO子线程
         BookObservable.subscribeOn(Schedulers.io())
                 // 响应于Android主线程
@@ -142,6 +141,7 @@ public class BookPresenter extends BasePresenter<IBookContract.View>
                 }
             }
         });
+        
         // 处理于IO子线程
         BookObservable.subscribeOn(Schedulers.io())
                 // 响应于Android主线程
