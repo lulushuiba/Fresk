@@ -35,13 +35,14 @@ public class BookPresenter extends BasePresenter<IBookContract.View>
     @Override
     public void getAllBooks(final IBookContract.OnBookBeanListener listener) {
         final BookDao bookDao = new BookDao(mView.getContext());
-        Observable<List<BookBean>> BookObservable = Observable.create(new ObservableOnSubscribe<List<BookBean>>() {
+
+        Observable<List<BookBean>> BookObservable
+                = Observable.create(new ObservableOnSubscribe<List<BookBean>>() {
             @Override
             public void subscribe(ObservableEmitter<List<BookBean>> emitter) throws Exception {
                 emitter.onNext(bookDao.selectAll());
             }
         });
-
 
         BookObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -65,9 +66,12 @@ public class BookPresenter extends BasePresenter<IBookContract.View>
      */
     @SuppressLint("CheckResult")
     @Override
-    public void removeBooksInDatabase(final List<BookBean> bookList, final IBookContract.OnBookBeanListener listener) {
+    public void removeBooksInDatabase(final List<BookBean> bookList,
+                                      final IBookContract.OnBookBeanListener listener) {
         final BookDao bookDao = new BookDao(mView.getContext());
-        Observable<List<BookBean>> BookObservable = Observable.create(new ObservableOnSubscribe<List<BookBean>>() {
+
+        Observable<List<BookBean>> BookObservable
+                = Observable.create(new ObservableOnSubscribe<List<BookBean>>() {
             @Override
             public void subscribe(ObservableEmitter<List<BookBean>> emitter) throws Exception {
                 emitter.onNext(bookList);
@@ -99,7 +103,7 @@ public class BookPresenter extends BasePresenter<IBookContract.View>
      */
     @Override
     public void removeBooksInStorage(List<BookBean> bookList) {
-
+        // TODO: 2019-07-09 待完成 实现 从储存设备内移除书籍
     }
 
     /**
@@ -110,14 +114,17 @@ public class BookPresenter extends BasePresenter<IBookContract.View>
      */
     @SuppressLint("CheckResult")
     @Override
-    public void restoreBooks(final List<BookBean> bookList, final IBookContract.OnNormalListener listener) {
+    public void restoreBooks(final List<BookBean> bookList,
+                             final IBookContract.OnNormalListener listener) {
         final BookDao bookDao = new BookDao(mView.getContext());
+
         Observable<List<BookBean>> BookObservable = Observable.create(new ObservableOnSubscribe<List<BookBean>>() {
             @Override
             public void subscribe(ObservableEmitter<List<BookBean>> emitter) throws Exception {
                 emitter.onNext(bookList);
             }
         });
+
         BookObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<BookBean>>() {
@@ -144,14 +151,17 @@ public class BookPresenter extends BasePresenter<IBookContract.View>
      */
     @SuppressLint("CheckResult")
     @Override
-    public void alterBookInfo(final BookBean bookBean, final IBookContract.OnNormalListener listener) {
+    public void alterBookInfo(final BookBean bookBean,
+                              final IBookContract.OnNormalListener listener) {
         final BookDao bookDao = new BookDao(mView.getContext());
+
         Observable<BookBean> BookObservable = Observable.create(new ObservableOnSubscribe<BookBean>() {
             @Override
             public void subscribe(ObservableEmitter<BookBean> emitter) throws Exception {
                 emitter.onNext(bookBean);
             }
         });
+
         BookObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<BookBean>() {
