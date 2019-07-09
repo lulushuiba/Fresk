@@ -1,3 +1,10 @@
 <resources>
+    <!--Application-->
     <string name="app_name">Fresk</string>
+
+    <!--MAinActivity-->
+    <string name="title_write">写作</string>
+    <string name="title_desk">书桌</string>
+    <string name="title_more">更多</string>
+
 </resources>
