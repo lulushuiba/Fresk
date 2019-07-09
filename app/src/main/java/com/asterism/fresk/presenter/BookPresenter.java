@@ -20,8 +20,8 @@ import io.reactivex.schedulers.Schedulers;
  * 书籍模块Presenter类，继承base基类且泛型为当前模块View接口类型，并实现当前模块Presenter接口
  *
  * @author Rainydays
- * @email Glaxyinfinite@outlook.com
- * @date on 2019-7-7 16：57：32
+ * @email 2036361118@qq.com
+ * @date on 2019-07-09 19:14:56
  */
 public class BookPresenter extends BasePresenter<IBookContract.View>
         implements IBookContract.Presenter {
@@ -34,18 +34,22 @@ public class BookPresenter extends BasePresenter<IBookContract.View>
     @SuppressLint("CheckResult")
     @Override
     public void getAllBooks(final IBookContract.OnBookBeanListener listener) {
-        final BookDao bookDao = new BookDao(mView.getContext());
-
+        // 创建被观察者，传递List<BookBean>类型事件
         Observable<List<BookBean>> BookObservable
                 = Observable.create(new ObservableOnSubscribe<List<BookBean>>() {
             @Override
             public void subscribe(ObservableEmitter<List<BookBean>> emitter) throws Exception {
+                // 初始化书籍类型表访问器
+                BookDao bookDao = new BookDao(mView.getContext());
                 emitter.onNext(bookDao.selectAll());
             }
         });
-
+        
+        // 处理于IO子线程
         BookObservable.subscribeOn(Schedulers.io())
+                // 响应于Android主线程
                 .observeOn(AndroidSchedulers.mainThread())
+                // 设置订阅的响应事件
                 .subscribe(new Consumer<List<BookBean>>() {
                     @Override
                     public void accept(List<BookBean> bookBeans) throws Exception {
@@ -68,30 +72,35 @@ public class BookPresenter extends BasePresenter<IBookContract.View>
     @Override
     public void removeBooksInDatabase(final List<BookBean> bookList,
                                       final IBookContract.OnBookBeanListener listener) {
-        final BookDao bookDao = new BookDao(mView.getContext());
-
+        // 创建被观察者，传递List<BookBean>类型事件
         Observable<List<BookBean>> BookObservable
                 = Observable.create(new ObservableOnSubscribe<List<BookBean>>() {
             @Override
             public void subscribe(ObservableEmitter<List<BookBean>> emitter) throws Exception {
-                emitter.onNext(bookList);
+                // 初始化书籍表访问器
+                BookDao bookDao = new BookDao(mView.getContext());
+
+                if (bookList != null) {
+                    for (int i = 0; i < bookList.size(); i++) {
+                        BookBean bookBean = bookList.get(i);
+                        // 执行书籍类型表访问器删除操作
+                        bookDao.delete(bookBean);
+                    }
+                    emitter.onNext(bookList);
+                }
+
             }
         });
 
+        // 处理于IO子线程
         BookObservable.subscribeOn(Schedulers.io())
+                // 响应于Android主线程
                 .observeOn(AndroidSchedulers.mainThread())
+                // 设置订阅的响应事件
                 .subscribe(new Consumer<List<BookBean>>() {
                     @Override
                     public void accept(List<BookBean> bookBeans) throws Exception {
-                        if (bookBeans != null) {
-                            for (int i = 0; i < bookBeans.size(); i++) {
-                                BookBean bookBean = bookBeans.get(i);
-                                bookDao.delete(bookBean);
-                            }
-                            listener.onSuccess(bookList);
-                        } else {
-                            listener.onError();
-                        }
+                        listener.onSuccess(bookList);
                     }
                 });
     }
@@ -116,29 +125,32 @@ public class BookPresenter extends BasePresenter<IBookContract.View>
     @Override
     public void restoreBooks(final List<BookBean> bookList,
                              final IBookContract.OnNormalListener listener) {
-        final BookDao bookDao = new BookDao(mView.getContext());
-
+        // 创建被观察者，传递List<BookBean>类型事件
         Observable<List<BookBean>> BookObservable = Observable.create(new ObservableOnSubscribe<List<BookBean>>() {
             @Override
             public void subscribe(ObservableEmitter<List<BookBean>> emitter) throws Exception {
-                emitter.onNext(bookList);
+                if (bookList != null) {
+                    for (int i = 0; i < bookList.size(); i++) {
+                        // 初始化书籍表访问器
+                        BookDao bookDao = new BookDao(mView.getContext());
+                        BookBean bookBean = bookList.get(i);
+                        // 执行书籍类型表访问器添加操作
+                        bookDao.insert(bookBean);
+                    }
+                    emitter.onNext(bookList);
+                }
             }
         });
-
+        
+        // 处理于IO子线程
         BookObservable.subscribeOn(Schedulers.io())
+                // 响应于Android主线程
                 .observeOn(AndroidSchedulers.mainThread())
+                // 设置订阅的响应事件
                 .subscribe(new Consumer<List<BookBean>>() {
                     @Override
                     public void accept(List<BookBean> bookBeans) throws Exception {
-                        if (bookBeans != null) {
-                            for (int i = 0; i < bookBeans.size(); i++) {
-                                BookBean bookBean = bookBeans.get(i);
-                                bookDao.insert(bookBean);
-                            }
-                            listener.onSuccess();
-                        } else {
-                            listener.onError();
-                        }
+                        listener.onSuccess();
                     }
                 });
     }
@@ -153,26 +165,29 @@ public class BookPresenter extends BasePresenter<IBookContract.View>
     @Override
     public void alterBookInfo(final BookBean bookBean,
                               final IBookContract.OnNormalListener listener) {
-        final BookDao bookDao = new BookDao(mView.getContext());
-
+        // 创建被观察者，传递BookBean类型事件
         Observable<BookBean> BookObservable = Observable.create(new ObservableOnSubscribe<BookBean>() {
             @Override
             public void subscribe(ObservableEmitter<BookBean> emitter) throws Exception {
-                emitter.onNext(bookBean);
+                // 初始化书籍表访问器
+                BookDao bookDao = new BookDao(mView.getContext());
+                if (bookBean != null) {
+                    // 执行书籍类型表访问器修改操作
+                    bookDao.update(bookBean);
+                    emitter.onNext(bookBean);
+                }
             }
         });
 
+        // 处理于IO子线程
         BookObservable.subscribeOn(Schedulers.io())
+                // 响应于Android主线程
                 .observeOn(AndroidSchedulers.mainThread())
+                // 设置订阅的响应事件
                 .subscribe(new Consumer<BookBean>() {
                     @Override
                     public void accept(BookBean bookBean) throws Exception {
-                        if (bookBean != null) {
-                            bookDao.update(bookBean);
-                            listener.onSuccess();
-                        } else {
-                            listener.onError();
-                        }
+                        listener.onSuccess();
                     }
                 });
     }
