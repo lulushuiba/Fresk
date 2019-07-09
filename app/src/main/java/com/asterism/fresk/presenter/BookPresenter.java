@@ -135,7 +135,8 @@ public class BookPresenter extends BasePresenter<IBookContract.View>
     public void restoreBooks(final List<BookBean> bookList,
                              final IBookContract.OnNormalListener listener) {
         // 创建被观察者，传递List<BookBean>类型事件
-        Observable<BookBean> BookObservable = Observable.create(new ObservableOnSubscribe<BookBean>() {
+        Observable<BookBean> BookObservable
+                = Observable.create(new ObservableOnSubscribe<BookBean>() {
             @Override
             public void subscribe(ObservableEmitter<BookBean> emitter) throws Exception {
                 // 初始化书籍表访问器
