@@ -30,7 +30,7 @@ public abstract class BaseActivity<P extends IBaseContract.Presenter>
         setContentView(setLayoutId());
         // 绑定ButterKnife库
         ButterKnife.bind(this);
-        // 实现实例化Presenter方法
+        // 实例化Presenter方法
         if (this.mPresenter == null) {
             mPresenter = setPresenter();
         }

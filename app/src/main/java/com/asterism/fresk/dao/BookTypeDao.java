@@ -3,7 +3,6 @@ package com.asterism.fresk.dao;
 import android.content.Context;
 
 import com.asterism.fresk.dao.bean.BookTypeBean;
-import com.asterism.fresk.dao.bean.BookTypeBean;
 import com.asterism.fresk.dao.core.DatabaseHelper;
 import com.j256.ormlite.dao.Dao;
 
@@ -92,5 +91,42 @@ public class BookTypeDao {
             e.printStackTrace();
         }
         return beanList;
+    }
+
+    /**
+     * 根据类型名查询记录
+     *
+     * @param name 类型名
+     *
+     * @return 返回所有记录实体类集合
+     */
+    public List<BookTypeBean> selectAllByName(String name) {
+        List<BookTypeBean> beanList = null;
+        try {
+            beanList = dao.queryBuilder().where().eq("type", name).query();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return beanList;
+    }
+
+    /**
+     * 根据类型名判断是否存在于表中
+     *
+     * @param name 类型名
+     *
+     * @return 返回boolean值
+     */
+    public boolean isExistsByName(String name) {
+        boolean b = false;
+        try {
+            List<BookTypeBean> beanList = dao.queryBuilder().where().eq("type", name).query();
+            if (beanList.size() > 0) {
+                b = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return b;
     }
 }
