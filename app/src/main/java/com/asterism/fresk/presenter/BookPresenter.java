@@ -1,6 +1,8 @@
 package com.asterism.fresk.presenter;
 
 
+import android.annotation.SuppressLint;
+
 import com.asterism.fresk.contract.IBookContract;
 import com.asterism.fresk.dao.BookDao;
 import com.asterism.fresk.dao.bean.BookBean;
@@ -13,6 +15,7 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -184,6 +187,7 @@ public class BookPresenter extends BasePresenter<IBookContract.View>
      * @param bookBean 欲更改的书籍实体类
      * @param listener 监听器
      */
+    @SuppressLint("CheckResult")
     @Override
     public void alterBookInfo(final BookBean bookBean, final IBookContract.OnNormalListener listener) {
         final BookDao bookDao = new BookDao(mView.getContext());
@@ -195,14 +199,9 @@ public class BookPresenter extends BasePresenter<IBookContract.View>
         });
         BookObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<BookBean>() {
+                .subscribe(new Consumer<BookBean>() {
                     @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(BookBean bookBean) {
+                    public void accept(BookBean bookBean) throws Exception {
                         if (bookBean != null) {
                             bookDao.update(bookBean);
                             listener.onSuccess();
@@ -210,17 +209,6 @@ public class BookPresenter extends BasePresenter<IBookContract.View>
                             listener.onError();
                         }
                     }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
                 });
-
     }
 }
