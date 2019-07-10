@@ -65,13 +65,13 @@
         android:layout_marginTop="58dp"
         tools:context=".ui.fragment.DeskFragment">
 
-        <com.ashinch.fraesk.ui.widget.ScrollViewPager
+        <com.asterism.fresk.ui.widget.ScrollViewPager
             android:id="@+id/content_desk"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1">
 
-        </com.ashinch.fraesk.ui.widget.ScrollViewPager>
+        </com.asterism.fresk.ui.widget.ScrollViewPager>
 
     </FrameLayout>
 

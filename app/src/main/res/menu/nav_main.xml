@@ -2,9 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/nav_write"
+        android:id="@+id/nav_note"
         android:icon="@drawable/nav_write"
-        android:title="@string/title_write" />
+        android:title="@string/title_note" />
 
     <item
         android:id="@+id/nav_desk"

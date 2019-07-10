@@ -16,19 +16,18 @@ import java.util.List;
  */
 public class PagerAdapter extends FragmentPagerAdapter {
 
-    private FragmentManager mfragmentManager;
-    private List<Fragment> mList;
-    private List<String> mTitles;
+    private List<Fragment> FragmentList;    // 视图碎片集合
+    private List<String> titleList;         // 页面标题集合
 
     public PagerAdapter(FragmentManager fm, List<Fragment> list) {
         super(fm);
-        this.mList = list;
+        this.FragmentList = list;
     }
 
     public PagerAdapter(FragmentManager fm, List<Fragment> list, List<String> titles) {
         super(fm);
-        this.mList = list;
-        this.mTitles = titles;
+        this.FragmentList = list;
+        this.titleList = titles;
     }
 
     /**
@@ -40,7 +39,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
      */
     @Override
     public Fragment getItem(int i) {
-        return mList.get(i);
+        return FragmentList.get(i);
     }
 
     /**
@@ -50,12 +49,19 @@ public class PagerAdapter extends FragmentPagerAdapter {
      */
     @Override
     public int getCount() {
-        return mList.size();
+        return FragmentList.size();
     }
 
+    /**
+     * 获取页面标题
+     *
+     * @param position 当前页面位置
+     *
+     * @return 返回指定titleList内容值
+     */
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
-        return mTitles.get(position);
+        return titleList.get(position);
     }
 }

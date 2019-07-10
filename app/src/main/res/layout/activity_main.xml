@@ -6,13 +6,13 @@
     android:layout_height="match_parent"
     android:background="@color/background">
 
-    <com.ashinch.fraesk.ui.widget.ScrollViewPager
+    <com.asterism.fresk.ui.widget.ScrollViewPager
         android:id="@+id/content_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
 
-    </com.ashinch.fraesk.ui.widget.ScrollViewPager>
+    </com.asterism.fresk.ui.widget.ScrollViewPager>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation_main"

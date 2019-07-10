@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <!--状态栏颜色与背景颜色一致 需要API level 21-->
+        <item name="android:statusBarColor">@color/background</item>
+        <!--沉浸式状态栏 需要API level 23-->
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+</resources>
