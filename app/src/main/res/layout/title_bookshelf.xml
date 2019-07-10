@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="58dp"
+    android:layout_alignParentTop="true"
+    android:background="@color/background">
+
+    <ImageButton
+        android:layout_width="58dp"
+        android:layout_height="match_parent"
+        android:src="@drawable/title_desk"
+        android:background="@color/background"
+        android:id="@+id/btn_title_desk"
+        android:layout_alignParentLeft="true"/>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="书架"
+            android:textSize="20dp"
+            android:textColor="#333333"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+
+    <ImageButton
+        android:layout_width="58dp"
+        android:layout_height="match_parent"
+        android:src="@drawable/title_add"
+        android:background="@color/background"
+        android:id="@+id/btn_title_add_book2"
+        android:layout_alignParentRight="true" />
+
+</RelativeLayout>

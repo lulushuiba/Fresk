@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragment.DeskFragment">
+
+    <include
+        android:id="@+id/title_desk"
+        layout="@layout/title_desk"
+        android:visibility="visible" />
+
+    <include
+        android:id="@+id/title_bookshelf"
+        layout="@layout/title_bookshelf"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/img_in_triangle"
+        android:layout_width="10dp"
+        android:layout_height="6dp"
+        android:layout_below="@id/title_desk"
+        android:layout_centerHorizontal="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/icon_in_triangle" />
+
+    <RelativeLayout
+        android:id="@+id/layout_slide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:paddingTop="217dp">
+
+        <!--<ImageView-->
+        <!--android:layout_width="60dp"-->
+        <!--android:layout_height="5dp"-->
+        <!--android:src="@drawable/desk_scroll_bar1"-->
+        <!--android:adjustViewBounds="true"-->
+        <!--android:scaleType="fitXY"/>-->
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="3dp"
+            android:layout_marginTop="1dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/icon_slide_back" />
+
+        <ImageView
+            android:id="@+id/img_slide_fore"
+            android:layout_width="15dp"
+            android:layout_height="5dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/icon_slide_fore" />
+
+
+    </RelativeLayout>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="58dp"
+        tools:context=".ui.fragment.DeskFragment">
+
+        <com.asterism.fresk.ui.widget.ScrollViewPager
+            android:id="@+id/content_desk"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+        </com.asterism.fresk.ui.widget.ScrollViewPager>
+
+    </FrameLayout>
+
+</RelativeLayout>
