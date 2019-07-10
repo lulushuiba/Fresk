@@ -20,23 +20,28 @@ import io.reactivex.schedulers.Schedulers;
  *
  * @author lulushuiba
  * @email 1315269930@qq.com
- * @date on 2019-07-10 09:33:56
+ * @date on 2019-07-10 15:40:56
  */
 public class NotePresenter extends BasePresenter <INoteContract.View>
     implements INoteContract.Presenter{
 
+    /**
+     * 实现, 从数据库内获取所有笔记
+     *
+     * @param listener 监听器
+     */
     @SuppressLint("CheckResult")
     @Override
     public void getAllNotes(final INoteContract.OnNoteBeanListener listener) {
         // 显示正在加载
         mView.showLoading();
 
-        // 创建被观察者，传递List<NoteBean>类型事件
+        // 创建被观察者，传递查询到的所有笔记实体类集合。
         Observable<List<NoteBean>> NoteObservable
                 = Observable.create(new ObservableOnSubscribe<List<NoteBean>>() {
             @Override
             public void subscribe(ObservableEmitter<List<NoteBean>> emitter) throws Exception {
-                // 初始化书籍类型表访问器
+                // 初始化笔记类型表访问器
                 NoteDao noteDao = new NoteDao(mView.getContext());
                 emitter.onNext(noteDao.selectAll());
                 emitter.onComplete();
