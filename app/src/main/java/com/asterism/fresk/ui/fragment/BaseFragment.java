@@ -15,7 +15,7 @@ import com.asterism.fresk.contract.IBaseContract;
 import es.dmoral.toasty.Toasty;
 
 /**
- * Fragment抽象基类，泛型Presenter基础接口类型，继承自AppCompatActivity，实现View基础接口
+ * Fragment抽象基类，泛型Presenter基础接口类型，继承自Fragment，实现View基础接口
  *
  * @author Ashinch
  * @email Glaxyinfinite@outlook.com

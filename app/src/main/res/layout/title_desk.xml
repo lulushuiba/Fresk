@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="58dp"
+    android:layout_alignParentTop="true"
+    android:background="@color/background">
+
+    <ImageButton
+        android:layout_width="58dp"
+        android:layout_height="match_parent"
+        android:src="@drawable/title_bookshelf"
+        android:background="@color/background"
+        android:id="@+id/btn_title_bookshelf"
+        android:layout_alignParentLeft="true"/>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="已读"
+            android:textSize="10dp"
+            android:layout_marginEnd="6dp"
+            android:textColor="#999999"
+            android:layout_marginRight="6dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/title_time"
+            android:text="408"
+            android:textSize="20dp"
+            android:textColor="#333333"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:textColor="#999999"
+            android:textSize="10dp"
+            android:text="分钟"
+            android:layout_marginLeft="6dp" />
+
+    </LinearLayout>
+
+    <ImageButton
+        android:layout_width="58dp"
+        android:layout_height="match_parent"
+        android:src="@drawable/title_add"
+        android:background="@color/background"
+        android:id="@+id/btn_title_add_book1"
+        android:layout_alignParentRight="true" />
+
+</RelativeLayout>
