@@ -44,7 +44,7 @@ public interface INoteContract {
         void onSuccess(List<NoteBean> noteList);
 
         /**
-         * BookBean相关操作失败事件
+         * NoteBean相关操作失败事件
          */
         void onError();
     }

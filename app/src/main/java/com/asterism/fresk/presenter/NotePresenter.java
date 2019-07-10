@@ -26,7 +26,7 @@ public class NotePresenter extends BasePresenter <INoteContract.View>
     implements INoteContract.Presenter{
 
     /**
-     * 实现, 从数据库内获取所有笔记
+     * 实现 获取所有笔记
      *
      * @param listener 监听器
      */
