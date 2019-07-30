@@ -279,10 +279,3 @@ public class BookPresenter extends BasePresenter<IBookContract.View>
                 });
     }
 }
-/**
- * 优化代码
- *
- * @reviser Ashinch
- * @email Glaxyinfinite@outlook.com
- * @date on 2019-07-09 21:45
- */
