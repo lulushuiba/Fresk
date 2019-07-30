@@ -76,7 +76,14 @@ public interface IAddBookContract {
          *
          * @param pathList 回调添加失败的书籍文件路径集合
          */
-        void onError(List<String> pathList);
+        void onFailed(List<String> pathList);
+
+        /**
+         * 添加书籍错误事件
+         *
+         * @param message 回调错误消息
+         */
+        void onError(String message);
     }
 
     interface OnGetFilesListener {

@@ -1,9 +1,7 @@
 package com.asterism.fresk.ui.fragment;
 
 import com.asterism.fresk.R;
-import com.asterism.fresk.contract.IBookContract;
 import com.asterism.fresk.contract.INoteContract;
-import com.asterism.fresk.presenter.BookPresenter;
 import com.asterism.fresk.presenter.NotePresenter;
 
 /**

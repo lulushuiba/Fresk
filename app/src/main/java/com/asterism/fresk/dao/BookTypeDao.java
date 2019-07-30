@@ -45,6 +45,9 @@ public class BookTypeDao {
      * @param data 欲增加的记录实体类
      */
     public void insert(BookTypeBean data) {
+        if (isExistsByName(data.getType())) {
+            return;
+        }
         try {
             dao.create(data);
         } catch (SQLException e) {

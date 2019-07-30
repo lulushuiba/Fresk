@@ -25,6 +25,7 @@ import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
@@ -51,6 +52,7 @@ public class AddBookPresenter extends BasePresenter<IAddBookContract.View>
 
         bookBean.setFilePath(path);
         bookBean.setAddDate(DateUtils.getNowToString());
+        // TODO: 2019-07-11 最后章节与书籍名称后面针对书籍类型需要更改写法
         bookBean.setLastChapter("从未阅读");
         bookBean.setName(FileUtils.getFileSimpleName(path));
         bookBean.setReadDate(DateUtils.getNowToString());
@@ -62,18 +64,23 @@ public class AddBookPresenter extends BasePresenter<IAddBookContract.View>
         // 根据不同的类型处理书籍封面
         switch (bookTypeBean.getType()) {
             case "txt":
-                picPath = "android.resource://" + mView.getContext().getPackageName() + "/" + R.raw.txt;
+                picPath = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+                        .getAbsolutePath() + File.separator + "txt.png";
                 break;
             case "pdf":
-                picPath = "android.resource://" + mView.getContext().getPackageName() + "/" + R.raw.pdf;
+                picPath = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+                        .getAbsolutePath() + File.separator + "pdf.png";
                 break;
             case "epub":
-                picPath = "android.resource://" + mView.getContext().getPackageName() + "/" + R.raw.epub;
+                picPath = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+                        .getAbsolutePath() + File.separator + "epub.png";
                 break;
             case "mobi":
-                picPath = "android.resource://" + mView.getContext().getPackageName() + "/" + R.raw.mobi;
+                picPath = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+                        .getAbsolutePath() + File.separator + "mobi.png";
                 break;
         }
+
         bookBean.setPicName(picPath);
         return bookBean;
     }
@@ -85,7 +92,7 @@ public class AddBookPresenter extends BasePresenter<IAddBookContract.View>
      */
     private void fileScan(File Dir, Set<String> typeNameSet, ObservableEmitter<String> emitter) {
         // 初始化书籍类型表访问器
-        BookTypeDao bookTypeDao = new BookTypeDao(mView.getContext());
+        BookTypeDao bookTypeDao = new BookTypeDao(getContext());
         // 获取当前目录内所有文件类型数组
         File[] files = Dir.listFiles();
         // 不为空文件夹时
@@ -112,18 +119,19 @@ public class AddBookPresenter extends BasePresenter<IAddBookContract.View>
      */
     @SuppressLint("CheckResult")
     @Override
-    public void addBooks(final List<String> pathList, final IAddBookContract.OnAddBooksListener listener) {
+    public void addBooks(final List<String> pathList,
+                         final IAddBookContract.OnAddBooksListener listener) {
         // 创建被观察者，传递List<String>类型事件
         Observable<List<String>> observable
                 = Observable.create(new ObservableOnSubscribe<List<String>>() {
             @Override
             public void subscribe(ObservableEmitter<List<String>> emitter) {
                 // 错误路径集合
-                List<String> errorPathList = new ArrayList<>();
+                List<String> failPathList = new ArrayList<>();
                 // 书籍类型表访问器
-                BookTypeDao bookTypeDao = new BookTypeDao(mView.getContext());
+                BookTypeDao bookTypeDao = new BookTypeDao(getContext());
                 // 书籍表访问器
-                BookDao bookDao = new BookDao(mView.getContext());
+                BookDao bookDao = new BookDao(getContext());
 
                 // 遍历路径集合
                 for (String path : pathList) {
@@ -131,16 +139,16 @@ public class AddBookPresenter extends BasePresenter<IAddBookContract.View>
                     String suffixName = FileUtils.getFileSuffixName(path);
                     List<BookTypeBean> list = bookTypeDao.selectAllByName(suffixName);
                     // 如果文件类型存在于书籍类型表中
-                    if (list.size() != 0) {
+                    if (list.size() > 0) {
                         // 将书籍添加到数据库
                         bookDao.insert(getBookBean(path, list.get(0)));
                     } else {
                         // 将路径添加到错误路径集合
-                        errorPathList.add(path);
+                        failPathList.add(path);
                     }
                 }
 
-                emitter.onNext(errorPathList);
+                emitter.onNext(failPathList);
                 emitter.onComplete();
             }
         });
@@ -150,14 +158,29 @@ public class AddBookPresenter extends BasePresenter<IAddBookContract.View>
                 // 响应于Android主线程
                 .observeOn(AndroidSchedulers.mainThread())
                 // 设置订阅的响应事件
-                .subscribe(new Consumer<List<String>>() {
+                .subscribe(new Observer<List<String>>() {
                     @Override
-                    public void accept(List<String> errorPathList) throws Exception {
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<String> errorPathList) {
                         if (errorPathList.size() == 0) {
                             listener.onSuccess();
                         } else {
-                            listener.onError(errorPathList);
+                            listener.onFailed(errorPathList);
                         }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        listener.onError(e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
     }
@@ -203,7 +226,7 @@ public class AddBookPresenter extends BasePresenter<IAddBookContract.View>
                 // 初始化列表集合子项集合
                 Map<String, Object> itemMap = new HashMap<>();
                 // 初始化书籍类型表访问器
-                BookTypeDao bookTypeDao = new BookTypeDao(mView.getContext());
+                BookTypeDao bookTypeDao = new BookTypeDao(getContext());
 
                 // 遍历当前目录下所有文件
                 for (File file : currentFiles) {

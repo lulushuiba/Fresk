@@ -34,6 +34,15 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private Map<String, Dao> daos = new HashMap<>();
 
     /**
+     * 构造方法
+     *
+     * @param context 上下文对象
+     */
+    private DatabaseHelper(Context context) {
+        super(context, DATABASE_NAME, null, 1);
+    }
+
+    /**
      * 获取单例
      *
      * @param context 上下文对象
@@ -49,15 +58,6 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             }
         }
         return instance;
-    }
-
-    /**
-     * 构造方法
-     *
-     * @param context 上下文对象
-     */
-    private DatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, 1);
     }
 
     /**
@@ -132,10 +132,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     @Override
     public void close() {
         super.close();
-        // 释放Dao集合资源
-        for (String key : daos.keySet()) {
-            Dao dao = daos.get(key);
-            dao = null;
-        }
+        daos.clear();
+        daos = null;
     }
 }

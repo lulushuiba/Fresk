@@ -7,4 +7,12 @@
     <string name="title_desk">书桌</string>
     <string name="title_more">更多</string>
 
+    <!--DeskFragment-->
+    <string name="read">已读</string>
+    <string name="minutes">分钟</string>
+    <string name="neverRead">从未阅读</string>
+
+    <!--BookshelfFragment-->
+    <string name="bookshelf">书架</string>
+
 </resources>

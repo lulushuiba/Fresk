@@ -9,7 +9,7 @@ import com.asterism.fresk.contract.IMainContract;
  * @email Glaxyinfinite@outlook.com
  * @date on 2019-07-09 16:33
  */
-public class MainPresenter extends BasePresenter<IMainContract.View> 
+public class MainPresenter extends BasePresenter<IMainContract.View>
         implements IMainContract.Presenter {
-    
+
 }

@@ -46,13 +46,6 @@ public interface IBaseContract {
          * @param massage 欲显示的消息内容
          */
         void showNormalToast(String massage);
-
-        /**
-         * 获取上下文对象
-         *
-         * @return 返回当前View的上下文对象
-         */
-        Context getContext();
     }
 
     interface Presenter<V extends IBaseContract.View> {
@@ -75,5 +68,12 @@ public interface IBaseContract {
          * @return 返回绑定状态
          */
         boolean isAttached();
+
+        /**
+         * 获取上下文对象
+         *
+         * @return 返回上下文对象
+         */
+        Context getContext();
     }
 }

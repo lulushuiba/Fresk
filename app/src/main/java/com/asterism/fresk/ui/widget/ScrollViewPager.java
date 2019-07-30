@@ -35,7 +35,9 @@ public class ScrollViewPager extends ViewPager {
 
     /**
      * 重写 拦截触摸事件
-     * @param ev
+     *
+     * @param ev 动作事件
+     *
      * @return
      */
     @Override
@@ -45,7 +47,9 @@ public class ScrollViewPager extends ViewPager {
 
     /**
      * 重写 触摸事件
-     * @param ev
+     *
+     * @param ev 动作事件
+     *
      * @return
      */
     @Override

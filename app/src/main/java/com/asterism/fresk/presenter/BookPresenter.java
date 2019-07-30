@@ -1,6 +1,5 @@
 package com.asterism.fresk.presenter;
 
-
 import android.annotation.SuppressLint;
 
 import com.asterism.fresk.contract.IBookContract;
@@ -35,7 +34,7 @@ public class BookPresenter extends BasePresenter<IBookContract.View>
      */
     @SuppressLint("CheckResult")
     @Override
-    public void getAllBooks(final IBookContract.OnBookBeanListener listener) {
+    public void getAllBooks(final IBookContract.OnBookListListener listener) {
         // 显示正在加载
         mView.showLoading();
 
@@ -45,7 +44,7 @@ public class BookPresenter extends BasePresenter<IBookContract.View>
             @Override
             public void subscribe(ObservableEmitter<List<BookBean>> emitter) throws Exception {
                 // 初始化书籍类型表访问器
-                BookDao bookDao = new BookDao(mView.getContext());
+                BookDao bookDao = new BookDao(getContext());
                 emitter.onNext(bookDao.selectAll());
                 emitter.onComplete();
             }
@@ -71,6 +70,61 @@ public class BookPresenter extends BasePresenter<IBookContract.View>
     }
 
     /**
+     * 从数据库内按照阅读日期排序获取指定索引书籍
+     *
+     * @param index    索引
+     * @param listener 监听器
+     */
+    @SuppressLint("CheckResult")
+    @Override
+    public void getBookByIndexSortReadDate(final int index,
+                                           final IBookContract.OnBookBeanListener listener) {
+        // 创建被观察者，传递BookBean类型事件
+        Observable<BookBean> BookObservable
+                = Observable.create(new ObservableOnSubscribe<BookBean>() {
+            @Override
+            public void subscribe(ObservableEmitter<BookBean> emitter) throws Exception {
+                // 初始化书籍类型表访问器
+                BookDao bookDao = new BookDao(getContext());
+                BookBean bookBean = bookDao.selectByIndexSortReadDate(index);
+                if (bookBean != null) {
+                    emitter.onNext(bookBean);
+                } else {
+                    emitter.onError(new Throwable("bookBean is null!"));
+                }
+                emitter.onComplete();
+            }
+        });
+
+        // 处理于IO子线程
+        BookObservable.subscribeOn(Schedulers.io())
+                // 响应于Android主线程
+                .observeOn(AndroidSchedulers.mainThread())
+                // 设置订阅的响应事件
+                .subscribe(new Observer<BookBean>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BookBean bookBean) {
+                        listener.onSuccess(bookBean);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        listener.onError(e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    /**
      * 实现 从数据库内移除书籍
      *
      * @param bookList 欲移除的BookBean集合
@@ -79,7 +133,7 @@ public class BookPresenter extends BasePresenter<IBookContract.View>
     @SuppressLint("CheckResult")
     @Override
     public void removeBooksInDatabase(final List<BookBean> bookList,
-                                      final IBookContract.OnBookBeanListener listener) {
+                                      final IBookContract.OnBookListListener listener) {
         // 显示正在移除
         mView.showRemoving();
 
@@ -89,7 +143,7 @@ public class BookPresenter extends BasePresenter<IBookContract.View>
             @Override
             public void subscribe(ObservableEmitter<List<BookBean>> emitter) throws Exception {
                 // 初始化书籍表访问器
-                BookDao bookDao = new BookDao(mView.getContext());
+                BookDao bookDao = new BookDao(getContext());
                 for (BookBean bookBean : bookList) {
                     // 执行书籍类型表访问器删除操作
                     bookDao.delete(bookBean);
@@ -140,7 +194,7 @@ public class BookPresenter extends BasePresenter<IBookContract.View>
             @Override
             public void subscribe(ObservableEmitter<BookBean> emitter) throws Exception {
                 // 初始化书籍表访问器
-                BookDao bookDao = new BookDao(mView.getContext());
+                BookDao bookDao = new BookDao(getContext());
                 for (BookBean bookBean : bookList) {
                     // 执行书籍类型表访问器添加操作
                     bookDao.insert(bookBean);
@@ -198,7 +252,7 @@ public class BookPresenter extends BasePresenter<IBookContract.View>
             @Override
             public void subscribe(ObservableEmitter<BookBean> emitter) throws Exception {
                 // 初始化书籍表访问器
-                BookDao bookDao = new BookDao(mView.getContext());
+                BookDao bookDao = new BookDao(getContext());
                 if (bookBean != null) {
                     // 执行书籍类型表访问器修改操作
                     bookDao.update(bookBean);

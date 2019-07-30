@@ -1,5 +1,9 @@
 package com.asterism.fresk.presenter;
 
+import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+
 import com.asterism.fresk.contract.IBaseContract;
 
 /**
@@ -20,7 +24,7 @@ public abstract class BasePresenter<V extends IBaseContract.View>
      * @param view 欲绑定的视图，当前合约内的View
      */
     @Override
-    public void attachView(V view) {
+    public void attachView(@NonNull V view) {
         this.mView = view;
     }
 
@@ -40,5 +44,24 @@ public abstract class BasePresenter<V extends IBaseContract.View>
     @Override
     public boolean isAttached() {
         return mView != null;
+    }
+
+    /**
+     * 获取上下文对象
+     *
+     * @return 返回上下文对象
+     */
+    @Override
+    public Context getContext() {
+        if (mView instanceof Context) {
+            // 如果当前mView是Activity，直接强制转型
+            return (Context) mView;
+        } else if (mView instanceof Fragment) {
+            // 如果当前mView是Fragment，获取父视图的Context对象
+            return ((Fragment) mView).getContext();
+        } else {
+            // 都不是则抛出异常
+            throw new NullPointerException("BasePresenter:mView is't instance of Context,can't use getContext() method.");
+        }
     }
 }

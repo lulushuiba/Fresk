@@ -92,4 +92,15 @@ public class BookDao {
         }
         return beanList;
     }
+
+    public BookBean selectByIndexSortReadDate(int index) {
+        List<BookBean> beanList = selectAll();
+        if (beanList == null || index < 0 || index >= beanList.size()) {
+            return null;
+        }
+        //AlgorithmUtils.sortBookListByReadDate(beanList, 0, beanList.size() - 1);
+        BookBean bean = beanList.get(index);
+        beanList.clear();
+        return bean;
+    }
 }

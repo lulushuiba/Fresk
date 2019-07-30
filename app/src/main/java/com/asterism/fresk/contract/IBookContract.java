@@ -42,7 +42,15 @@ public interface IBookContract {
          *
          * @param listener 监听器
          */
-        void getAllBooks(OnBookBeanListener listener);
+        void getAllBooks(OnBookListListener listener);
+
+        /**
+         * 从数据库内按照阅读日期排序获取指定索引书籍
+         *
+         * @param index    索引
+         * @param listener 监听器
+         */
+        void getBookByIndexSortReadDate(int index, OnBookBeanListener listener);
 
         /**
          * 从数据库内移除书籍
@@ -50,7 +58,7 @@ public interface IBookContract {
          * @param bookList 欲移除的BookBean集合
          * @param listener 监听器
          */
-        void removeBooksInDatabase(List<BookBean> bookList, OnBookBeanListener listener);
+        void removeBooksInDatabase(List<BookBean> bookList, OnBookListListener listener);
 
         /**
          * 从储存设备内移除书籍
@@ -76,18 +84,34 @@ public interface IBookContract {
         void alterBookInfo(BookBean bookBean, OnNormalListener listener);
     }
 
-    interface OnBookBeanListener {
+    interface OnBookListListener {
         /**
-         * BookBean相关操作成功事件
+         * BookList相关操作成功事件
          *
          * @param bookList 回调操作的BookBean集合
          */
         void onSuccess(List<BookBean> bookList);
 
         /**
-         * BookBean相关操作失败事件
+         * BookList相关操作失败事件
          */
         void onError();
+    }
+
+    interface OnBookBeanListener {
+        /**
+         * BookBean相关操作成功事件
+         *
+         * @param bookList 回调操作的BookBean对象
+         */
+        void onSuccess(BookBean bookList);
+
+        /**
+         * BookBean相关操作失败事件
+         *
+         * @param message 回调错误消息
+         */
+        void onError(String message);
     }
 
     interface OnNormalListener {

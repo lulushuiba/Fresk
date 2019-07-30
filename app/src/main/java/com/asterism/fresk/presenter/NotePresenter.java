@@ -22,8 +22,8 @@ import io.reactivex.schedulers.Schedulers;
  * @email 1315269930@qq.com
  * @date on 2019-07-10 15:40:56
  */
-public class NotePresenter extends BasePresenter <INoteContract.View>
-    implements INoteContract.Presenter{
+public class NotePresenter extends BasePresenter<INoteContract.View>
+        implements INoteContract.Presenter {
 
     /**
      * 实现 获取所有笔记
@@ -42,7 +42,7 @@ public class NotePresenter extends BasePresenter <INoteContract.View>
             @Override
             public void subscribe(ObservableEmitter<List<NoteBean>> emitter) throws Exception {
                 // 初始化笔记类型表访问器
-                NoteDao noteDao = new NoteDao(mView.getContext());
+                NoteDao noteDao = new NoteDao(getContext());
                 emitter.onNext(noteDao.selectAll());
                 emitter.onComplete();
             }
