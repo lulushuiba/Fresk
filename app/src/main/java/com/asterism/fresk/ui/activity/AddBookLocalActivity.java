@@ -6,14 +6,13 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.asterism.fresk.R;
-import com.asterism.fresk.contract.IAddBookContract;
 import com.asterism.fresk.contract.IAddBookLocalContract;
-import com.asterism.fresk.contract.IMainContract;
 import com.asterism.fresk.presenter.AddBookLocalPresenter;
 import com.asterism.fresk.ui.adapter.TabFragmentPagerAdapter;
 import com.asterism.fresk.ui.fragment.AddBookAutoFragment;
 import com.asterism.fresk.ui.fragment.AddBookManualFragment;
 import com.asterism.fresk.ui.widget.ScrollViewPager;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +23,9 @@ import butterknife.OnClick;
 public class AddBookLocalActivity  extends BaseActivity<IAddBookLocalContract.Presenter>
         implements IAddBookLocalContract.View {
 
-    @BindView(R.id.navigation)
+
+
+   @BindView(R.id.navigation)
     protected TabLayout tabLayout;
 
     @BindView(R.id.content)
@@ -64,7 +65,7 @@ public class AddBookLocalActivity  extends BaseActivity<IAddBookLocalContract.Pr
     }
 
 
-    @OnClick({R.id.btn_title_return})
+   @OnClick({R.id.btn_title_return})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_title_return:
