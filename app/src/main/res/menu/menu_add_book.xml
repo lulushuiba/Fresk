@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/item_add_book_local"
+        android:title="导入本地书籍" />
+    <item
+        android:id="@+id/item_add_book_network"
+        android:title="获取网络书籍"/>
+</menu>

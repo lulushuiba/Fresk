@@ -1,24 +1,31 @@
 package com.asterism.fresk.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 
 import com.asterism.fresk.R;
 import com.asterism.fresk.contract.IBookContract;
 import com.asterism.fresk.presenter.BookPresenter;
+import com.asterism.fresk.ui.activity.AddBookLocalActivity;
 import com.asterism.fresk.ui.adapter.PagerAdapter;
 import com.asterism.fresk.ui.widget.ScrollViewPager;
+import com.asterism.fresk.util.PermissionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.OnItemClick;
 
 /**
  * 书籍页面Fragment类，继承base基类且泛型为当前模块Presenter接口类型，并实现当前模块View接口
@@ -162,9 +169,9 @@ public class BookFragment extends BaseFragment<IBookContract.Presenter>
     /**
      * 按钮点击事件
      *
-     * @param view 书架按钮 书桌按钮
+     * @param view 书架按钮 书桌按钮 添加数据按钮1 添加数据按钮2
      */
-    @OnClick({R.id.btn_title_bookshelf, R.id.btn_title_desk})
+    @OnClick({R.id.btn_title_bookshelf, R.id.btn_title_desk, R.id.btn_title_add_book1, R.id.btn_title_add_book2})
     public void onClick(View view) {
         switch (view.getId()) {
             // 点击书架按钮
@@ -182,6 +189,41 @@ public class BookFragment extends BaseFragment<IBookContract.Presenter>
                 titleBookshelf.setVisibility(View.GONE);
                 imgInTriangle.setVisibility(View.VISIBLE);
                 break;
+
+            case R.id.btn_title_add_book1:
+                PopupMenu popupMenu = new PopupMenu(getContext(), view);
+                getActivity().getMenuInflater().inflate(R.menu.menu_add_book, popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(menuAddOnMenuItemClickListener);
+                //显示菜单
+                popupMenu.show();
+                //对权限进行申请
+                PermissionUtils.requestPermissionsRWM(getActivity());
+                break;
+            case R.id.btn_title_add_book2:
+                break;
+          /*  case  R.id.item_add_book_local:
+                Log.w("zhi","成功");
+                break;*/
+
         }
     }
+
+    //  菜单选中事件
+    private PopupMenu.OnMenuItemClickListener menuAddOnMenuItemClickListener = new PopupMenu.OnMenuItemClickListener() {
+        @Override
+        public boolean onMenuItemClick(MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.item_add_book_local:
+                   Intent intent = new Intent(getActivity(), AddBookLocalActivity.class);
+                    startActivity(intent);
+                    return true;
+                case R.id.item_add_book_network:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+    };
+
+
 }
