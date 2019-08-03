@@ -1,5 +1,6 @@
 package com.asterism.fresk.ui.fragment;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.ImageView;
@@ -9,6 +10,7 @@ import com.asterism.fresk.R;
 import com.asterism.fresk.contract.IBookContract;
 import com.asterism.fresk.dao.bean.BookBean;
 import com.asterism.fresk.presenter.BookPresenter;
+import com.asterism.fresk.ui.activity.ReadActivity;
 
 import java.io.File;
 
@@ -92,6 +94,6 @@ public class DeskFragment extends BaseFragment<IBookContract.Presenter>
 
     @OnClick(R.id.img_book_Pic)
     public void onClick() {
-
+        startActivity(new Intent(mContext, ReadActivity.class));
     }
 }
