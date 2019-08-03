@@ -201,9 +201,6 @@ public class BookFragment extends BaseFragment<IBookContract.Presenter>
                 break;
             case R.id.btn_title_add_book2:
                 break;
-          /*  case  R.id.item_add_book_local:
-                Log.w("zhi","成功");
-                break;*/
 
         }
     }

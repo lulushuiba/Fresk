@@ -46,11 +46,12 @@
             android:orientation="vertical">
 
             <Button
+                android:id="@+id/bt_loadSelect"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_alignParentBottom="true"
                 android:background="#333333"
-                android:text="导入选中"
+                android:text="@string/LoadSelect"
                 android:textStyle="bold"
                 android:textSize="18dp"
                 android:textColor="#ffffff"/>

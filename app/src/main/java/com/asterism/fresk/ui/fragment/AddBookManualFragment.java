@@ -1,5 +1,6 @@
 package com.asterism.fresk.ui.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -31,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class AddBookManualFragment extends BaseFragment<IAddBookManualContract.Presenter>
         implements IAddBookManualContract.View {
@@ -39,6 +42,9 @@ public class AddBookManualFragment extends BaseFragment<IAddBookManualContract.P
 
     @BindView(R.id.tv_manual_path)
     protected TextView textView;
+
+    @BindView(R.id.bt_loadSelect)
+    public Button btloadSelect;
 
     //记录当前父文件夹
     private File currentParent;
@@ -49,26 +55,33 @@ public class AddBookManualFragment extends BaseFragment<IAddBookManualContract.P
     private DirectoryListAdapter adapter;
 
     @Override
-    protected int setLayoutId() { return R.layout.fragment_add_book_manual; }
+    protected int setLayoutId() {
+        return R.layout.fragment_add_book_manual;
+    }
 
     @Override
-    protected IAddBookManualContract.Presenter setPresenter() { return new AddBookManualPresenter(); }
+    protected IAddBookManualContract.Presenter setPresenter() {
+        return new AddBookManualPresenter();
+    }
 
     @Override
     protected void initialize() {
-        //设置为可滑动
+
         textView.setMovementMethod(ScrollingMovementMethod.getInstance());
         //获取系统SD卡目录
         File root = new File(Environment.getExternalStorageDirectory().getPath());
-        if(root.exists()){
+        if (root.exists()) {
             currentParent = root;
             currentFiles = root.listFiles();
             //使用当前目录下的全部文件，来填充ListView
             inflateListView(currentFiles);
 
             listView.setOnItemClickListener(listViewItemOnClick);
+        }
+
+        //设置初始值
+        btloadSelect.setText( getResources().getString(R.string.LoadSelect)+"(" + adapter.book.size()+")");
     }
-}
 
     /**
      * 填充ListView
@@ -78,23 +91,21 @@ public class AddBookManualFragment extends BaseFragment<IAddBookManualContract.P
     private void inflateListView(File[] files) {
         //创建List集合，元素是Map
         listItems = new ArrayList<>();
-        for (int i = 0; i < files.length; i++ ) {
+        for (int i = 0; i < files.length; i++) {
             Map<String, Object> listItem = new HashMap<>();
             String type;
             //如果当前File是文件夹，使用文件夹图标，其它使用文件图标
             if (files[i].isDirectory()) {
                 listItem.put("icon", R.drawable.icon_folder);
                 type = "dir";
-            }
-            else if (DirectoryUtils.getFormatName(files[i].getName()).equals("txt") ||
+            } else if (DirectoryUtils.getFormatName(files[i].getName()).equals("txt") ||
                     DirectoryUtils.getFormatName(files[i].getName()).equals("epub") ||
                     DirectoryUtils.getFormatName(files[i].getName()).equals("pdf") ||
                     DirectoryUtils.getFormatName(files[i].getName()).equals("mobi")) {
 
                 listItem.put("icon", R.drawable.icon_file);
                 type = "file";
-            }
-            else {
+            } else {
                 continue;
             }
 
@@ -119,20 +130,16 @@ public class AddBookManualFragment extends BaseFragment<IAddBookManualContract.P
                 returnUp.put("icon", R.drawable.icon_folder);
                 returnUp.put("file", "/..");
                 returnUp.put("type", "dir");
-                listItems.add(0,returnUp);
+                listItems.add(0, returnUp);
             }
-
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-
-
-
         //创建
-        if (adapter == null){
+        if (adapter == null) {
             adapter = new DirectoryListAdapter(getContext(), listItems);
-        }else {
+        } else {
             adapter.setData(listItems);
         }
 
@@ -147,6 +154,7 @@ public class AddBookManualFragment extends BaseFragment<IAddBookManualContract.P
 
 
     private ListView.OnItemClickListener listViewItemOnClick = new ListView.OnItemClickListener() {
+        @SuppressLint("SetTextI18n")
         @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -160,37 +168,48 @@ public class AddBookManualFragment extends BaseFragment<IAddBookManualContract.P
                         //使用当前目录下的全部文件，来填充ListView
                         inflateListView(currentFiles);
                     }
-                }catch(Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }else{
+            } else {
                 adapter.setBook(position);
 
-                if(((DirectoryListAdapter.ViewHolder) view.getTag()).cbOption.isChecked()) {
+                if (((DirectoryListAdapter.ViewHolder) view.getTag()).cbOption.isChecked()) {
                     adapter.setBook(position);
-                    updateProgressPartly(position,false);
 
-                }else {
+                    updateProgressPartly(position, false);
+                } else {
                     adapter.setBook(position);
-                    updateProgressPartly(position,true);
+                    updateProgressPartly(position, true);
                 }
-
+                //更新UI数据
+                btloadSelect.setText( getResources().getString(R.string.LoadSelect)+"(" + adapter.book.size()+")");
             }
-
         }
     };
 
-    private void updateProgressPartly(int position, boolean b){
+    private void updateProgressPartly(int position, boolean b) {
+
         int firstVisiblePosition = listView.getFirstVisiblePosition();
         int lastVisiblePosition = listView.getLastVisiblePosition();
-        if(position>=firstVisiblePosition && position<=lastVisiblePosition){
+        if (position >= firstVisiblePosition && position <= lastVisiblePosition) {
             View v = listView.getChildAt(position - firstVisiblePosition);
-            if(v.getTag() instanceof DirectoryListAdapter.ViewHolder){
-                DirectoryListAdapter.ViewHolder vh = (DirectoryListAdapter.ViewHolder)v.getTag();
+            if (v.getTag() instanceof DirectoryListAdapter.ViewHolder) {
+                DirectoryListAdapter.ViewHolder vh = (DirectoryListAdapter.ViewHolder) v.getTag();
                 vh.cbOption.setChecked(b);
             }
         }
     }
 
+    @OnClick({R.id.bt_loadSelect})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            // 点击导入选中
+            case R.id.bt_loadSelect:
 
+
+                Log.w("导入", "导入");
+                break;
+        }
+    }
 }

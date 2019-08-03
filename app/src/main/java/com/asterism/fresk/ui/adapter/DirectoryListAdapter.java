@@ -3,6 +3,7 @@ package com.asterism.fresk.ui.adapter;
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -20,7 +21,7 @@ import java.util.Map;
 public class DirectoryListAdapter extends BaseAdapter {
     private Context ctx;
     private List<Map<String, Object>> list;
-    private HashMap<String, Integer> book;
+    public HashMap<String, Integer> book;
 
 
     //MyAdapter需要一个Context，通过Context获得Layout.inflater，然后通过inflater加载item的布局
@@ -40,6 +41,7 @@ public class DirectoryListAdapter extends BaseAdapter {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void setBook(int position) {
+
         String path = list.get(position).get("path").toString() + "" + list.get(position).get("file").toString();
 
         if (book.getOrDefault(path,(-1)) == position) {
@@ -47,6 +49,9 @@ public class DirectoryListAdapter extends BaseAdapter {
         }else {
             book.put(path, position);
         }
+
+
+
 
     }
 
@@ -71,6 +76,7 @@ public class DirectoryListAdapter extends BaseAdapter {
     }
 
     //  得到 Item 的 View 视图
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         View view = null;
@@ -92,19 +98,24 @@ public class DirectoryListAdapter extends BaseAdapter {
         }
 
         holder.cbOption.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 String path = list.get(position).get("path").toString() + "" + list.get(position).get("file").toString();
 
                 if (isChecked) {
                     if (book.getOrDefault(path,(-1)) != position) {
-
                         book.put(path,position);
                     }
                 }else {
                     if (book.getOrDefault(path,(-1)) == position) {
                         book.remove(path);
                     }
+                }
+
+                for(String key:book.keySet())
+                {
+                    Log.w("aas", "Key: "+key+" Value: "+book.get(key));
                 }
 
             }
