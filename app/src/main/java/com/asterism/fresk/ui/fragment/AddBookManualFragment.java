@@ -7,6 +7,7 @@ import android.os.Environment;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,9 @@ import android.widget.TextView;
 
 
 import com.asterism.fresk.R;
+import com.asterism.fresk.contract.IAddBookManualContract;
+import com.asterism.fresk.contract.IBookContract;
+import com.asterism.fresk.presenter.AddBookManualPresenter;
 import com.asterism.fresk.ui.adapter.DirectoryListAdapter;
 import com.asterism.fresk.util.DirectoryUtils;
 
@@ -26,31 +30,33 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AddBookManualFragment extends Fragment {
-    private Context ctx;
+import butterknife.BindView;
 
-    private ListView listView;
-    private TextView textView;
+public class AddBookManualFragment extends BaseFragment<IAddBookManualContract.Presenter>
+        implements IAddBookManualContract.View {
+    @BindView(R.id.lv_manual_files)
+    protected ListView listView;
+
+    @BindView(R.id.tv_manual_path)
+    protected TextView textView;
+
     //记录当前父文件夹
     private File currentParent;
+
     //记录当前路经下的所有文件
     private File[] currentFiles = null;
     private List<Map<String, Object>> listItems;
     private DirectoryListAdapter adapter;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_book_manual, container, false);
-        ctx = getContext();
-        initView(view);
-        return view;
-    }
+    protected int setLayoutId() { return R.layout.fragment_add_book_manual; }
 
+    @Override
+    protected IAddBookManualContract.Presenter setPresenter() { return new AddBookManualPresenter(); }
 
-    private void initView(View view) {
-        listView = view.findViewById(R.id.lv_manual_files);
-        textView = view.findViewById(R.id.tv_manual_path);
+    @Override
+    protected void initialize() {
+        //设置为可滑动
         textView.setMovementMethod(ScrollingMovementMethod.getInstance());
         //获取系统SD卡目录
         File root = new File(Environment.getExternalStorageDirectory().getPath());
@@ -60,11 +66,15 @@ public class AddBookManualFragment extends Fragment {
             //使用当前目录下的全部文件，来填充ListView
             inflateListView(currentFiles);
 
-        listView.setOnItemClickListener(listViewItemOnClick);
+            listView.setOnItemClickListener(listViewItemOnClick);
     }
-
 }
 
+    /**
+     * 填充ListView
+     *
+     * @param files
+     */
     private void inflateListView(File[] files) {
         //创建List集合，元素是Map
         listItems = new ArrayList<>();
@@ -121,7 +131,7 @@ public class AddBookManualFragment extends Fragment {
 
         //创建
         if (adapter == null){
-            adapter = new DirectoryListAdapter(ctx, listItems);
+            adapter = new DirectoryListAdapter(getContext(), listItems);
         }else {
             adapter.setData(listItems);
         }
