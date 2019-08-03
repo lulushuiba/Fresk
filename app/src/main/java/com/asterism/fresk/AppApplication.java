@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * 重写Application
@@ -88,10 +89,18 @@ public class AppApplication extends Application {
         FileUtils.writeFile(this, "Pdf测试书籍.pdf", "pdf", Context.MODE_PRIVATE);
 
         List<String> preBookPathList = new ArrayList<>();
+        preBookPathList.add(getFilesDir().getAbsolutePath() + "/别了，柏林.txt");
+        preBookPathList.add(getFilesDir().getAbsolutePath() + "/沧海，卷一.epub");
+        preBookPathList.add(getFilesDir().getAbsolutePath() + "/三个火枪手.pdf");
+        preBookPathList.add(getFilesDir().getAbsolutePath() + "/月亮与六便士.txt");
+        preBookPathList.add(getFilesDir().getAbsolutePath() + "/百年孤独.epub");
+        preBookPathList.add(getFilesDir().getAbsolutePath() + "/雾都孤儿.pdf");
+        preBookPathList.add(getFilesDir().getAbsolutePath() + "/白夜行.txt");
+        preBookPathList.add(getFilesDir().getAbsolutePath() + "/茶花女.epub");
+        preBookPathList.add(getFilesDir().getAbsolutePath() + "/老人与海.pdf");
         preBookPathList.add(getFilesDir().getAbsolutePath() + "/TXT测试书籍.txt");
         preBookPathList.add(getFilesDir().getAbsolutePath() + "/epub测试书籍.epub");
         preBookPathList.add(getFilesDir().getAbsolutePath() + "/Pdf测试书籍.pdf");
-
         for (String path : preBookPathList) {
             Log.i("application", "preBookPathList: " + path);
         }
@@ -134,7 +143,8 @@ public class AppApplication extends Application {
         bookBean.setLastChapter(getString(R.string.neverRead));
         bookBean.setName(FileUtils.getFileSimpleName(path));
         bookBean.setReadDate(DateUtils.getNowToString());
-        bookBean.setReadProgress(0);
+        Random r = new Random();
+        bookBean.setReadProgress( r.nextInt(100));
         bookBean.setReadTiming(0);
         bookBean.setType(bookTypeBean);
 

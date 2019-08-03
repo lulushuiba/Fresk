@@ -8,7 +8,6 @@ import android.widget.GridView;
 
 import com.asterism.fresk.R;
 import com.asterism.fresk.contract.IBookContract;
-import com.asterism.fresk.dao.BookDao;
 import com.asterism.fresk.dao.bean.BookBean;
 import com.asterism.fresk.presenter.BookPresenter;
 import com.asterism.fresk.ui.adapter.BookshelfGridAdapter;
@@ -48,18 +47,6 @@ public class BookshelfFragment extends BaseFragment<IBookContract.Presenter>
         mPresenter.getAllBooks(new IBookContract.OnBookListListener() {
             @Override
             public void onSuccess(List<BookBean> bookList) {
-                // bookList根据阅读时间进行排序
-                BookBean temp;
-                for(int i = 0; i < bookList.size(); i++) {
-                    for (int j = 0; j <bookList.size()-1-i; j++) {
-                       int res=bookList.get(j).getReadDate().compareTo(bookList.get(j+1).getReadDate());
-                        if(res<0) {
-                            temp = bookList.get(j);
-                           bookList.set(j,bookList.get(j + 1));
-                           bookList.set(j + 1, temp);
-                        }
-                    }
-                }
 
                 // 书架GridView适配器设置
                 BookshelfGridAdapter adapter = new BookshelfGridAdapter(mContext, bookList);

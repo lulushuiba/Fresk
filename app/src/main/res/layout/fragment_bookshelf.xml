@@ -8,7 +8,7 @@
         android:layout_height="match_parent"
         android:id="@+id/gv_bookshelf"
         android:horizontalSpacing="29sp"
-        android:verticalSpacing="68sp"
+        android:verticalSpacing="20sp"
         android:padding="20dp"
         android:stretchMode="columnWidth"
         android:numColumns="3"
