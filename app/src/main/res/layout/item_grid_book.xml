@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="-10dp">
     <ImageView
        android:id="@+id/img_item_book"
-        android:background="#FF999999"
         android:layout_width="87dp"
         android:layout_height="122dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="8dp"
-        android:scaleType="center"
         android:adjustViewBounds="true"
         android:elevation="10dp" />
     <TextView
@@ -25,6 +23,6 @@
         android:id="@+id/tv_item_progress"
         android:layout_width="87dp"
         android:layout_height="-2dp"
-        android:text="6%" />
+        />
 
 </LinearLayout>
