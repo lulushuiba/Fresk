@@ -57,7 +57,7 @@ public class AddBookManualPresenter extends BasePresenter<IAddBookManualContract
      */
     @SuppressLint("CheckResult")
     @Override
-    public void addBooks(final List<String> pathList, final IAddBookContract.OnAddBooksListener listener) {
+    public void addBooks(final List<String> pathList, final IAddBookManualContract.OnAddBooksListener listener) {
         // 创建被观察者，传递List<String>类型事件
         Observable<List<String>> observable
                 = Observable.create(new ObservableOnSubscribe<List<String>>() {

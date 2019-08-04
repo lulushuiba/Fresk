@@ -123,7 +123,6 @@ public class AddBookManualFragment extends BaseFragment<IAddBookManualContract.P
         }
 
         listItems = DirectoryUtils.DirectorySort(listItems);
-
         try {
             if (!currentParent.getCanonicalPath().equals("/storage/emulated/0")) {
                 Map<String, Object> returnUp = new HashMap<String, Object>();
@@ -151,7 +150,6 @@ public class AddBookManualFragment extends BaseFragment<IAddBookManualContract.P
             e.printStackTrace();
         }
     }
-
 
     private ListView.OnItemClickListener listViewItemOnClick = new ListView.OnItemClickListener() {
         @SuppressLint("SetTextI18n")
@@ -207,9 +205,34 @@ public class AddBookManualFragment extends BaseFragment<IAddBookManualContract.P
             // 点击导入选中
             case R.id.bt_loadSelect:
 
+                if(adapter.getCount() >= 0) {
+                    //临时存储要导入的书籍路径
+                    List<String> preBookPathList = new ArrayList<>();
+                    for (String key : adapter.book.keySet()){
+                        preBookPathList.add(key);
+                    }
 
-                Log.w("导入", "导入");
-                break;
+                    mPresenter.addBooks(preBookPathList, new IAddBookManualContract.OnAddBooksListener() {
+                        @Override
+                        public void onSuccess() {
+                            showSuccessToast("添加成功");
+                        }
+
+                        @Override
+                        public void onFailed(List<String> pathList) {
+                            String temString = "导入失败：";
+                            for(String s : pathList) {
+                                s += "\n" + s;
+                            }
+                        }
+
+                        @Override
+                        public void onError(String message) {
+                            showErrorToast(message);
+                        }
+                    });
+                }
+
         }
     }
 }

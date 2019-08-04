@@ -23,27 +23,28 @@ public interface IAddBookManualContract {
          * @param pathList 选中的书籍文件路径集合
          * @param listener 监听器
          */
-        void addBooks(List<String> pathList, IAddBookContract.OnAddBooksListener listener);
+        void addBooks(List<String> pathList, IAddBookManualContract.OnAddBooksListener listener);
 
-        interface OnAddBooksListener {
-            /**
-             * 添加书籍成功事件
-             */
-            void onSuccess();
+    }
 
-            /**
-             * 添加书籍失败事件
-             *
-             * @param pathList 回调添加失败的书籍文件路径集合
-             */
-            void onFailed(List<String> pathList);
+    interface OnAddBooksListener {
+        /**
+         * 添加书籍成功事件
+         */
+        void onSuccess();
 
-            /**
-             * 添加书籍错误事件
-             *
-             * @param message 回调错误消息
-             */
-            void onError(String message);
-        }
+        /**
+         * 添加书籍失败事件
+         *
+         * @param pathList 回调添加失败的书籍文件路径集合
+         */
+        void onFailed(List<String> pathList);
+
+        /**
+         * 添加书籍错误事件
+         *
+         * @param message 回调错误消息
+         */
+        void onError(String message);
     }
 }
