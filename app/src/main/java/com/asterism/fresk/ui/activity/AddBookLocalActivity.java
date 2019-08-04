@@ -23,15 +23,13 @@ public class AddBookLocalActivity extends BaseActivity<IAddBookContract.Presente
         implements IAddBookContract.View {
 
     @BindView(R.id.navigation)
-    TabLayout tabLayout;
+    TabLayout tabLayout;                //
 
     @BindView(R.id.content)
-    ScrollViewPager viewPager;
+    ScrollViewPager viewPager;          // 滚动视图容器
 
     @BindView(R.id.btn_title_return)
-    ImageButton btnTitleReturn;
-
-    private PagerAdapter adapter;
+    ImageButton btnTitleReturn;         // 返回 按钮
 
     @Override
     protected int setLayoutId() {
@@ -45,24 +43,28 @@ public class AddBookLocalActivity extends BaseActivity<IAddBookContract.Presente
 
     @Override
     protected void initialize() {
-        tabLayout.setSelectedTabIndicatorColor(0xff666666);//设置选中时的指示器的颜色
-
+        // 碎片集合
         List<Fragment> fragments = new ArrayList<>();
+        // 自动添加书籍页面碎片
         fragments.add(new AddBookAutoFragment());
+        // 手动添加书籍页面碎片
         fragments.add(new AddBookManualFragment());
 
+        // 设置页面标题
         List<String> titles = new ArrayList<>();
-        titles.add("自动扫描");
-        titles.add("手动选择");
+        titles.add(getString(R.string.addBookAuto));
+        titles.add(getString(R.string.addBookManual));
 
-        tabLayout.setupWithViewPager(viewPager);
-
-        adapter = new PagerAdapter(getSupportFragmentManager(), fragments, titles);
-
+        // 设置滚动视图适配器
+        PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), fragments, titles);
         viewPager.setCanScroll(true);
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(0);
-        viewPager.setOffscreenPageLimit(2);
+        viewPager.setOffscreenPageLimit(1);
+
+        // 设置选中时的指示器的颜色
+        tabLayout.setSelectedTabIndicatorColor(0xff666666);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     @Override

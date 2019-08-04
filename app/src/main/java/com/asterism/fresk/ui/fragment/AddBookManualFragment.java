@@ -46,8 +46,8 @@ public class AddBookManualFragment extends BaseFragment<IAddBookContract.Present
     @BindView(R.id.tv_manual_path)
     TextView tvPath;                        // 当前路径 文本框
 
-    @BindView(R.id.btn_loadSelect)
-    Button btnLoadSelect;                   // 导入选中 按钮
+    @BindView(R.id.btn_import_select)
+    Button btnImportSelect;                 // 导入选中 按钮
 
     private File parent;                    // 当前父文件夹
     private File[] files = null;            // 当前路径下所有文件
@@ -60,6 +60,7 @@ public class AddBookManualFragment extends BaseFragment<IAddBookContract.Present
      * value：String、Drawable_Id、String、（dir、file）
      */
     private List<Map<String, Object>> listItems;
+
     /**
      * Item的点击事件
      */
@@ -93,7 +94,7 @@ public class AddBookManualFragment extends BaseFragment<IAddBookContract.Present
                     updateProgressPartly(position, true);
                 }
                 // 更新UI数据
-                btnLoadSelect.setText(getResources().getString(R.string.LoadSelect) + "(" + adapter.book.size() + ")");
+                btnImportSelect.setText(getResources().getString(R.string.importSelect) + "(" + adapter.book.size() + ")");
             }
         }
     };
@@ -123,7 +124,7 @@ public class AddBookManualFragment extends BaseFragment<IAddBookContract.Present
             filesListView.setOnItemClickListener(listViewItemOnClick);
         }
         // 设置初始值
-        btnLoadSelect.setText(getResources().getString(R.string.LoadSelect) + "(" + adapter.book.size() + ")");
+        btnImportSelect.setText(getResources().getString(R.string.importSelect) + "(" + adapter.book.size() + ")");
     }
 
     /**
@@ -237,11 +238,11 @@ public class AddBookManualFragment extends BaseFragment<IAddBookContract.Present
      *
      * @param view 导入加载按钮
      */
-    @OnClick({R.id.btn_loadSelect})
+    @OnClick({R.id.btn_import_select})
     public void onClick(View view) {
         switch (view.getId()) {
             // 点击导入选中
-            case R.id.btn_loadSelect:
+            case R.id.btn_import_select:
                 if (adapter.getCount() >= 0) {
                     // 临时存储要导入的书籍路径
                     List<String> preBookPathList = new ArrayList<>(adapter.book.keySet());
@@ -268,7 +269,9 @@ public class AddBookManualFragment extends BaseFragment<IAddBookContract.Present
                         }
 
                         @Override
-                        public void onError(String message) { showErrorToast(message); }
+                        public void onError(String message) {
+                            showErrorToast("导入书籍错误: " + message);
+                        }
                     });
                 }
         }

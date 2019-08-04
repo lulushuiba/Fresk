@@ -45,12 +45,12 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/btn_loadSelect"
+                android:id="@+id/btn_import_select"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_alignParentBottom="true"
                 android:background="#333333"
-                android:text="@string/LoadSelect"
+                android:text="@string/importSelect"
                 android:textStyle="bold"
                 android:textSize="18dp"
                 android:textColor="#ffffff"/>

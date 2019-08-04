@@ -98,8 +98,8 @@ public interface IAddBookContract {
         void onSuccess(List<Map<String, Object>> fileList);
 
         /**
-         * 获取文件信息失败事件
+         * 获取文件信息错误事件
          */
-        void onError();
+        void onError(String message);
     }
 }
