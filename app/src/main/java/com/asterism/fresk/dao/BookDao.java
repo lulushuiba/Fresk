@@ -1,9 +1,12 @@
 package com.asterism.fresk.dao;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.asterism.fresk.dao.bean.BookBean;
 import com.asterism.fresk.dao.core.DatabaseHelper;
+import com.asterism.fresk.util.AlgorithmUtils;
+import com.asterism.fresk.util.DateUtils;
 import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
@@ -98,9 +101,46 @@ public class BookDao {
         if (beanList == null || index < 0 || index >= beanList.size()) {
             return null;
         }
-        //AlgorithmUtils.sortBookListByReadDate(beanList, 0, beanList.size() - 1);
+        BookBean temp;
+        for(int i = 0; i < beanList.size(); i++) {
+            for (int j = 0; j <beanList.size()-1-i; j++) {
+                int res= DateUtils.compareDateByString(beanList.get(j).getReadDate()
+                        ,beanList.get(j+1).getReadDate());
+                if(res<0) {
+                    temp = beanList.get(j);
+                    beanList.set(j,beanList.get(j + 1));
+                    beanList.set(j + 1, temp);
+                }
+            }
+        }
+       // AlgorithmUtils.sortBookListByReadDate(beanList, 0, beanList.size() - 1);
         BookBean bean = beanList.get(index);
         beanList.clear();
         return bean;
+    }
+
+    /**
+     * 根据阅读时间排序
+     *
+     * @return 返回排序后的实体类集合
+     */
+    public List<BookBean> selectALLSortReadDate(){
+        List<BookBean> beanList = selectAll();
+        if (beanList == null ) {
+            return null;
+        }
+        BookBean temp;
+        for(int i = 0; i < beanList.size(); i++) {
+            for (int j = 0; j <beanList.size()-1-i; j++) {
+                int res= DateUtils.compareDateByString(beanList.get(j).getReadDate()
+                        ,beanList.get(j+1).getReadDate());
+                if(res<0) {
+                    temp = beanList.get(j);
+                    beanList.set(j,beanList.get(j + 1));
+                    beanList.set(j + 1, temp);
+                }
+            }
+        }
+        return beanList;
     }
 }
