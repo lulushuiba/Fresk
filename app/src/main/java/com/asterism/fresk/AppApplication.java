@@ -144,7 +144,7 @@ public class AppApplication extends Application {
         bookBean.setName(FileUtils.getFileSimpleName(path));
         bookBean.setReadDate(DateUtils.getNowToString());
         Random r = new Random();
-        bookBean.setReadProgress( r.nextInt(100));
+        bookBean.setReadProgress(r.nextInt(100));
         bookBean.setReadTiming(0);
         bookBean.setType(bookTypeBean);
 
