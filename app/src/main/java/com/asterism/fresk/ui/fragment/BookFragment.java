@@ -95,7 +95,10 @@ public class BookFragment extends BaseFragment<IBookContract.Presenter>
 
         }
     };
-    //  菜单选中事件
+
+    /**
+     * 添加书籍按钮弹出菜单 选中事件
+     */
     private PopupMenu.OnMenuItemClickListener menuAddOnMenuItemClickListener = new PopupMenu.OnMenuItemClickListener() {
         @Override
         public boolean onMenuItemClick(MenuItem item) {

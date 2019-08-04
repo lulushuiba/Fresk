@@ -94,6 +94,13 @@ public class BookDao {
         return beanList;
     }
 
+    /**
+     * 根据上次阅读日期降序排序并通过索引查询记录
+     *
+     * @param index 索引
+     *
+     * @return 返回查询到的BookBean
+     */
     public BookBean selectByIndexSortReadDate(int index) {
         List<BookBean> beanList = selectAll();
         if (beanList == null || index < 0 || index >= beanList.size()) {
@@ -111,14 +118,13 @@ public class BookDao {
                 }
             }
         }
-        // AlgorithmUtils.sortBookListByReadDate(beanList, 0, beanList.size() - 1);
         BookBean bean = beanList.get(index);
         beanList.clear();
         return bean;
     }
 
     /**
-     * 根据阅读时间排序
+     * 根据上次阅读日期降序排序并查询所有记录
      *
      * @return 返回排序后的实体类集合
      */

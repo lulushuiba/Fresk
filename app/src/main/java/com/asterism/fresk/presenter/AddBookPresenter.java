@@ -193,7 +193,8 @@ public class AddBookPresenter extends BasePresenter<IAddBookContract.View>
      */
     @SuppressLint("CheckResult")
     @Override
-    public void getFilesInDir(final File currentDir, final IAddBookContract.OnGetFilesListener listener) {
+    public void getFilesInDir(final File currentDir,
+                              final IAddBookContract.OnGetFilesListener listener) {
         // 被观察者 传递List<Map<String,Object>>类型事件
         Observable<List<Map<String, Object>>> observable
                 = Observable.create(new ObservableOnSubscribe<List<Map<String, Object>>>() {
@@ -245,7 +246,7 @@ public class AddBookPresenter extends BasePresenter<IAddBookContract.View>
 
                     // 记录文件路径
                     try {
-                        itemMap.put("path", currentDir.getCanonicalPath() + "/");
+                        itemMap.put("path", currentDir.getCanonicalPath() + File.separator);
                     } catch (IOException e) {
                         e.printStackTrace();
                         mView.showErrorToast(e.getMessage());
@@ -268,14 +269,25 @@ public class AddBookPresenter extends BasePresenter<IAddBookContract.View>
                 // 响应于Android主线程
                 .observeOn(AndroidSchedulers.mainThread())
                 // 设置订阅的响应事件
-                .subscribe(new Consumer<List<Map<String, Object>>>() {
+                .subscribe(new Observer<List<Map<String, Object>>>() {
                     @Override
-                    public void accept(List<Map<String, Object>> itemList) throws Exception {
-                        if (itemList.size() != 0) {
-                            listener.onSuccess(itemList);
-                        } else {
-                            listener.onError();
-                        }
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<Map<String, Object>> itemList) {
+                        listener.onSuccess(itemList);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        listener.onError(e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
     }

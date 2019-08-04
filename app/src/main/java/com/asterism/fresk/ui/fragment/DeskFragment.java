@@ -64,7 +64,7 @@ public class DeskFragment extends BaseFragment<IBookContract.Presenter>
 
             @Override
             public void onError(String message) {
-                showErrorToast(message);
+                showErrorToast("获取书桌书籍错误: " + message);
             }
         });
     }

@@ -9,8 +9,8 @@
     </style>
 
     <style name="My_CheckBox" parent="Theme.AppCompat.Light">
-        <item name="colorControlNormal">@color/Title1</item>
-        <item name="colorControlActivated">@color/Title2</item>
+        <item name="colorControlNormal">@color/title1</item>
+        <item name="colorControlActivated">@color/title2</item>
     </style>
 
 </resources>
