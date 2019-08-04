@@ -29,9 +29,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<<<<<<< HEAD
 
         <activity android:name=".ui.activity.AddBookLocalActivity" />
 
 
+=======
+        <activity android:name=".ui.activity.ReadActivity" />
+>>>>>>> ReadActivity
     </application>
 </manifest>
