@@ -139,8 +139,7 @@ public class AddBookManualFragment extends BaseFragment<IAddBookContract.Present
         for (int i = 0; i < files.length; i++) {
             // 可点击的书籍
             Map<String, Object> listItem = new HashMap<>();
-            // 以添加的书籍
-            Map<String, Object> listalAlreadyItem = new HashMap<>();
+            //文件类型
             String type;
             // 如果当前File是文件夹，使用文件夹图标，其它使用文件图标
             if (files[i].isDirectory()) {
