@@ -23,8 +23,6 @@ import butterknife.OnClick;
 public class AddBookLocalActivity  extends BaseActivity<IAddBookLocalContract.Presenter>
         implements IAddBookLocalContract.View {
 
-
-
    @BindView(R.id.navigation)
     protected TabLayout tabLayout;
 

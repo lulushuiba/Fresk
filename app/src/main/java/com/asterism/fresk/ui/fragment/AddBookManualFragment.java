@@ -12,10 +12,9 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-
 import com.asterism.fresk.R;
-import com.asterism.fresk.contract.IAddBookManualContract;
-import com.asterism.fresk.presenter.AddBookManualPresenter;
+import com.asterism.fresk.contract.IAddBookContract;
+import com.asterism.fresk.presenter.AddBookPresenter;
 import com.asterism.fresk.ui.activity.MainActivity;
 import com.asterism.fresk.ui.adapter.DirectoryListAdapter;
 import com.asterism.fresk.util.DirectoryUtils;
@@ -37,8 +36,8 @@ import butterknife.OnClick;
  * @email 1315269930@qq.com
  * @date on 2019-08-03 22:48
  */
-public class AddBookManualFragment extends BaseFragment<IAddBookManualContract.Presenter>
-        implements IAddBookManualContract.View {
+public class AddBookManualFragment extends BaseFragment<IAddBookContract.Presenter>
+        implements IAddBookContract.View {
     @BindView(R.id.lv_manual_files)
     protected ListView listView;
 
@@ -64,7 +63,7 @@ public class AddBookManualFragment extends BaseFragment<IAddBookManualContract.P
     }
 
     @Override
-    protected IAddBookManualContract.Presenter setPresenter() { return new AddBookManualPresenter(); }
+    protected IAddBookContract.Presenter setPresenter() { return new AddBookPresenter(); }
 
     @Override
     protected void initialize() {
@@ -77,10 +76,9 @@ public class AddBookManualFragment extends BaseFragment<IAddBookManualContract.P
             currentFiles = root.listFiles();
             //使用当前目录下的全部文件，来填充ListView
             inflateListView(currentFiles);
-
+            //绑定点击事件
             listView.setOnItemClickListener(listViewItemOnClick);
         }
-
         //设置初始值
         btloadSelect.setText( getResources().getString(R.string.LoadSelect)+"(" + adapter.book.size()+")");
     }
@@ -218,7 +216,6 @@ public class AddBookManualFragment extends BaseFragment<IAddBookManualContract.P
         switch (view.getId()) {
             // 点击导入选中
             case R.id.bt_loadSelect:
-
                 if(adapter.getCount() >= 0) {
                     //临时存储要导入的书籍路径
                     List<String> preBookPathList = new ArrayList<>();
@@ -226,7 +223,7 @@ public class AddBookManualFragment extends BaseFragment<IAddBookManualContract.P
                         preBookPathList.add(key);
                     }
 
-                    mPresenter.addBooks(preBookPathList, new IAddBookManualContract.OnAddBooksListener() {
+                    mPresenter.addBooks(preBookPathList, new IAddBookContract.OnAddBooksListener() {
                         @Override
                         public void onSuccess() {
                             showSuccessToast("添加成功");
@@ -250,7 +247,26 @@ public class AddBookManualFragment extends BaseFragment<IAddBookManualContract.P
                         }
                     });
                 }
-
         }
+    }
+
+    @Override
+    public void showAdding() {
+
+    }
+
+    @Override
+    public void hideAdding() {
+
+    }
+
+    @Override
+    public void showScanning() {
+
+    }
+
+    @Override
+    public void hideScanning() {
+
     }
 }
