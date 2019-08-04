@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -25,7 +24,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import butterknife.OnItemClick;
 
 /**
  * 书籍页面Fragment类，继承base基类且泛型为当前模块Presenter接口类型，并实现当前模块View接口
@@ -95,6 +93,22 @@ public class BookFragment extends BaseFragment<IBookContract.Presenter>
         @Override
         public void onPageScrollStateChanged(int i) {
 
+        }
+    };
+    //  菜单选中事件
+    private PopupMenu.OnMenuItemClickListener menuAddOnMenuItemClickListener = new PopupMenu.OnMenuItemClickListener() {
+        @Override
+        public boolean onMenuItemClick(MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.item_add_book_local:
+                    Intent intent = new Intent(getActivity(), AddBookLocalActivity.class);
+                    startActivity(intent);
+                    return true;
+                case R.id.item_add_book_network:
+                    return true;
+                default:
+                    return false;
+            }
         }
     };
 
@@ -203,23 +217,6 @@ public class BookFragment extends BaseFragment<IBookContract.Presenter>
                 break;
         }
     }
-
-    //  菜单选中事件
-    private PopupMenu.OnMenuItemClickListener menuAddOnMenuItemClickListener = new PopupMenu.OnMenuItemClickListener() {
-        @Override
-        public boolean onMenuItemClick(MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.item_add_book_local:
-                   Intent intent = new Intent(getActivity(), AddBookLocalActivity.class);
-                    startActivity(intent);
-                    return true;
-                case R.id.item_add_book_network:
-                    return true;
-                default:
-                    return false;
-            }
-        }
-    };
 
 
 }

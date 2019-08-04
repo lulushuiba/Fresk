@@ -3,7 +3,6 @@ package com.asterism.fresk.ui.adapter;
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -18,16 +17,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 文件目录ListView适配器类
+ *
+ * @author Ashinch
+ * @email Glaxyinfinite@outlook.com
+ * @date on 2019-08-04 16:48
+ */
 public class DirectoryListAdapter extends BaseAdapter {
-    private Context ctx;
-    private List<Map<String, Object>> list;
-    public HashMap<String, Integer> book;
 
+    public HashMap<String, Integer> book;       // 书籍信息集合
+    private Context context;                    // 上下文对象
+    private List<Map<String, Object>> list;     // 文件信息集合
 
     //MyAdapter需要一个Context，通过Context获得Layout.inflater，然后通过inflater加载item的布局
     public DirectoryListAdapter(Context context, List<Map<String, Object>> data) {
-        this.ctx = context;
-        for (int i=0;i<data.size();i++) {
+        this.context = context;
+        for (int i = 0; i < data.size(); i++) {
             data.get(i).put("check", false);
         }
         this.list = data;
@@ -35,89 +41,112 @@ public class DirectoryListAdapter extends BaseAdapter {
 
     }
 
-    public void setData(List<Map<String, Object>> data){
+    /**
+     * 为文件信息集合设置数据
+     *
+     * @param data 欲设置的List<Map<String, Object>>对象
+     */
+    public void setData(List<Map<String, Object>> data) {
         this.list = data;
     }
 
+    /**
+     * 设置书籍
+     *
+     * @param position position
+     */
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void setBook(int position) {
-
         String path = list.get(position).get("path").toString() + "" + list.get(position).get("file").toString();
 
-        if (book.getOrDefault(path,(-1)) == position) {
+        if (book.getOrDefault(path, (-1)) == position) {
             book.remove(path);
-        }else {
+        } else {
             book.put(path, position);
         }
-
-
-
-
     }
 
+    /**
+     * 获取item总数
+     *
+     * @return 返回集合长度
+     */
     @Override
     public int getCount() {
         //  返回 ListView Item 条目的总数
         return list.size();
     }
 
-    //  得到 Item 代表的对象
+    /**
+     * 获取item对应的对象
+     *
+     * @param position 指定item位置
+     *
+     * @return 返回文件信息集合中指定位置的对象
+     */
     @Override
     public Map<String, Object> getItem(int position) {
         //  返回 ListView Item 条目代表的对象
         return list.get(position);
     }
 
-    //  得到 Item 的 id
+    /**
+     * 获取item对应的id
+     *
+     * @param position 指定item位置
+     *
+     * @return 返回item位置
+     */
     @Override
     public long getItemId(int position) {
         //  返回 ListView Item 的 id
         return position;
     }
 
-    //  得到 Item 的 View 视图
+    /**
+     * 获取item对应的View对象
+     *
+     * @param position    指定item位置
+     * @param convertView item布局文件转换的View对象
+     * @param parent      parent
+     *
+     * @return 返回当前item对应的View对象
+     */
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        View view = null;
+        View view;
         ViewHolder holder;
         if (convertView == null) {
-            //  将 list_item.xml 文件找出来并转换成 View 对象
-            view = View.inflate(ctx, R.layout.item_list_file, null);
+            // 将list_item.xml文件找出来并转换成View对象
+            view = View.inflate(context, R.layout.item_list_file, null);
             holder = new ViewHolder();
             holder.ivIcon = view.findViewById(R.id.img_item_list_icon);
             holder.tvName = view.findViewById(R.id.tv_item_list_text);
             holder.ivOption = view.findViewById(R.id.img_item_list_folder_forward);
             holder.cbOption = view.findViewById(R.id.cb_item_list_book);
 
-            //把ViewHolder对象封装到View对象中
+            // 把ViewHolder对象封装到View对象中
             view.setTag(holder);
-        }else{
+        } else {
             view = convertView;
             holder = (ViewHolder) view.getTag();
         }
 
         holder.cbOption.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 String path = list.get(position).get("path").toString() + "" + list.get(position).get("file").toString();
 
                 if (isChecked) {
-                    if (book.getOrDefault(path,(-1)) != position) {
-                        book.put(path,position);
+                    if (book.getOrDefault(path, (-1)) != position) {
+                        book.put(path, position);
                     }
-                }else {
-                    if (book.getOrDefault(path,(-1)) == position) {
+                } else {
+                    if (book.getOrDefault(path, (-1)) == position) {
                         book.remove(path);
                     }
                 }
-
-                for(String key:book.keySet())
-                {
-                    Log.w("aas", "Key: "+key+" Value: "+book.get(key));
-                }
-
             }
         });
 
@@ -125,36 +154,31 @@ public class DirectoryListAdapter extends BaseAdapter {
             holder.ivIcon.setImageResource(R.drawable.icon_folder);
             holder.ivOption.setVisibility(View.VISIBLE);
             holder.cbOption.setVisibility(View.GONE);
-
-        }else {
+        } else {
             holder.ivIcon.setImageResource(R.drawable.icon_file);
             holder.ivOption.setVisibility(View.GONE);
             holder.cbOption.setVisibility(View.VISIBLE);
 
             String path = list.get(position).get("path").toString() + "" + list.get(position).get("file").toString();
 
-            if (book.getOrDefault(path,(-1)) == position) {
-//                Toast.makeText(ctx, path, Toast.LENGTH_SHORT).show();
+            if (book.getOrDefault(path, (-1)) == position) {
                 holder.cbOption.setChecked(true);
-            }else {
+            } else {
                 holder.cbOption.setChecked(false);
             }
-
         }
 
         holder.tvName.setText(list.get(position).get("file").toString());
-
         return view;
     }
 
-    public static class ViewHolder{
-        //条目的布局文件中有什么组件，这里就定义有什么属性
-        public ImageView ivIcon;
-        public TextView tvName;
-        public ImageView ivOption;
-        public CheckBox cbOption;
-
+    /**
+     * ViewHolder
+     */
+    public static class ViewHolder {
+        public ImageView ivIcon;    // item 文件图标 图片框
+        public TextView tvName;     // item 文件名称 文本框
+        public ImageView ivOption;  // item 目录下级指示图标 图片框
+        public CheckBox cbOption;   // item 文件可选图标 复选框
     }
-
-
 }

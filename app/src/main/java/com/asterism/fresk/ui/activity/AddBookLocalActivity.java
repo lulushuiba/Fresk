@@ -6,13 +6,12 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.asterism.fresk.R;
-import com.asterism.fresk.contract.IAddBookLocalContract;
-import com.asterism.fresk.presenter.AddBookLocalPresenter;
-import com.asterism.fresk.ui.adapter.TabFragmentPagerAdapter;
+import com.asterism.fresk.contract.IAddBookContract;
+import com.asterism.fresk.presenter.AddBookPresenter;
+import com.asterism.fresk.ui.adapter.PagerAdapter;
 import com.asterism.fresk.ui.fragment.AddBookAutoFragment;
 import com.asterism.fresk.ui.fragment.AddBookManualFragment;
 import com.asterism.fresk.ui.widget.ScrollViewPager;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +19,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class AddBookLocalActivity  extends BaseActivity<IAddBookLocalContract.Presenter>
-        implements IAddBookLocalContract.View {
+public class AddBookLocalActivity extends BaseActivity<IAddBookContract.Presenter>
+        implements IAddBookContract.View {
 
     @BindView(R.id.navigation)
     TabLayout tabLayout;
@@ -32,13 +31,17 @@ public class AddBookLocalActivity  extends BaseActivity<IAddBookLocalContract.Pr
     @BindView(R.id.btn_title_return)
     ImageButton btnTitleReturn;
 
-    private TabFragmentPagerAdapter adapter;
+    private PagerAdapter adapter;
 
     @Override
-    protected int setLayoutId() { return  R.layout.activity_add_book_local; }
+    protected int setLayoutId() {
+        return R.layout.activity_add_book_local;
+    }
 
     @Override
-    protected IAddBookLocalContract.Presenter setPresenter() { return new AddBookLocalPresenter(); }
+    protected IAddBookContract.Presenter setPresenter() {
+        return new AddBookPresenter();
+    }
 
     @Override
     protected void initialize() {
@@ -54,7 +57,7 @@ public class AddBookLocalActivity  extends BaseActivity<IAddBookLocalContract.Pr
 
         tabLayout.setupWithViewPager(viewPager);
 
-        adapter = new TabFragmentPagerAdapter(getSupportFragmentManager(), fragments, titles);
+        adapter = new PagerAdapter(getSupportFragmentManager(), fragments, titles);
 
         viewPager.setCanScroll(true);
         viewPager.setAdapter(adapter);
@@ -62,12 +65,32 @@ public class AddBookLocalActivity  extends BaseActivity<IAddBookLocalContract.Pr
         viewPager.setOffscreenPageLimit(2);
     }
 
+    @Override
+    public void showAdding() {
 
-   @OnClick({R.id.btn_title_return})
+    }
+
+    @Override
+    public void hideAdding() {
+
+    }
+
+    @Override
+    public void showScanning() {
+
+    }
+
+    @Override
+    public void hideScanning() {
+
+    }
+
+    @OnClick({R.id.btn_title_return})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_title_return:
                 finish();
                 break;
-        } }
+        }
+    }
 }

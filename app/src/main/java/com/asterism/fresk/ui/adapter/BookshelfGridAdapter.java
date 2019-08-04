@@ -8,7 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
 import com.asterism.fresk.R;
 import com.asterism.fresk.dao.bean.BookBean;
 
@@ -17,6 +16,14 @@ import java.util.List;
 
 /**
  * 书桌GridView适配器类
+ */
+
+/**
+ * 书架GridView适配器类
+ *
+ * @author Ashinch
+ * @email Glaxyinfinite@outlook.com
+ * @date on 2019-08-04 17:25
  */
 public class BookshelfGridAdapter extends BaseAdapter {
 

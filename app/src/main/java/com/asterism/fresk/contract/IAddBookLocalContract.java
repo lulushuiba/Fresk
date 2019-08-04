@@ -8,7 +8,9 @@ package com.asterism.fresk.contract;
  * @date on 2019-08-02 02:10
  */
 public interface IAddBookLocalContract {
-    interface View extends IBaseContract.View {}
+    interface View extends IBaseContract.View {
+    }
 
-    interface Presenter extends IBaseContract.Presenter<IAddBookLocalContract.View> {}
+    interface Presenter extends IBaseContract.Presenter<IAddBookLocalContract.View> {
+    }
 }

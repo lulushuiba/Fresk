@@ -1,7 +1,6 @@
 package com.asterism.fresk.ui.fragment;
 
 import android.net.Uri;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 

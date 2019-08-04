@@ -27,7 +27,7 @@ import butterknife.BindView;
  * @email Glaxyinfinite@outlook.com
  * @date on 2019-07-09 16:48
  */
-public class MainActivity extends BaseActivity<IAddBookContract.Presenter>
+public class MainActivity extends BaseActivity<IMainContract.Presenter>
         implements IMainContract.View {
 
     @BindView(R.id.content_main)

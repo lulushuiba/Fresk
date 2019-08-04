@@ -16,7 +16,7 @@ public class PermissionUtils {
     private static String[] PERMISSIONS_STORAGE = {
             //从SDCard读取数据权限
             "android.permission.READ_EXTERNAL_STORAGE",
-             //往SDCard写入数据权限
+            //往SDCard写入数据权限
             "android.permission.WRITE_EXTERNAL_STORAGE",
             // 在SDCard中创建与删除文件权限
             "android.permission.MOUNT_UNMOUNT_FILESYSTEMS"};
@@ -39,7 +39,7 @@ public class PermissionUtils {
                     pmsRead != PackageManager.PERMISSION_GRANTED ||
                     pmsMount != PackageManager.PERMISSION_GRANTED) {
                 // 没有写的权限，去申请写的权限，会弹出对话框
-                ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE,REQUEST_EXTERNAL_STORAGE);
+                ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE);
             }
         } catch (Exception e) {
             e.printStackTrace();

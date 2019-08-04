@@ -10,28 +10,28 @@ public class DirectoryUtils {
         ArrayList<Map<String, Object>> dir = new ArrayList<>();
         ArrayList<Map<String, Object>> file = new ArrayList<>();
 
-        for (int i=0;i<list.size();i++) {
+        for (int i = 0; i < list.size(); i++) {
             if ("dir".equals(list.get(i).get("type"))) {
                 dir.add(list.get(i));
-            }else if ("file".equals(list.get(i).get("type"))){
+            } else if ("file".equals(list.get(i).get("type"))) {
                 file.add(list.get(i));
             }
         }
 
-        for (int i=0;i<dir.size() - 1;i++) {
-            for (int j=0;j<dir.size() - i - 1;j++) {
-                int num = dir.get(j).get("file").toString().compareToIgnoreCase(dir.get(j+1).get("file").toString());
+        for (int i = 0; i < dir.size() - 1; i++) {
+            for (int j = 0; j < dir.size() - i - 1; j++) {
+                int num = dir.get(j).get("file").toString().compareToIgnoreCase(dir.get(j + 1).get("file").toString());
                 if (num > 0) {
-                    Collections.swap(dir, j, j+1);
+                    Collections.swap(dir, j, j + 1);
                 }
             }
         }
 
-        for (int i=0;i<file.size() - 1;i++) {
-            for (int j=0;j<file.size() - i - 1;j++) {
-                int num = file.get(j).get("file").toString().compareToIgnoreCase(file.get(j+1).get("file").toString());
+        for (int i = 0; i < file.size() - 1; i++) {
+            for (int j = 0; j < file.size() - i - 1; j++) {
+                int num = file.get(j).get("file").toString().compareToIgnoreCase(file.get(j + 1).get("file").toString());
                 if (num > 0) {
-                    Collections.swap(file, j, j+1);
+                    Collections.swap(file, j, j + 1);
                 }
             }
         }
