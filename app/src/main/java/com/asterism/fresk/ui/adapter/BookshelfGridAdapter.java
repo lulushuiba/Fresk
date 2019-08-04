@@ -15,38 +15,20 @@ import java.io.File;
 import java.util.List;
 
 /**
- * 数据绑定GridView控件类
+ * 书架GridView适配器类
  *
  * @author Lshz
  * @email 528118879@qq.com
  * @date on 2019-08-04 16:37
  */
-
-/**
- * 书架GridView适配器类
- *
- * @author Ashinch
- * @email Glaxyinfinite@outlook.com
- * @date on 2019-08-04 17:25
- */
 public class BookshelfGridAdapter extends BaseAdapter {
 
     private List<BookBean> mList;          // 书籍信息集合
-    private Context ctx;                  // 上下文类
+    private Context ctx;                   // 上下文对象
 
     public BookshelfGridAdapter(Context ctx, List<BookBean> list) {
         this.mList = list;
         this.ctx = ctx;
-    }
-
-    /**
-     * 优化GridView控件内部类
-     */
-    static class ViewHolder {
-
-        ImageView imgBook;    // 书籍图片 图片框
-        TextView tvBookName;  // 书籍名称 文本框
-        TextView tvProgress;  // 阅读进度 文本框
     }
 
     /**
@@ -63,6 +45,7 @@ public class BookshelfGridAdapter extends BaseAdapter {
      * 获取item对应的对象
      *
      * @param position 指定item位置
+     *
      * @return 返回book对象
      */
     @Override
@@ -74,6 +57,7 @@ public class BookshelfGridAdapter extends BaseAdapter {
      * 获取item的id
      *
      * @param position 指定item位置
+     *
      * @return 返回id
      */
     @Override
@@ -81,7 +65,15 @@ public class BookshelfGridAdapter extends BaseAdapter {
         return position;
     }
 
-    // 得到 item 的 View 视图
+    /**
+     * 获取item对应的View对象
+     *
+     * @param position    item位置
+     * @param convertView item文件转换的View
+     * @param parent      parent
+     *
+     * @return 返回item对应的View对象
+     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
@@ -102,5 +94,9 @@ public class BookshelfGridAdapter extends BaseAdapter {
         return convertView;
     }
 
-
+    static class ViewHolder {
+        ImageView imgBook;    // 书籍图片 图片框
+        TextView tvBookName;  // 书籍名称 文本框
+        TextView tvProgress;  // 阅读进度 文本框
+    }
 }
