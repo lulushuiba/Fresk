@@ -190,7 +190,9 @@ public class BookFragment extends BaseFragment<IBookContract.Presenter>
                 imgInTriangle.setVisibility(View.VISIBLE);
                 break;
 
+            //书架与书桌都添加弹出加载书籍按钮
             case R.id.btn_title_add_book1:
+            case R.id.btn_title_add_book2:
                 PopupMenu popupMenu = new PopupMenu(getContext(), view);
                 getActivity().getMenuInflater().inflate(R.menu.menu_add_book, popupMenu.getMenu());
                 popupMenu.setOnMenuItemClickListener(menuAddOnMenuItemClickListener);
@@ -199,9 +201,6 @@ public class BookFragment extends BaseFragment<IBookContract.Presenter>
                 //对权限进行申请
                 PermissionUtils.requestPermissionsRWM(getActivity());
                 break;
-            case R.id.btn_title_add_book2:
-                break;
-
         }
     }
 

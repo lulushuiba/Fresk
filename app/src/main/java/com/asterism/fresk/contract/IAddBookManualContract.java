@@ -6,7 +6,7 @@ import android.widget.TextView;
 import java.util.List;
 
 /**
- * 添加书籍手册合约接口，同时规定了View基础接口和Presenter基础接口
+ * 手动查找添加书籍合约接口，同时规定了View基础接口和Presenter基础接口
  *
  * @author lulushuiba
  * @email 1315269930@qq.com

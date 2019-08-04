@@ -1,34 +1,19 @@
 package com.asterism.fresk.presenter;
 
 import android.annotation.SuppressLint;
-import android.os.Build;
 import android.os.Environment;
-import android.support.annotation.RequiresApi;
-import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.TextView;
 
-import com.asterism.fresk.R;
-import com.asterism.fresk.contract.IAddBookContract;
 import com.asterism.fresk.contract.IAddBookManualContract;
 import com.asterism.fresk.dao.BookDao;
 import com.asterism.fresk.dao.BookTypeDao;
 import com.asterism.fresk.dao.bean.BookBean;
 import com.asterism.fresk.dao.bean.BookTypeBean;
-import com.asterism.fresk.ui.adapter.DirectoryListAdapter;
 import com.asterism.fresk.util.DateUtils;
-import com.asterism.fresk.util.DirectoryUtils;
 import com.asterism.fresk.util.FileUtils;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -39,13 +24,12 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * 添加书籍的手册Presenter类，继承base基类且泛型为当前模块View接口类型，并实现当前模块Presenter接口
+ * 手动查找添加书籍Presenter类，继承base基类且泛型为当前模块View接口类型，并实现当前模块Presenter接口
  *
  * @author lulushuiba
  * @email 1315269930@qq.com
  * @date on 2019-08-03 10:20
  */
-
 public class AddBookManualPresenter extends BasePresenter<IAddBookManualContract.View>
         implements IAddBookManualContract.Presenter{
 
@@ -121,7 +105,6 @@ public class AddBookManualPresenter extends BasePresenter<IAddBookManualContract
                     }
                 });
     }
-
 
     /**
      * 获取BookBean对象

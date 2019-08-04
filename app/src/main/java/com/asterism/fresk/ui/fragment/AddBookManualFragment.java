@@ -1,17 +1,12 @@
 package com.asterism.fresk.ui.fragment;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.Fragment;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -20,8 +15,8 @@ import android.widget.TextView;
 
 import com.asterism.fresk.R;
 import com.asterism.fresk.contract.IAddBookManualContract;
-import com.asterism.fresk.contract.IBookContract;
 import com.asterism.fresk.presenter.AddBookManualPresenter;
+import com.asterism.fresk.ui.activity.MainActivity;
 import com.asterism.fresk.ui.adapter.DirectoryListAdapter;
 import com.asterism.fresk.util.DirectoryUtils;
 
@@ -35,14 +30,23 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+/**
+ * 手动查找添加书籍页面Fragment类，继承base基类且泛型为当前模块Presenter接口类型，并实现当前模块View接口
+ *
+ * @author lulushuiba
+ * @email 1315269930@qq.com
+ * @date on 2019-08-03 22:48
+ */
 public class AddBookManualFragment extends BaseFragment<IAddBookManualContract.Presenter>
         implements IAddBookManualContract.View {
     @BindView(R.id.lv_manual_files)
     protected ListView listView;
 
+    //所在目录路径
     @BindView(R.id.tv_manual_path)
     protected TextView textView;
 
+    //导入选中按钮
     @BindView(R.id.bt_loadSelect)
     public Button btloadSelect;
 
@@ -60,13 +64,11 @@ public class AddBookManualFragment extends BaseFragment<IAddBookManualContract.P
     }
 
     @Override
-    protected IAddBookManualContract.Presenter setPresenter() {
-        return new AddBookManualPresenter();
-    }
+    protected IAddBookManualContract.Presenter setPresenter() { return new AddBookManualPresenter(); }
 
     @Override
     protected void initialize() {
-
+        //设置为可滑动
         textView.setMovementMethod(ScrollingMovementMethod.getInstance());
         //获取系统SD卡目录
         File root = new File(Environment.getExternalStorageDirectory().getPath());
@@ -151,6 +153,9 @@ public class AddBookManualFragment extends BaseFragment<IAddBookManualContract.P
         }
     }
 
+    /**
+     * Item的点击事件
+     */
     private ListView.OnItemClickListener listViewItemOnClick = new ListView.OnItemClickListener() {
         @SuppressLint("SetTextI18n")
         @RequiresApi(api = Build.VERSION_CODES.N)
@@ -174,7 +179,6 @@ public class AddBookManualFragment extends BaseFragment<IAddBookManualContract.P
 
                 if (((DirectoryListAdapter.ViewHolder) view.getTag()).cbOption.isChecked()) {
                     adapter.setBook(position);
-
                     updateProgressPartly(position, false);
                 } else {
                     adapter.setBook(position);
@@ -186,6 +190,11 @@ public class AddBookManualFragment extends BaseFragment<IAddBookManualContract.P
         }
     };
 
+    /**
+     * 当更新书籍选中与被选中时调用
+     * @param position 被点击的位置
+     * @param b 要设置的值
+     */
     private void updateProgressPartly(int position, boolean b) {
 
         int firstVisiblePosition = listView.getFirstVisiblePosition();
@@ -199,6 +208,11 @@ public class AddBookManualFragment extends BaseFragment<IAddBookManualContract.P
         }
     }
 
+    /**
+     * 按钮点击事件
+     *
+     * @param view 导入加载按钮
+     */
     @OnClick({R.id.bt_loadSelect})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -216,6 +230,10 @@ public class AddBookManualFragment extends BaseFragment<IAddBookManualContract.P
                         @Override
                         public void onSuccess() {
                             showSuccessToast("添加成功");
+                            //查询加载MainActivity, 并清空栈中所有Activity
+                            Intent intent = new Intent(mContext, MainActivity.class)
+                                    .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
                         }
 
                         @Override
