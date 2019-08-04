@@ -17,4 +17,7 @@
 
     <!--AddBookManualFragment-->
     <string name="LoadSelect">导入选中</string>
+
+    <!--DirectoryListAdapter-->
+    <string name="AlreadyLoad">以加载</string>
 </resources>
