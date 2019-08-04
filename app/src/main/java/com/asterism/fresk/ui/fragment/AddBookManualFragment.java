@@ -39,15 +39,15 @@ import butterknife.OnClick;
 public class AddBookManualFragment extends BaseFragment<IAddBookContract.Presenter>
         implements IAddBookContract.View {
     @BindView(R.id.lv_manual_files)
-    protected ListView listView;
+    ListView listView;
 
     //所在目录路径
     @BindView(R.id.tv_manual_path)
-    protected TextView textView;
+    TextView textView;
 
     //导入选中按钮
     @BindView(R.id.bt_loadSelect)
-    public Button btloadSelect;
+    Button btloadSelect;
 
     //记录当前父文件夹
     private File currentParent;

@@ -23,14 +23,14 @@ import butterknife.OnClick;
 public class AddBookLocalActivity  extends BaseActivity<IAddBookLocalContract.Presenter>
         implements IAddBookLocalContract.View {
 
-   @BindView(R.id.navigation)
-    protected TabLayout tabLayout;
+    @BindView(R.id.navigation)
+    TabLayout tabLayout;
 
     @BindView(R.id.content)
-    protected ScrollViewPager viewPager;
+    ScrollViewPager viewPager;
 
     @BindView(R.id.btn_title_return)
-    protected ImageButton btnTitleReturn;
+    ImageButton btnTitleReturn;
 
     private TabFragmentPagerAdapter adapter;
 
