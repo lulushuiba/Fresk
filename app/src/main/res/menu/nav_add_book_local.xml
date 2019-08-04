@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_auto"
+        android:title="自动扫描" />
+
+    <item
+        android:id="@+id/navigation_manual"
+        android:title="手动选择" />
+
+</menu>

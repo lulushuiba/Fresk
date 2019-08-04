@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    tools:context="com.asterism.fresk.ui.fragment.AddBookManualFragment">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/tv_manual_path"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="20dp"
+                android:gravity="center_vertical"
+                android:scrollbars="horizontal"
+                android:maxLines="1"
+                android:textSize="12dp"
+                android:text="@string/hello_blank_fragment" />
+
+            <ListView
+                android:id="@+id/lv_manual_files"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#ffffff">
+
+            </ListView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/bt_loadSelect"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_alignParentBottom="true"
+                android:background="#333333"
+                android:text="@string/LoadSelect"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                android:textColor="#ffffff"/>
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+</FrameLayout>

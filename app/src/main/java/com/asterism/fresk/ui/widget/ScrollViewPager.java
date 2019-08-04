@@ -16,6 +16,8 @@ public class ScrollViewPager extends ViewPager {
 
     private boolean mIsCanScroll = true;
 
+
+
     public ScrollViewPager(Context context) {
         super(context);
     }
