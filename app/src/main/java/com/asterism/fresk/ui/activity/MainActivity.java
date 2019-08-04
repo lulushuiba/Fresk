@@ -9,6 +9,7 @@ import com.asterism.fresk.R;
 import com.asterism.fresk.contract.IAddBookContract;
 import com.asterism.fresk.contract.IMainContract;
 import com.asterism.fresk.presenter.AddBookPresenter;
+import com.asterism.fresk.presenter.MainPresenter;
 import com.asterism.fresk.ui.adapter.PagerAdapter;
 import com.asterism.fresk.ui.fragment.BookFragment;
 import com.asterism.fresk.ui.fragment.MoreFragment;
@@ -67,8 +68,8 @@ public class MainActivity extends BaseActivity<IMainContract.Presenter>
     }
 
     @Override
-    protected IAddBookContract.Presenter setPresenter() {
-        return new AddBookPresenter();
+    protected IMainContract.Presenter setPresenter() {
+        return new MainPresenter();
     }
 
     @Override
