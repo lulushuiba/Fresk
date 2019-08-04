@@ -43,7 +43,7 @@ public class AppApplication extends Application {
     private void initBookType() {
         try {
             BookTypeDao bookTypeDao = new BookTypeDao(this);
-            String[] types = getAssets().list("pic");
+            String[] types = getAssets().list("pictures");
             if (types != null) {
                 if (bookTypeDao.selectAll().size() != types.length) {
                     for (String type : types) {
@@ -65,13 +65,13 @@ public class AppApplication extends Application {
     private void initBookPictures() {
         // TODO: 2019-07-30 待完成 检测缺省书籍封面已存在
         try {
-            String[] picPaths = getAssets().list("pic");
+            String[] picPaths = getAssets().list("pictures");
             if (picPaths == null) {
                 Log.i("application", "picPaths is null!");
             } else {
                 for (String path : picPaths) {
                     Log.i("application", "picPath:" + path);
-                    FileUtils.writeBookPic(this, path, getAssets().open("pic/" + path));
+                    FileUtils.writeBookPic(this, path, getAssets().open("pictures/" + path));
                 }
             }
         } catch (IOException e) {
