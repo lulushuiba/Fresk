@@ -1,11 +1,13 @@
 package com.asterism.fresk.dao;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.asterism.fresk.dao.bean.BookBean;
 import com.asterism.fresk.dao.core.DatabaseHelper;
 import com.asterism.fresk.util.DateUtils;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.Where;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -146,5 +148,27 @@ public class BookDao {
             }
         }
         return beanList;
+    }
+
+    /**
+     * 根据Path来查询数据库中是否存在
+     *
+     * @param path 要进行比对的Path
+     * @return 返回数据库中是否有此书籍
+     */
+    public boolean queryIsExistByPath(String path) {
+
+        List<BookBean> beanList = null;
+        try {
+            beanList =  dao.queryBuilder().where().eq("file_path", path).query();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        //判断是否有值
+        if(beanList == null || beanList.size() == 0) {
+            return false;
+        }
+        return true;
     }
 }

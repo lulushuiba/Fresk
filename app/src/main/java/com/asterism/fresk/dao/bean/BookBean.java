@@ -21,8 +21,8 @@ public class BookBean {
     @DatabaseField(useGetSet = true, foreign = true, columnName = "type", canBeNull = false)
     private BookTypeBean type;
 
-    // 文件路径
-    @DatabaseField(useGetSet = true, columnName = "file_path", canBeNull = false)
+    // 文件路径 唯一
+    @DatabaseField(useGetSet = true, columnName = "file_path", canBeNull = false, unique = true)
     private String filePath;
 
     // 书籍名称

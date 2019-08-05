@@ -11,9 +11,11 @@ public class DirectoryUtils {
         ArrayList<Map<String, Object>> file = new ArrayList<>();
 
         for (int i = 0; i < list.size(); i++) {
+            //当为文件夹类型时
             if ("dir".equals(list.get(i).get("type"))) {
                 dir.add(list.get(i));
-            } else if ("file".equals(list.get(i).get("type"))) {
+            //当为书籍与以添加书籍类型时
+            } else if ("file".equals(list.get(i).get("type") )  ||  "already_file".equals(list.get(i).get("type"))) {
                 file.add(list.get(i));
             }
         }

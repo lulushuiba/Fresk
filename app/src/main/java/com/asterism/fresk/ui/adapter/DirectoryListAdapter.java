@@ -3,6 +3,7 @@ package com.asterism.fresk.ui.adapter;
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -12,10 +13,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.asterism.fresk.R;
+import com.asterism.fresk.dao.BookDao;
+import com.asterism.fresk.dao.bean.BookBean;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 文件目录ListView适配器类
@@ -38,7 +43,6 @@ public class DirectoryListAdapter extends BaseAdapter {
         }
         this.list = data;
         this.book = new HashMap<>();
-
     }
 
     /**
@@ -118,6 +122,7 @@ public class DirectoryListAdapter extends BaseAdapter {
         View view;
         ViewHolder holder;
         if (convertView == null) {
+
             // 将list_item.xml文件找出来并转换成View对象
             view = View.inflate(context, R.layout.item_list_file, null);
             holder = new ViewHolder();
@@ -125,6 +130,7 @@ public class DirectoryListAdapter extends BaseAdapter {
             holder.tvName = view.findViewById(R.id.tv_item_list_text);
             holder.ivOption = view.findViewById(R.id.img_item_list_folder_forward);
             holder.cbOption = view.findViewById(R.id.cb_item_list_book);
+            holder.tvAlready = view.findViewById(R.id.tv_item_list_already_text);
 
             // 把ViewHolder对象封装到View对象中
             view.setTag(holder);
@@ -150,22 +156,33 @@ public class DirectoryListAdapter extends BaseAdapter {
             }
         });
 
+        //当为文件夹时
         if ("dir".equals(list.get(position).get("type"))) {
             holder.ivIcon.setImageResource(R.drawable.icon_folder);
             holder.ivOption.setVisibility(View.VISIBLE);
             holder.cbOption.setVisibility(View.GONE);
-        } else {
+
+        //当为以添加书籍时
+        }else if("already_file".equals(list.get(position).get("type"))){
+            holder.ivIcon.setImageResource(R.drawable.icon_file);
+            holder.ivOption.setVisibility(View.GONE);
+            holder.cbOption.setVisibility(View.GONE);
+            holder.tvAlready.setVisibility(View.VISIBLE);
+
+        } else if("file".equals(list.get(position).get("type"))){
             holder.ivIcon.setImageResource(R.drawable.icon_file);
             holder.ivOption.setVisibility(View.GONE);
             holder.cbOption.setVisibility(View.VISIBLE);
+            holder.tvAlready.setVisibility(View.GONE);
 
             String path = list.get(position).get("path").toString() + "" + list.get(position).get("file").toString();
-
             if (book.getOrDefault(path, (-1)) == position) {
                 holder.cbOption.setChecked(true);
             } else {
                 holder.cbOption.setChecked(false);
             }
+        }else{
+            Log.w("报错！", "没有找到对应的类型");
         }
 
         holder.tvName.setText(list.get(position).get("file").toString());
@@ -180,5 +197,6 @@ public class DirectoryListAdapter extends BaseAdapter {
         public TextView tvName;     // item 文件名称 文本框
         public ImageView ivOption;  // item 目录下级指示图标 图片框
         public CheckBox cbOption;   // item 文件可选图标 复选框
+        public TextView tvAlready;  // item 以添加 文本框
     }
 }
