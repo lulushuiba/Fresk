@@ -132,6 +132,39 @@ public class BookDao {
      */
     public List<BookBean> selectALLSortReadDate() {
         List<BookBean> beanList = selectAll();
+        for(int i=0;i<beanList.size();i++)
+            Log.i("kn",beanList.get(i).getReadDate()+beanList.get(i).getName());
+        if (beanList == null) {
+            return null;
+        }
+        BookBean temp;
+        for (int i = 0; i < beanList.size(); i++) {
+            for (int j = 0; j < beanList.size() - 1 - i; j++) {
+                int res = DateUtils.compareDateByString(beanList.get(j).getReadDate()
+                        , beanList.get(j + 1).getReadDate());
+                if (res < 0) {
+                    temp = beanList.get(j);
+                    beanList.set(j, beanList.get(j + 1));
+                    beanList.set(j + 1, temp);
+                }
+            }
+        }
+        for(int i=0;i<beanList.size();i++){
+            update(beanList.get(i));
+            Log.i("knpx",beanList.get(i).getReadDate()+beanList.get(i).getName());
+        }
+
+        return beanList;
+    }
+
+    /**
+     *根据上次阅读日期降序排序
+     *
+     * @param list 要排序的集合
+     * @return 返回排序后的集合
+     */
+    public List<BookBean> SortReadDate( List<BookBean> list) {
+        List<BookBean> beanList = list;
         if (beanList == null) {
             return null;
         }
@@ -171,4 +204,5 @@ public class BookDao {
         }
         return true;
     }
+
 }

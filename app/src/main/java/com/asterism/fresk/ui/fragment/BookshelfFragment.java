@@ -1,22 +1,22 @@
 package com.asterism.fresk.ui.fragment;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.asterism.fresk.R;
 import com.asterism.fresk.contract.IBookContract;
+import com.asterism.fresk.dao.BookDao;
 import com.asterism.fresk.dao.bean.BookBean;
 import com.asterism.fresk.presenter.BookPresenter;
 import com.asterism.fresk.ui.adapter.BookshelfGridAdapter;
+import com.asterism.fresk.util.DateUtils;
 
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
+
 
 /**
  * 书架页面Fragment类，继承base基类且泛型为当前模块Presenter接口类型，并实现当前模块View接口
@@ -30,7 +30,6 @@ public class BookshelfFragment extends BaseFragment<IBookContract.Presenter>
 
     @BindView(R.id.gv_bookshelf)
     GridView gvBookshelf;
-    Unbinder unbinder;
 
     @Override
     protected int setLayoutId() {
@@ -46,11 +45,21 @@ public class BookshelfFragment extends BaseFragment<IBookContract.Presenter>
     protected void initialize() {
         mPresenter.getAllBooks(new IBookContract.OnBookListListener() {
             @Override
-            public void onSuccess(List<BookBean> bookList) {
-
-                // 书架GridView适配器设置
+            public void onSuccess(final List<BookBean> bookList) {
                 BookshelfGridAdapter adapter = new BookshelfGridAdapter(mContext, bookList);
                 gvBookshelf.setAdapter(adapter);
+                gvBookshelf.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(final AdapterView<?> adapterView, final View view,
+                                            int i, long l) {
+                        BookDao bookDao=new BookDao(mContext);
+                        bookList.get(i).setReadDate(DateUtils.getNowToString());
+                        List<BookBean>  bookList1;
+                        bookList1= bookDao.SortReadDate(bookList);
+                        BookshelfGridAdapter adapter = new BookshelfGridAdapter(mContext,bookList1);
+                        gvBookshelf.setAdapter(adapter);
+                    }
+                });
             }
 
             @Override
@@ -58,6 +67,7 @@ public class BookshelfFragment extends BaseFragment<IBookContract.Presenter>
 
             }
         });
+
 
     }
 
@@ -81,17 +91,6 @@ public class BookshelfFragment extends BaseFragment<IBookContract.Presenter>
 
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
+
 }

@@ -1,6 +1,7 @@
 package com.asterism.fresk.ui.fragment;
 
 import android.net.Uri;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -89,8 +90,7 @@ public class DeskFragment extends BaseFragment<IBookContract.Presenter>
 
     }
 
-    @OnClick(R.id.img_book_Pic)
-    public void onClick() {
-
+    @OnClick({R.id.img_book_Pic})
+    public void onClick(View view) {
     }
 }
