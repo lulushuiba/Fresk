@@ -59,7 +59,7 @@ public class BookFragment extends BaseFragment<IBookContract.Presenter>
     @BindView(R.id.img_slide_fore)
     ImageView imgSlideFore;
 
-    @BindView(R.id.content_desk)
+    @BindView(R.id.navigation_book)
     ScrollViewPager viewPager;
 
     @BindView(R.id.layout_slide)

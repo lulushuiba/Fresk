@@ -9,7 +9,7 @@ import com.asterism.fresk.R;
 import com.asterism.fresk.contract.IBookContract;
 import com.asterism.fresk.dao.bean.BookBean;
 import com.asterism.fresk.presenter.BookPresenter;
-import com.asterism.fresk.ui.activity.ReadActivity;
+import com.asterism.fresk.ui.activity.ReadEpubActivity;
 
 import java.io.File;
 
@@ -39,6 +39,7 @@ public class DeskFragment extends BaseFragment<IBookContract.Presenter>
     TextView tvReadProgress;
 
     private int pos = 0;
+    private BookBean mBookBean;
 
     @Override
     protected int setLayoutId() {
@@ -58,6 +59,7 @@ public class DeskFragment extends BaseFragment<IBookContract.Presenter>
         mPresenter.getBookByIndexSortReadDate(pos, new IBookContract.OnBookBeanListener() {
             @Override
             public void onSuccess(BookBean bookBean) {
+                mBookBean = bookBean;
                 imgBookPic.setImageURI(Uri.fromFile(new File(bookBean.getPicName())));
                 tvBookName.setText(bookBean.getName());
                 tvLastChapter.setText(bookBean.getLastChapter());
@@ -93,6 +95,8 @@ public class DeskFragment extends BaseFragment<IBookContract.Presenter>
 
     @OnClick(R.id.img_book_Pic)
     public void onClick() {
-        startActivity(new Intent(mContext, ReadActivity.class));
+        if (mBookBean != null) {
+            startActivity(new Intent(mContext, ReadEpubActivity.class).putExtra("path",mBookBean.getFilePath()));
+        }
     }
 }

@@ -52,5 +52,10 @@ dependencies {
         exclude group: 'org.slf4j'
         exclude group: 'xmlpull'
     }
+
+    // slf4j
     implementation 'org.slf4j:slf4j-android:1.7.25'
+
+    // jsoup
+    implementation 'org.jsoup:jsoup:1.12.1'
 }
