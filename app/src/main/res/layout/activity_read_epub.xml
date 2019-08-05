@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textIsSelectable="true"
+        android:textSize="16dp"/>
+
+    <!--<com.asterism.fresk.ui.widget.ScrollViewPager-->
+        <!--android:id="@+id/navigation_read"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+
+    <!--</com.asterism.fresk.ui.widget.ScrollViewPager>-->
+
+</LinearLayout>

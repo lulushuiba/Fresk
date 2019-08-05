@@ -58,7 +58,7 @@
         tools:context=".ui.fragment.BookFragment">
 
         <com.asterism.fresk.ui.widget.ScrollViewPager
-            android:id="@+id/content_desk"
+            android:id="@+id/navigation_book"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1">
