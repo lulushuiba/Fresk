@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.RequiresApi;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -76,8 +77,17 @@ public class AddBookManualFragment extends BaseFragment<IAddBookContract.Present
                     if (root.exists()) {
                         AddBookManualFragment.this.parent = root;
                         files = root.listFiles();
-                        // 使用当前目录下的全部文件，来填充ListView
-                        inflateListView(files);
+                        mPresenter.getFilesInDir(root, new IAddBookContract.OnGetFilesListener() {
+                            @Override
+                            public void onSuccess(List<Map<String, Object>> fileList) {
+                                inflateListView(fileList);
+                            }
+
+                            @Override
+                            public void onError(String message) {
+
+                            }
+                        });
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -119,12 +129,24 @@ public class AddBookManualFragment extends BaseFragment<IAddBookContract.Present
             parent = root;
             files = root.listFiles();
             // 使用当前目录下的全部文件，来填充ListView
-            inflateListView(files);
+          //  inflateListView(files);
+            mPresenter.getFilesInDir(parent, new IAddBookContract.OnGetFilesListener() {
+                @Override
+                public void onSuccess(List<Map<String, Object>> fileList) {
+                    listItems  = fileList;
+                    inflateListView(fileList);
+                }
+
+                @Override
+                public void onError(String message) {
+
+                }
+            });
             // 绑定点击事件
             filesListView.setOnItemClickListener(listViewItemOnClick);
         }
         // 设置初始值
-        btnImportSelect.setText(getResources().getString(R.string.importSelect) + "(" + adapter.book.size() + ")");
+     //   btnImportSelect.setText(getResources().getString(R.string.importSelect) + "(" + adapter.book.size() + ")");
     }
 
     /**
@@ -132,77 +154,19 @@ public class AddBookManualFragment extends BaseFragment<IAddBookContract.Present
      *
      * @param files 文件数组
      */
-    private void inflateListView(File[] files) {
-        // 创建List集合，元素是Map
-        listItems = new ArrayList<>();
-
-        for (int i = 0; i < files.length; i++) {
-            // 可点击的书籍
-            Map<String, Object> listItem = new HashMap<>();
-            //文件类型
-            String type;
-            // 如果当前File是文件夹，使用文件夹图标，其它使用文件图标
-            if (files[i].isDirectory()) {
-                listItem.put("icon", R.drawable.icon_folder);
-                type = "dir";
-            } else if (DirectoryUtils.getFormatName(files[i].getName()).equals("txt") ||
-                    DirectoryUtils.getFormatName(files[i].getName()).equals("epub") ||
-                    DirectoryUtils.getFormatName(files[i].getName()).equals("pdf") ||
-                    DirectoryUtils.getFormatName(files[i].getName()).equals("mobi")) {
-
-                listItem.put("icon", R.drawable.icon_file);
-
-                // 得到BookDao
-                BookDao dao = new BookDao(getContext());
-                //默认类型为file | 未加载的书籍
-                type = "file";
-                try {
-                    // 判断数据库中是否已经拥有此书籍
-                    if( dao.queryIsExistByPath( parent.getCanonicalPath() + "/" + files[i].getName())) {
-                        // 以用于type设置为already_file
-                        type = "already_file";
-                    }
-                }catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-            } else {
-                continue;
-            }
-
-                try {
-                    listItem.put("path", parent.getCanonicalPath() + "/");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                listItem.put("icon", files[i]);
-                listItem.put("file", files[i].getName());
-                listItem.put("type", type);
-                // 添加List项
-                listItems.add(listItem);
-
-        }
+    private void inflateListView(List<Map<String, Object>> fileList) {
         // 对目录与文件进行分类排序
-        listItems = DirectoryUtils.DirectorySort(listItems);
-
-        try {
-            if (!parent.getCanonicalPath().equals("/storage/emulated/0")) {
-                Map<String, Object> returnUp = new HashMap<String, Object>();
-                returnUp.put("icon", R.drawable.icon_folder);
-                returnUp.put("file", "/..");
-                returnUp.put("type", "dir");
-                listItems.add(0, returnUp);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        fileList = DirectoryUtils.DirectorySort(fileList);
+        Log.w("test",fileList.size()+"");
+        for(int i = 0; i < fileList.size(); i++){
+            Log.w("test", fileList.get(i).values() + "" + i);
         }
 
         // 创建Adapter
         if (adapter == null) {
-            adapter = new DirectoryListAdapter(getContext(), listItems);
+            adapter = new DirectoryListAdapter(getContext(), fileList);
         } else {
-            adapter.setData(listItems);
+            adapter.setData(fileList);
         }
 
         // 为ListView设置Adapter

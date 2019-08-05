@@ -2,6 +2,7 @@ package com.asterism.fresk.presenter;
 
 import android.annotation.SuppressLint;
 import android.os.Environment;
+import android.util.Log;
 
 import com.asterism.fresk.R;
 import com.asterism.fresk.contract.IAddBookContract;
@@ -232,6 +233,7 @@ public class AddBookPresenter extends BasePresenter<IAddBookContract.View>
                 // 遍历当前目录下所有文件
                 for (File file : currentFiles) {
                     String type;
+                    itemMap = new HashMap<>();
                     // 判断类型，如果当前file是文件夹就使用文件夹图标，否则使用书籍文件图标
                     if (file.isDirectory()) {
                         itemMap.put("icon", R.drawable.icon_folder);
@@ -253,12 +255,17 @@ public class AddBookPresenter extends BasePresenter<IAddBookContract.View>
                     }
                     // 记录文件名称，例：123.txt
                     itemMap.put("name", file.getName());
+                    Log.w("test", file.getName());
                     // 记录文件类型
                     itemMap.put("type", type);
                     // 添加到列表集合
                     itemList.add(itemMap);
                 }
 
+                Log.w("test",itemList.size()+"");
+                for(int i = 0; i < itemList.size(); i++){
+                    Log.w("test", itemList.get(i).get("name").toString() + "" + i);
+                }
                 emitter.onNext(itemList);
                 emitter.onComplete();
             }
@@ -277,6 +284,7 @@ public class AddBookPresenter extends BasePresenter<IAddBookContract.View>
 
                     @Override
                     public void onNext(List<Map<String, Object>> itemList) {
+
                         listener.onSuccess(itemList);
                     }
 

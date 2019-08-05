@@ -1,5 +1,14 @@
 package com.asterism.fresk.ui.fragment;
 
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.PopupWindow;
+
 import com.asterism.fresk.R;
 import com.asterism.fresk.contract.IAddBookContract;
 import com.asterism.fresk.presenter.AddBookPresenter;
@@ -27,6 +36,44 @@ public class AddBookAutoFragment extends BaseFragment<IAddBookContract.Presenter
     @Override
     protected void initialize() {
 
+        View contentView = LayoutInflater.from(mContext).inflate(R.layout.poput_now_search, null);
+
+        Button btCancel = contentView.findViewById(R.id.btCancel);
+
+        final PopupWindow popupWindow = new PopupWindow(contentView,
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        popupWindow.setFocusable(false);
+        popupWindow.setTouchable(true);
+        popupWindow.setOutsideTouchable(false);
+
+        backgroundAlpha((float) 0.5);
+        btCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
+        //显示PopupWindow
+        View rootview = LayoutInflater.from(mContext).inflate(R.layout.fragment_add_book_auto, null);
+        popupWindow.showAtLocation(rootview, Gravity.CENTER, 0, 0);
+
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                backgroundAlpha(1);
+            }
+        });
+    }
+
+    /**
+     * 设置添加屏幕的背景透明度
+     * @param bgAlpha
+     */
+    public void backgroundAlpha(float bgAlpha)
+    {
+        WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+        lp.alpha = bgAlpha; //0.0-1.0
+        getActivity().getWindow().setAttributes(lp);
     }
 
     @Override

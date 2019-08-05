@@ -185,7 +185,8 @@ public class DirectoryListAdapter extends BaseAdapter {
             Log.w("报错！", "没有找到对应的类型");
         }
 
-        holder.tvName.setText(list.get(position).get("file").toString());
+        holder.tvName.setText(list.get(position).get("name").toString());
+        Log.w("传过来", list.get(position).get("name").toString());
         return view;
     }
 
