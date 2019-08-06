@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import com.asterism.fresk.contract.IBaseContract;
 
+import java.io.IOException;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import es.dmoral.toasty.Toasty;
@@ -49,7 +51,13 @@ public abstract class BaseFragment<P extends IBaseContract.Presenter>
         if (this.mPresenter != null) {
             mPresenter.attachView(this);
         }
-        initialize();
+        try {
+            initialize();
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
         return mView;
     }
 
@@ -70,7 +78,7 @@ public abstract class BaseFragment<P extends IBaseContract.Presenter>
     /**
      * 初始化
      */
-    protected abstract void initialize();
+    protected abstract void initialize() throws IOException;
 
     /**
      * 实现 显示错误消息

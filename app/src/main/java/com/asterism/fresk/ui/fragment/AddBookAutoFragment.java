@@ -1,5 +1,6 @@
 package com.asterism.fresk.ui.fragment;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -77,22 +78,17 @@ public class AddBookAutoFragment extends BaseFragment<IAddBookContract.Presenter
     }
 
     @Override
-    public void showAdding() {
-
-    }
+    public Context GetContext() { return super.getContext(); }
 
     @Override
-    public void hideAdding() {
-
-    }
+    public void showAdding() { }
 
     @Override
-    public void showScanning() {
-
-    }
+    public void hideAdding() { }
 
     @Override
-    public void hideScanning() {
+    public void showScanning() { }
 
-    }
+    @Override
+    public void hideScanning() { }
 }

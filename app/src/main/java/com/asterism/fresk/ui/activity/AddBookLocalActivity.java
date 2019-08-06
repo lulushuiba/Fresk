@@ -1,5 +1,6 @@
 package com.asterism.fresk.ui.activity;
 
+import android.content.Context;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -68,19 +69,16 @@ public class AddBookLocalActivity extends BaseActivity<IAddBookContract.Presente
     }
 
     @Override
-    public void showAdding() {
-
-    }
+    public Context GetContext() { return this; }
 
     @Override
-    public void hideAdding() {
-
-    }
+    public void showAdding() { }
 
     @Override
-    public void showScanning() {
+    public void hideAdding() { }
 
-    }
+    @Override
+    public void showScanning() { }
 
     @Override
     public void hideScanning() {

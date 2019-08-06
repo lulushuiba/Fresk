@@ -1,5 +1,7 @@
 package com.asterism.fresk.contract;
 
+import android.content.Context;
+
 import java.io.File;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +19,15 @@ import io.reactivex.Observer;
 public interface IAddBookContract {
 
     interface View extends IBaseContract.View {
+
+        /**
+         * 得到上下文
+         *
+         *
+         * @return 返回上下文
+         */
+        Context GetContext();
+
         /**
          * 显示正在添加
          */

@@ -1,5 +1,7 @@
 package com.asterism.fresk.ui.fragment;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Environment;
@@ -15,6 +17,7 @@ import android.widget.TextView;
 import com.asterism.fresk.R;
 import com.asterism.fresk.contract.IAddBookContract;
 import com.asterism.fresk.dao.BookDao;
+import com.asterism.fresk.dao.bean.BookBean;
 import com.asterism.fresk.presenter.AddBookPresenter;
 import com.asterism.fresk.ui.activity.MainActivity;
 import com.asterism.fresk.ui.adapter.DirectoryListAdapter;
@@ -24,7 +27,6 @@ import com.asterism.fresk.util.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -70,10 +72,12 @@ public class AddBookManualFragment extends BaseFragment<IAddBookContract.Present
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             //当点击的为dir类型时
+
             if (listItems.get(position).get("type").equals("dir")) {
                 try {
                     // 获取系统SD卡目录
-                    File root = new File(AddBookManualFragment.this.parent.getCanonicalPath() + "/" + listItems.get(position).get("file"));
+                    File root = new File(AddBookManualFragment.this.parent.getCanonicalPath() + "/"
+                            + listItems.get(position).get("name"));
                     if (root.exists()) {
                         AddBookManualFragment.this.parent = root;
                         files = root.listFiles();
@@ -104,10 +108,22 @@ public class AddBookManualFragment extends BaseFragment<IAddBookContract.Present
                     updateProgressPartly(position, true);
                 }
                 // 更新UI数据
-                btnImportSelect.setText(getResources().getString(R.string.importSelect) + "(" + adapter.book.size() + ")");
+                 btnImportSelect.setText(getResources().getString(R.string.importSelect) + "(" + adapter.book.size() + ")");
+
+                //当点击的为already_file()类型时
+            }else if(listItems.get(position).get("type").equals("already_file")){
+                //无需操作
+            }
+            else {
+                showSuccessToast("错误，未知错误");
             }
         }
     };
+
+    @Override
+    public Context GetContext() {
+        return super.getContext();
+    }
 
     @Override
     protected int setLayoutId() {
@@ -119,21 +135,19 @@ public class AddBookManualFragment extends BaseFragment<IAddBookContract.Present
         return new AddBookPresenter();
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
-    protected void initialize() {
+    protected void initialize(){
         // 设置为可滑动
         tvPath.setMovementMethod(ScrollingMovementMethod.getInstance());
+
         // 获取系统SD卡目录
         File root = new File(Environment.getExternalStorageDirectory().getPath());
         if (root.exists()) {
             parent = root;
-            files = root.listFiles();
-            // 使用当前目录下的全部文件，来填充ListView
-          //  inflateListView(files);
             mPresenter.getFilesInDir(parent, new IAddBookContract.OnGetFilesListener() {
                 @Override
                 public void onSuccess(List<Map<String, Object>> fileList) {
-                    listItems  = fileList;
                     inflateListView(fileList);
                 }
 
@@ -146,21 +160,17 @@ public class AddBookManualFragment extends BaseFragment<IAddBookContract.Present
             filesListView.setOnItemClickListener(listViewItemOnClick);
         }
         // 设置初始值
-     //   btnImportSelect.setText(getResources().getString(R.string.importSelect) + "(" + adapter.book.size() + ")");
+       btnImportSelect.setText(getResources().getString(R.string.importSelect) + "(0)");
     }
 
     /**
      * 填充ListView
      *
-     * @param files 文件数组
+     * @param fileList 文件数组
      */
     private void inflateListView(List<Map<String, Object>> fileList) {
         // 对目录与文件进行分类排序
         fileList = DirectoryUtils.DirectorySort(fileList);
-        Log.w("test",fileList.size()+"");
-        for(int i = 0; i < fileList.size(); i++){
-            Log.w("test", fileList.get(i).values() + "" + i);
-        }
 
         // 创建Adapter
         if (adapter == null) {
@@ -168,7 +178,7 @@ public class AddBookManualFragment extends BaseFragment<IAddBookContract.Present
         } else {
             adapter.setData(fileList);
         }
-
+        listItems = fileList;
         // 为ListView设置Adapter
         filesListView.setAdapter(adapter);
         try {

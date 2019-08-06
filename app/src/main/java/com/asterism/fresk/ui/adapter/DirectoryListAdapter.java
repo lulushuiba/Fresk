@@ -61,7 +61,7 @@ public class DirectoryListAdapter extends BaseAdapter {
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void setBook(int position) {
-        String path = list.get(position).get("path").toString() + "" + list.get(position).get("file").toString();
+        String path = list.get(position).get("path").toString() + "" + list.get(position).get("name").toString();
 
         if (book.getOrDefault(path, (-1)) == position) {
             book.remove(path);
@@ -142,7 +142,7 @@ public class DirectoryListAdapter extends BaseAdapter {
         holder.cbOption.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                String path = list.get(position).get("path").toString() + "" + list.get(position).get("file").toString();
+                String path = list.get(position).get("path").toString() + "" + list.get(position).get("name").toString();
 
                 if (isChecked) {
                     if (book.getOrDefault(path, (-1)) != position) {
@@ -174,8 +174,7 @@ public class DirectoryListAdapter extends BaseAdapter {
             holder.ivOption.setVisibility(View.GONE);
             holder.cbOption.setVisibility(View.VISIBLE);
             holder.tvAlready.setVisibility(View.GONE);
-
-            String path = list.get(position).get("path").toString() + "" + list.get(position).get("file").toString();
+            String path = list.get(position).get("path").toString() + "" + list.get(position).get("name").toString();
             if (book.getOrDefault(path, (-1)) == position) {
                 holder.cbOption.setChecked(true);
             } else {
@@ -186,7 +185,6 @@ public class DirectoryListAdapter extends BaseAdapter {
         }
 
         holder.tvName.setText(list.get(position).get("name").toString());
-        Log.w("传过来", list.get(position).get("name").toString());
         return view;
     }
 
