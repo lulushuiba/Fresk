@@ -57,6 +57,26 @@ public class FileUtils {
     }
 
     /**
+     * 获取文件名称
+     *
+     * @param path 文件路径
+     *
+     * @return 返回文件名称字符串（不包括后缀名）
+     */
+    public static String getFileSimpleName2(String path) {
+        //去掉首尾的空格
+        path = path.trim();
+        String[] parts = new File(path).getName().split("\\.");
+        StringBuilder name = new StringBuilder();
+        for (int i = 0; i < parts.length; i++) {
+            if (i != (parts.length - 1)) {
+                name.append(parts[i]);
+            }
+        }
+        return name.toString();
+    }
+
+    /**
      * 写入File目录文件
      *
      * @param context  上下文对象

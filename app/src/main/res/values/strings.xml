@@ -25,4 +25,7 @@
     <!--DirectoryListAdapter-->
     <string name="AlreadyLoad">已导入</string>
     <string name="importSelect">导入选中</string>
+
+    <!--poput_now_search.xml-->
+    <string name="NowSearch">正在搜索</string>
 </resources>

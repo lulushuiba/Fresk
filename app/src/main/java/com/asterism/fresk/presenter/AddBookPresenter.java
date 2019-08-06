@@ -86,6 +86,10 @@ public class AddBookPresenter extends BasePresenter<IAddBookContract.View>
         return bookBean;
     }
 
+
+
+
+
     /**
      * 文件扫描递归
      *
@@ -106,7 +110,7 @@ public class AddBookPresenter extends BasePresenter<IAddBookContract.View>
                 } else if (typeNameSet.contains(FileUtils.getFileSuffixName(file.getName()))
                         && !file.isHidden()) {
                     // 如果该文件是书籍类型且不为隐藏文件时
-                    emitter.onNext(file.getPath() + file.getName());
+                    emitter.onNext(file.getPath());
                 }
             }
         }
@@ -261,7 +265,7 @@ public class AddBookPresenter extends BasePresenter<IAddBookContract.View>
 
                     // 记录文件路径
                     try {
-                       itemMap.put("path", currentDir.getCanonicalPath() + File.separator);
+                       itemMap.put("path", currentDir.getCanonicalPath() + File.separator + file.getName());
                     } catch (IOException e) {
                         e.printStackTrace();
                         mView.showErrorToast(e.getMessage());

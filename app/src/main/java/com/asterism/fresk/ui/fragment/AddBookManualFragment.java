@@ -16,8 +16,6 @@ import android.widget.TextView;
 
 import com.asterism.fresk.R;
 import com.asterism.fresk.contract.IAddBookContract;
-import com.asterism.fresk.dao.BookDao;
-import com.asterism.fresk.dao.bean.BookBean;
 import com.asterism.fresk.presenter.AddBookPresenter;
 import com.asterism.fresk.ui.activity.MainActivity;
 import com.asterism.fresk.ui.adapter.DirectoryListAdapter;
@@ -90,7 +88,7 @@ public class AddBookManualFragment extends BaseFragment<IAddBookContract.Present
                             @Override
                             public void onError(String message) {
 
-                            }
+                        }
                         });
                     }
                 } catch (Exception e) {
@@ -219,6 +217,7 @@ public class AddBookManualFragment extends BaseFragment<IAddBookContract.Present
                 if (adapter.getCount() >= 0) {
                     // 临时存储要导入的书籍路径
                     List<String> preBookPathList = new ArrayList<>(adapter.book.keySet());
+
                     if (preBookPathList.size() < 1) {
                         break;
                     }

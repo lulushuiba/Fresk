@@ -51,6 +51,8 @@ public interface IAddBookContract {
 
     interface Presenter extends IBaseContract.Presenter<IAddBookContract.View> {
 
+
+
         /**
          * 添加书籍
          *

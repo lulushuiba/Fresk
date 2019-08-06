@@ -61,8 +61,10 @@ public class DirectoryListAdapter extends BaseAdapter {
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void setBook(int position) {
-        String path = list.get(position).get("path").toString() + "" + list.get(position).get("name").toString();
 
+
+        String path = list.get(position).get("path").toString();
+        Log.w("wwwww", path);
         if (book.getOrDefault(path, (-1)) == position) {
             book.remove(path);
         } else {
@@ -142,7 +144,7 @@ public class DirectoryListAdapter extends BaseAdapter {
         holder.cbOption.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                String path = list.get(position).get("path").toString() + "" + list.get(position).get("name").toString();
+                String path = list.get(position).get("path").toString();
 
                 if (isChecked) {
                     if (book.getOrDefault(path, (-1)) != position) {
