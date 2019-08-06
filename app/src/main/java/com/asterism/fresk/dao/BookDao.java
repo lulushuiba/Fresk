@@ -10,6 +10,7 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.Where;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -89,11 +90,28 @@ public class BookDao {
     public List<BookBean> selectAll() {
         List<BookBean> beanList = null;
         try {
-            beanList = dao.queryForAll();
+            beanList = dao.queryBuilder().orderBy("read_date",false)
+                    .query();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return beanList;
+    }
+
+    /**
+     * 根据书本名称修改阅读时间
+     *
+     * @param bookname 书本名称
+     */
+    public void updateBookByBookName(String bookname) {
+        BookBean bookBean ;
+        try {
+            bookBean = dao.queryForEq("name",bookname).get(0);
+            bookBean.setReadDate(new Date());
+            update(bookBean);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -108,79 +126,9 @@ public class BookDao {
         if (beanList == null || index < 0 || index >= beanList.size()) {
             return null;
         }
-        BookBean temp;
-        for (int i = 0; i < beanList.size(); i++) {
-            for (int j = 0; j < beanList.size() - 1 - i; j++) {
-                int res = DateUtils.compareDateByString(beanList.get(j).getReadDate()
-                        , beanList.get(j + 1).getReadDate());
-                if (res < 0) {
-                    temp = beanList.get(j);
-                    beanList.set(j, beanList.get(j + 1));
-                    beanList.set(j + 1, temp);
-                }
-            }
-        }
         BookBean bean = beanList.get(index);
         beanList.clear();
         return bean;
-    }
-
-    /**
-     * 根据上次阅读日期降序排序并查询所有记录
-     *
-     * @return 返回排序后的实体类集合
-     */
-    public List<BookBean> selectALLSortReadDate() {
-        List<BookBean> beanList = selectAll();
-        for(int i=0;i<beanList.size();i++)
-            Log.i("kn",beanList.get(i).getReadDate()+beanList.get(i).getName());
-        if (beanList == null) {
-            return null;
-        }
-        BookBean temp;
-        for (int i = 0; i < beanList.size(); i++) {
-            for (int j = 0; j < beanList.size() - 1 - i; j++) {
-                int res = DateUtils.compareDateByString(beanList.get(j).getReadDate()
-                        , beanList.get(j + 1).getReadDate());
-                if (res < 0) {
-                    temp = beanList.get(j);
-                    beanList.set(j, beanList.get(j + 1));
-                    beanList.set(j + 1, temp);
-                }
-            }
-        }
-        for(int i=0;i<beanList.size();i++){
-            update(beanList.get(i));
-            Log.i("knpx",beanList.get(i).getReadDate()+beanList.get(i).getName());
-        }
-
-        return beanList;
-    }
-
-    /**
-     *根据上次阅读日期降序排序
-     *
-     * @param list 要排序的集合
-     * @return 返回排序后的集合
-     */
-    public List<BookBean> SortReadDate( List<BookBean> list) {
-        List<BookBean> beanList = list;
-        if (beanList == null) {
-            return null;
-        }
-        BookBean temp;
-        for (int i = 0; i < beanList.size(); i++) {
-            for (int j = 0; j < beanList.size() - 1 - i; j++) {
-                int res = DateUtils.compareDateByString(beanList.get(j).getReadDate()
-                        , beanList.get(j + 1).getReadDate());
-                if (res < 0) {
-                    temp = beanList.get(j);
-                    beanList.set(j, beanList.get(j + 1));
-                    beanList.set(j + 1, temp);
-                }
-            }
-        }
-        return beanList;
     }
 
     /**

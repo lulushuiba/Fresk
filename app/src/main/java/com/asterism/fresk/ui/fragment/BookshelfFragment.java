@@ -4,6 +4,7 @@ import android.view.View;
 
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import com.asterism.fresk.R;
 import com.asterism.fresk.contract.IBookContract;
@@ -11,7 +12,6 @@ import com.asterism.fresk.dao.BookDao;
 import com.asterism.fresk.dao.bean.BookBean;
 import com.asterism.fresk.presenter.BookPresenter;
 import com.asterism.fresk.ui.adapter.BookshelfGridAdapter;
-import com.asterism.fresk.util.DateUtils;
 
 import java.util.List;
 
@@ -48,18 +48,6 @@ public class BookshelfFragment extends BaseFragment<IBookContract.Presenter>
             public void onSuccess(final List<BookBean> bookList) {
                 BookshelfGridAdapter adapter = new BookshelfGridAdapter(mContext, bookList);
                 gvBookshelf.setAdapter(adapter);
-                gvBookshelf.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(final AdapterView<?> adapterView, final View view,
-                                            int i, long l) {
-                        BookDao bookDao=new BookDao(mContext);
-                        bookList.get(i).setReadDate(DateUtils.getNowToString());
-                        List<BookBean>  bookList1;
-                        bookList1= bookDao.SortReadDate(bookList);
-                        BookshelfGridAdapter adapter = new BookshelfGridAdapter(mContext,bookList1);
-                        gvBookshelf.setAdapter(adapter);
-                    }
-                });
             }
 
             @Override
@@ -68,7 +56,19 @@ public class BookshelfFragment extends BaseFragment<IBookContract.Presenter>
             }
         });
 
-
+        gvBookshelf.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(final AdapterView<?> adapterView, final View view,
+                                    int i, long l) {
+                BookDao bookDao=new BookDao(mContext);
+                String s=(String) ((TextView)view.findViewById(R.id.tv_item_bookname))
+                        .getText();
+                bookDao.updateBookByBookName(s);
+                BookshelfGridAdapter adapter = new BookshelfGridAdapter(mContext
+                        ,bookDao.selectAll());
+                gvBookshelf.setAdapter(adapter);
+            }
+        });
     }
 
     @Override
