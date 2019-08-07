@@ -45,7 +45,7 @@ public class BookPresenter extends BasePresenter<IBookContract.View>
             public void subscribe(ObservableEmitter<List<BookBean>> emitter) throws Exception {
                 // 初始化书籍类型表访问器
                 BookDao bookDao = new BookDao(getContext());
-                emitter.onNext(bookDao.selectALLSortReadDate());
+                emitter.onNext(bookDao.selectAll());
                 emitter.onComplete();
             }
         });

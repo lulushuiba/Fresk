@@ -15,6 +15,7 @@ import com.asterism.fresk.util.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -142,7 +143,7 @@ public class AppApplication extends Application {
         // TODO: 2019-07-11 最后章节与书籍名称后面针对书籍类型需要更改写法
         bookBean.setLastChapter(getString(R.string.neverRead));
         bookBean.setName(FileUtils.getFileSimpleName(path));
-        bookBean.setReadDate(DateUtils.getNowToString());
+        bookBean.setReadDate(new Date());
         Random r = new Random();
         bookBean.setReadProgress(r.nextInt(100));
         bookBean.setReadTiming(0);

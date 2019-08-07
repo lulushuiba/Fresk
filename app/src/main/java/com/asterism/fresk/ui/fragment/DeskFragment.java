@@ -1,11 +1,13 @@
 package com.asterism.fresk.ui.fragment;
 
 import android.net.Uri;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.asterism.fresk.R;
 import com.asterism.fresk.contract.IBookContract;
+import com.asterism.fresk.dao.BookDao;
 import com.asterism.fresk.dao.bean.BookBean;
 import com.asterism.fresk.presenter.BookPresenter;
 
@@ -89,8 +91,13 @@ public class DeskFragment extends BaseFragment<IBookContract.Presenter>
 
     }
 
-    @OnClick(R.id.img_book_Pic)
-    public void onClick() {
-
+    @OnClick({R.id.img_book_Pic})
+    public void onClick(View view) {
+//        switch (view.getId()){
+//            case R.id.img_book_Pic:
+//                BookDao bookDao=new BookDao(mContext);
+//                bookDao.updateBookByBookName(tvBookName.getText().toString());
+//                break;
+//        }
     }
 }

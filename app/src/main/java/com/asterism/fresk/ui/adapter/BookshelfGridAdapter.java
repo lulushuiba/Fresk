@@ -1,6 +1,7 @@
 package com.asterism.fresk.ui.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import com.asterism.fresk.R;
 import com.asterism.fresk.dao.bean.BookBean;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -99,4 +101,5 @@ public class BookshelfGridAdapter extends BaseAdapter {
         TextView tvBookName;  // 书籍名称 文本框
         TextView tvProgress;  // 阅读进度 文本框
     }
-}
+
+    }
