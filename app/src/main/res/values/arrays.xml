@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--DeskFragment-->
+    <array name="edit_menu">
+        <item>更改图片</item>
+        <item>更改书名</item>
+        <item>更改作者</item>
+    </array>
+</resources>

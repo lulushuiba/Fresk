@@ -1,6 +1,7 @@
 package com.asterism.fresk.presenter;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 
 import com.asterism.fresk.contract.IBookContract;
 import com.asterism.fresk.dao.BookDao;
@@ -254,6 +255,104 @@ public class BookPresenter extends BasePresenter<IBookContract.View>
                 // 初始化书籍表访问器
                 BookDao bookDao = new BookDao(getContext());
                 if (bookBean != null) {
+                    // 执行书籍类型表访问器修改操作
+                    bookDao.update(bookBean);
+                }
+                emitter.onNext(bookBean);
+                emitter.onComplete();
+            }
+        });
+
+        // 处理于IO子线程
+        BookObservable.subscribeOn(Schedulers.io())
+                // 响应于Android主线程
+                .observeOn(AndroidSchedulers.mainThread())
+                // 设置订阅的响应事件
+                .subscribe(new Consumer<BookBean>() {
+                    @Override
+                    public void accept(BookBean bookBean) throws Exception {
+                        if (bookBean != null) {
+                            listener.onSuccess();
+                        } else {
+                            listener.onError();
+                        }
+                    }
+                });
+    }
+
+    /**
+     * 实现 修改数据库内书籍书名信息
+     *
+     * @param bookid 欲更改的书籍编号
+     * @param newbookname 欲更改书名
+     * @param listener 监听器
+     */
+    @SuppressLint("CheckResult")
+    @Override
+    public void alterBookNameInfo(final int bookid, final String newbookname,
+                                  final IBookContract.OnNormalListener listener) {
+
+        // 创建被观察者，传递BookBean类型事件
+        Observable<BookBean> BookObservable
+                = Observable.create(new ObservableOnSubscribe<BookBean>() {
+            @Override
+            public void subscribe(ObservableEmitter<BookBean> emitter) throws Exception {
+                // 初始化书籍表访问器
+                BookDao bookDao = new BookDao(getContext());
+                BookBean bookBean=null;
+                // 执行书籍类型表访问器根据编号查询操作
+                bookBean=bookDao.getbookbyid(bookid);
+                if (bookBean != null) {
+                 bookBean.setName(newbookname);
+                 // 执行书籍类型表访问器修改操作
+                 bookDao.update(bookBean);
+                }
+                emitter.onNext(bookBean);
+                emitter.onComplete();
+            }
+        });
+
+        // 处理于IO子线程
+        BookObservable.subscribeOn(Schedulers.io())
+                // 响应于Android主线程
+                .observeOn(AndroidSchedulers.mainThread())
+                // 设置订阅的响应事件
+                .subscribe(new Consumer<BookBean>() {
+                    @Override
+                    public void accept(BookBean bookBean) throws Exception {
+                        if (bookBean != null) {
+                            listener.onSuccess();
+                        } else {
+                            listener.onError();
+                        }
+                    }
+                });
+    }
+
+    /**
+     * 实现 修改数据库内书籍图片信息
+     *
+     * @param bookid 欲更改的书籍编号
+     * @param newpic 欲更改图片
+     * @param listener 监听器
+     */
+    @SuppressLint("CheckResult")
+    @Override
+    public void alterBookPicInfo(final int bookid, final String newpic,
+                                 final IBookContract.OnNormalListener listener) {
+
+        // 创建被观察者，传递BookBean类型事件
+        Observable<BookBean> BookObservable
+                = Observable.create(new ObservableOnSubscribe<BookBean>() {
+            @Override
+            public void subscribe(ObservableEmitter<BookBean> emitter) throws Exception {
+                // 初始化书籍表访问器
+                BookDao bookDao = new BookDao(getContext());
+                BookBean bookBean=null;
+                // 执行书籍类型表访问器根据编号查询操作
+                bookBean=bookDao.getbookbyid(bookid);
+                if (bookBean != null) {
+                    bookBean.setPicName(newpic);
                     // 执行书籍类型表访问器修改操作
                     bookDao.update(bookBean);
                 }

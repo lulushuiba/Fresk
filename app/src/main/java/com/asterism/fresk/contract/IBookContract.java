@@ -82,6 +82,24 @@ public interface IBookContract {
          * @param listener 监听器
          */
         void alterBookInfo(BookBean bookBean, OnNormalListener listener);
+
+        /**
+         * 修改数据库内书籍书名信息
+         *
+         * @param bookid 书籍编号
+         * @param newbookname 更改后的书名
+         * @param listener 监听器
+         */
+        void alterBookNameInfo(int bookid,String newbookname,OnNormalListener listener);
+
+        /**
+         * 修改数据库内书籍图片信息
+         *
+         * @param bookid 书籍编号
+         * @param newpic 更改后的图片
+         * @param listener 监听器
+         */
+        void alterBookPicInfo(int bookid,String newpic,OnNormalListener listener);
     }
 
     interface OnBookListListener {

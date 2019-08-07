@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="680px"
+    android:layout_height="750px">
+    <ImageView
+        android:layout_width="165px"
+        android:layout_height="195px"
+        android:id="@+id/dl_img_book_pic"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        />
+    <WebView
+        android:layout_width="match_parent"
+        android:layout_height="500px"
+        android:id="@+id/wv_alter_pic"
+        android:layout_gravity="center"
+        >
+    </WebView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        >
+        <Button
+            android:layout_width="310px"
+            android:layout_height="100px"
+            android:id="@+id/dl_btn_cancle"
+            android:text="取消"
+            />
+        <Button
+            android:layout_width="310px"
+            android:layout_height="100px"
+            android:id="@+id/dl_btn_commit"
+            android:layout_marginLeft="20px"
+            android:text="确定"
+            />
+    </LinearLayout>
+</LinearLayout>
