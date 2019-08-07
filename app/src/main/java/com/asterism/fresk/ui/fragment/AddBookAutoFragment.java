@@ -3,6 +3,7 @@ package com.asterism.fresk.ui.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Environment;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.Gravity;
@@ -26,11 +27,13 @@ import com.asterism.fresk.presenter.AddBookPresenter;
 import com.asterism.fresk.ui.activity.MainActivity;
 import com.asterism.fresk.ui.adapter.DirectoryListAdapter;
 import com.asterism.fresk.util.DirectoryUtils;
+import com.asterism.fresk.util.FileSizeUtil;
 import com.asterism.fresk.util.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -91,6 +94,7 @@ public class AddBookAutoFragment extends BaseFragment<IAddBookContract.Presenter
 
             }
 
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onNext(String path) {
 
@@ -101,7 +105,7 @@ public class AddBookAutoFragment extends BaseFragment<IAddBookContract.Presenter
 
                 // 记录文件名称，例：123.txt
                 itemMap.put("name", FileUtils.getFileSimpleName(path) + "." + FileUtils.getFileSuffixName(path));
-                Log.w("记录", FileUtils.getFileSimpleName(path) + "." + FileUtils.getFileSuffixName(path));
+                File file = new File(path);
                 BookDao dao = new BookDao(getContext());
                 String Type = "file";
                 if( dao.queryIsExistByPath(path) ){
@@ -109,6 +113,11 @@ public class AddBookAutoFragment extends BaseFragment<IAddBookContract.Presenter
                 }
                 // 记录文件类型
                 itemMap.put("type", Type);
+                //记录大小
+                itemMap.put("size",  FileSizeUtil.getAutoFileOrFilesSize(file.getPath()));
+                //记录时间
+                itemMap.put("time", FileUtils.GetShowFileTime(path));
+
                 fileList.add(itemMap);
             }
 

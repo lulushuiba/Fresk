@@ -1,7 +1,9 @@
 package com.asterism.fresk.presenter;
 
 import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Environment;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import com.asterism.fresk.R;
@@ -11,11 +13,14 @@ import com.asterism.fresk.dao.BookTypeDao;
 import com.asterism.fresk.dao.bean.BookBean;
 import com.asterism.fresk.dao.bean.BookTypeBean;
 import com.asterism.fresk.util.DateUtils;
+import com.asterism.fresk.util.FileSizeUtil;
 import com.asterism.fresk.util.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -202,6 +207,7 @@ public class AddBookPresenter extends BasePresenter<IAddBookContract.View>
         // 被观察者 传递List<Map<String,Object>>类型事件
         Observable<List<Map<String, Object>>> observable
                 = Observable.create(new ObservableOnSubscribe<List<Map<String, Object>>>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void subscribe(ObservableEmitter<List<Map<String, Object>>> emitter) throws Exception {
                 // 先判断当前目录是否存在
@@ -274,6 +280,11 @@ public class AddBookPresenter extends BasePresenter<IAddBookContract.View>
                     itemMap.put("name", file.getName());
                     // 记录文件类型
                     itemMap.put("type", type);
+                    //记录文件大小
+                    itemMap.put("size",  FileSizeUtil.getAutoFileOrFilesSize(file.getPath()));
+
+                    //记录文件时间
+                    itemMap.put("time", FileUtils.GetShowFileTime(file));
 
                     // 添加到列表集合
                     itemList.add(itemMap);
