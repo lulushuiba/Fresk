@@ -81,13 +81,10 @@ public class AddBookAutoFragment extends BaseFragment<IAddBookContract.Presenter
         ShowNowLoadWindow();
 
         BookTypeDao b =  new BookTypeDao(mContext);
-
         Set<String> set = new HashSet<>();
-
         for(BookTypeBean s : b.selectAll()){
             set.add(s.getType());
         }
-
         mPresenter.scanBooks(set, new Observer<String>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -190,8 +187,9 @@ public class AddBookAutoFragment extends BaseFragment<IAddBookContract.Presenter
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             //当点击的为dir类型时
 
-      if(fileList.get(position).get("type").equals("file")){
-                adapter.setBook(position);
+            Log.w("点击的类型", fileList.get(position).get("type") + "");
+           if(fileList.get(position).get("type").equals("file")){
+
                 if (((DirectoryListAdapter.ViewHolder) view.getTag()).cbOption.isChecked()) {
                     adapter.setBook(position);
                     updateProgressPartly(position, false);
@@ -199,6 +197,12 @@ public class AddBookAutoFragment extends BaseFragment<IAddBookContract.Presenter
                     adapter.setBook(position);
                     updateProgressPartly(position, true);
                 }
+
+                List<String > li = new ArrayList<>(adapter.book.keySet());
+
+
+                    Log.w("test", adapter.book.values().toString());
+
                 // 更新UI数据
                 btnImportSelect.setText(getResources().getString(R.string.importSelect) + "(" + adapter.book.size() + ")");
 
@@ -247,8 +251,6 @@ public class AddBookAutoFragment extends BaseFragment<IAddBookContract.Presenter
      * @param fileList 文件数组
      */
     private void inflateListView(List<Map<String, Object>> fileList) {
-        // 对目录与文件进行分类排序
-        fileList = DirectoryUtils.DirectorySort(fileList);
 
         // 创建Adapter
         if (adapter == null) {
@@ -272,6 +274,7 @@ public class AddBookAutoFragment extends BaseFragment<IAddBookContract.Presenter
             case R.id.btn_import_select:
                 if (adapter.getCount() >= 0) {
                     // 临时存储要导入的书籍路径
+                    Log.w("要导入的书籍", adapter.book.keySet().toString());
                     List<String> preBookPathList = new ArrayList<>(adapter.book.keySet());
                     if (preBookPathList.size() < 1) {
                         break;

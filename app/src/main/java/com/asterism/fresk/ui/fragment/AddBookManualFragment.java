@@ -96,7 +96,6 @@ public class AddBookManualFragment extends BaseFragment<IAddBookContract.Present
                 }
              //当点击的为File类型时
             } else if(listItems.get(position).get("type").equals("file")){
-                adapter.setBook(position);
 
                 if (((DirectoryListAdapter.ViewHolder) view.getTag()).cbOption.isChecked()) {
                     adapter.setBook(position);
