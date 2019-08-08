@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.RequiresApi;
-import android.util.Log;
 
 import com.asterism.fresk.R;
 import com.asterism.fresk.contract.IAddBookContract;
@@ -18,9 +17,7 @@ import com.asterism.fresk.util.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +29,6 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -90,11 +86,7 @@ public class AddBookPresenter extends BasePresenter<IAddBookContract.View>
         bookBean.setPicName(picPath);
         return bookBean;
     }
-
-
-
-
-
+    
     /**
      * 文件扫描递归
      *

@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.RequiresApi;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;

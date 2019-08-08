@@ -3,9 +3,7 @@ package com.asterism.fresk.ui.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Environment;
 import android.support.annotation.RequiresApi;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,25 +13,20 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.TextView;
 
 import com.asterism.fresk.R;
 import com.asterism.fresk.contract.IAddBookContract;
 import com.asterism.fresk.dao.BookDao;
 import com.asterism.fresk.dao.BookTypeDao;
-import com.asterism.fresk.dao.bean.BookBean;
 import com.asterism.fresk.dao.bean.BookTypeBean;
 import com.asterism.fresk.presenter.AddBookPresenter;
 import com.asterism.fresk.ui.activity.MainActivity;
 import com.asterism.fresk.ui.adapter.DirectoryListAdapter;
-import com.asterism.fresk.util.DirectoryUtils;
 import com.asterism.fresk.util.FileSizeUtil;
 import com.asterism.fresk.util.FileUtils;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -185,9 +178,7 @@ public class AddBookAutoFragment extends BaseFragment<IAddBookContract.Presenter
         @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            //当点击的为dir类型时
 
-            Log.w("点击的类型", fileList.get(position).get("type") + "");
            if(fileList.get(position).get("type").equals("file")){
 
                 if (((DirectoryListAdapter.ViewHolder) view.getTag()).cbOption.isChecked()) {
@@ -199,9 +190,6 @@ public class AddBookAutoFragment extends BaseFragment<IAddBookContract.Presenter
                 }
 
                 List<String > li = new ArrayList<>(adapter.book.keySet());
-
-
-                    Log.w("test", adapter.book.values().toString());
 
                 // 更新UI数据
                 btnImportSelect.setText(getResources().getString(R.string.importSelect) + "(" + adapter.book.size() + ")");
@@ -274,7 +262,6 @@ public class AddBookAutoFragment extends BaseFragment<IAddBookContract.Presenter
             case R.id.btn_import_select:
                 if (adapter.getCount() >= 0) {
                     // 临时存储要导入的书籍路径
-                    Log.w("要导入的书籍", adapter.book.keySet().toString());
                     List<String> preBookPathList = new ArrayList<>(adapter.book.keySet());
                     if (preBookPathList.size() < 1) {
                         break;
