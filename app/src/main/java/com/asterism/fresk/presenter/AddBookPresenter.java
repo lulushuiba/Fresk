@@ -244,6 +244,10 @@ public class AddBookPresenter extends BasePresenter<IAddBookContract.View>
                 // 遍历当前目录下所有文件
                 for (File file : currentFiles) {
                     String type;
+                    //若为隐藏文件则退出
+                    if(file.isHidden()){
+                        continue;
+                    }
                     itemMap = new HashMap<>();
                     // 判断类型，如果当前file是文件夹就使用文件夹图标，否则使用书籍文件图标
                     if (file.isDirectory()) {
