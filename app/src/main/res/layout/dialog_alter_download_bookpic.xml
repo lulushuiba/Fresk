@@ -9,13 +9,13 @@
         android:layout_gravity="center"
         android:layout_marginBottom="20dp"
         />
-    <WebView
+    <com.tencent.smtt.sdk.WebView
         android:layout_width="match_parent"
         android:layout_height="500px"
         android:id="@+id/wv_alter_pic"
         android:layout_gravity="center"
         >
-    </WebView>
+    </com.tencent.smtt.sdk.WebView>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
