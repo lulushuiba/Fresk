@@ -3,6 +3,8 @@ package com.asterism.fresk.dao.bean;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.util.Date;
+
 /**
  * 书籍表实体类
  *
@@ -21,8 +23,8 @@ public class BookBean {
     @DatabaseField(useGetSet = true, foreign = true, columnName = "type", canBeNull = false)
     private BookTypeBean type;
 
-    // 文件路径
-    @DatabaseField(useGetSet = true, columnName = "file_path", canBeNull = false)
+    // 文件路径 唯一
+    @DatabaseField(useGetSet = true, columnName = "file_path", canBeNull = false, unique = true)
     private String filePath;
 
     // 书籍名称
@@ -51,7 +53,7 @@ public class BookBean {
 
     // 阅读日期 2018-01-01-00:00
     @DatabaseField(useGetSet = true, columnName = "read_date", canBeNull = false)
-    private String readDate;
+    private Date readDate;
 
     public int getId() {
         return id;
@@ -125,11 +127,11 @@ public class BookBean {
         this.addDate = addDate;
     }
 
-    public String getReadDate() {
+    public Date getReadDate() {
         return readDate;
     }
 
-    public void setReadDate(String readDate) {
+    public void setReadDate(Date readDate) {
         this.readDate = readDate;
     }
 

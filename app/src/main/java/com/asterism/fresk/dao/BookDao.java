@@ -1,13 +1,16 @@
 package com.asterism.fresk.dao;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.asterism.fresk.dao.bean.BookBean;
 import com.asterism.fresk.dao.core.DatabaseHelper;
 import com.asterism.fresk.util.DateUtils;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.Where;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -87,11 +90,28 @@ public class BookDao {
     public List<BookBean> selectAll() {
         List<BookBean> beanList = null;
         try {
-            beanList = dao.queryForAll();
+            beanList = dao.queryBuilder().orderBy("read_date",false)
+                    .query();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return beanList;
+    }
+
+    /**
+     * 根据书本名称修改阅读时间
+     *
+     * @param bookname 书本名称
+     */
+    public void updateBookByBookName(String bookname) {
+        BookBean bookBean ;
+        try {
+            bookBean = dao.queryForEq("name",bookname).get(0);
+            bookBean.setReadDate(new Date());
+            update(bookBean);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -106,46 +126,31 @@ public class BookDao {
         if (beanList == null || index < 0 || index >= beanList.size()) {
             return null;
         }
-        BookBean temp;
-        for (int i = 0; i < beanList.size(); i++) {
-            for (int j = 0; j < beanList.size() - 1 - i; j++) {
-                int res = DateUtils.compareDateByString(beanList.get(j).getReadDate()
-                        , beanList.get(j + 1).getReadDate());
-                if (res < 0) {
-                    temp = beanList.get(j);
-                    beanList.set(j, beanList.get(j + 1));
-                    beanList.set(j + 1, temp);
-                }
-            }
-        }
         BookBean bean = beanList.get(index);
         beanList.clear();
         return bean;
     }
 
     /**
-     * 根据上次阅读日期降序排序并查询所有记录
+     * 根据Path来查询数据库中是否存在
      *
-     * @return 返回排序后的实体类集合
+     * @param path 要进行比对的Path
+     * @return 返回数据库中是否有此书籍
      */
-    public List<BookBean> selectALLSortReadDate() {
-        List<BookBean> beanList = selectAll();
-        if (beanList == null) {
-            return null;
+    public boolean queryIsExistByPath(String path) {
+
+        List<BookBean> beanList = null;
+        try {
+            beanList =  dao.queryBuilder().where().eq("file_path", path).query();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        BookBean temp;
-        for (int i = 0; i < beanList.size(); i++) {
-            for (int j = 0; j < beanList.size() - 1 - i; j++) {
-                int res = DateUtils.compareDateByString(beanList.get(j).getReadDate()
-                        , beanList.get(j + 1).getReadDate());
-                if (res < 0) {
-                    temp = beanList.get(j);
-                    beanList.set(j, beanList.get(j + 1));
-                    beanList.set(j + 1, temp);
-                }
-            }
+
+        //判断是否有值
+        if(beanList == null || beanList.size() == 0) {
+            return false;
         }
-        return beanList;
+        return true;
     }
 
     /**

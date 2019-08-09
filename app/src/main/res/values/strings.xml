@@ -20,5 +20,9 @@
     <string name="addBookManual">手动选择</string>
 
     <!--AddBookManualFragment-->
+    <string name="LoadSelect">导入选中</string>
+
+    <!--DirectoryListAdapter-->
+    <string name="AlreadyLoad">以加载</string>
     <string name="importSelect">导入选中</string>
 </resources>

@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.asterism.fresk.R;
 import com.asterism.fresk.contract.IAddBookContract;
+import com.asterism.fresk.dao.BookDao;
 import com.asterism.fresk.presenter.AddBookPresenter;
 import com.asterism.fresk.ui.activity.MainActivity;
 import com.asterism.fresk.ui.adapter.DirectoryListAdapter;
@@ -67,6 +68,7 @@ public class AddBookManualFragment extends BaseFragment<IAddBookContract.Present
         @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            //当点击的为dir类型时
             if (listItems.get(position).get("type").equals("dir")) {
                 try {
                     // 获取系统SD卡目录
@@ -80,7 +82,8 @@ public class AddBookManualFragment extends BaseFragment<IAddBookContract.Present
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            } else {
+             //当点击的为File类型时
+            } else if(listItems.get(position).get("type").equals("file")){
                 adapter.setBook(position);
 
                 if (((DirectoryListAdapter.ViewHolder) view.getTag()).cbOption.isChecked()) {
@@ -132,8 +135,11 @@ public class AddBookManualFragment extends BaseFragment<IAddBookContract.Present
     private void inflateListView(File[] files) {
         // 创建List集合，元素是Map
         listItems = new ArrayList<>();
+
         for (int i = 0; i < files.length; i++) {
+            // 可点击的书籍
             Map<String, Object> listItem = new HashMap<>();
+            //文件类型
             String type;
             // 如果当前File是文件夹，使用文件夹图标，其它使用文件图标
             if (files[i].isDirectory()) {
@@ -145,25 +151,41 @@ public class AddBookManualFragment extends BaseFragment<IAddBookContract.Present
                     DirectoryUtils.getFormatName(files[i].getName()).equals("mobi")) {
 
                 listItem.put("icon", R.drawable.icon_file);
+
+                // 得到BookDao
+                BookDao dao = new BookDao(getContext());
+                //默认类型为file | 未加载的书籍
                 type = "file";
+                try {
+                    // 判断数据库中是否已经拥有此书籍
+                    if( dao.queryIsExistByPath( parent.getCanonicalPath() + "/" + files[i].getName())) {
+                        // 以用于type设置为already_file
+                        type = "already_file";
+                    }
+                }catch (IOException e) {
+                    e.printStackTrace();
+                }
+
             } else {
                 continue;
             }
 
-            try {
-                listItem.put("path", parent.getCanonicalPath() + "/");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                try {
+                    listItem.put("path", parent.getCanonicalPath() + "/");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
-            listItem.put("icon", files[i]);
-            listItem.put("file", files[i].getName());
-            listItem.put("type", type);
-            // 添加List项
-            listItems.add(listItem);
+                listItem.put("icon", files[i]);
+                listItem.put("file", files[i].getName());
+                listItem.put("type", type);
+                // 添加List项
+                listItems.add(listItem);
+
         }
-
+        // 对目录与文件进行分类排序
         listItems = DirectoryUtils.DirectorySort(listItems);
+
         try {
             if (!parent.getCanonicalPath().equals("/storage/emulated/0")) {
                 Map<String, Object> returnUp = new HashMap<String, Object>();

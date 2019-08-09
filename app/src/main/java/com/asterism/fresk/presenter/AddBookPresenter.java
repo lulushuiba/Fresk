@@ -15,6 +15,7 @@ import com.asterism.fresk.util.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,7 +56,7 @@ public class AddBookPresenter extends BasePresenter<IAddBookContract.View>
         // TODO: 2019-07-11 最后章节与书籍名称后面针对书籍类型需要更改写法
         bookBean.setLastChapter("从未阅读");
         bookBean.setName(FileUtils.getFileSimpleName(path));
-        bookBean.setReadDate(DateUtils.getNowToString());
+        bookBean.setReadDate(new Date());
         bookBean.setReadProgress(0);
         bookBean.setReadTiming(0);
         bookBean.setType(bookTypeBean);
