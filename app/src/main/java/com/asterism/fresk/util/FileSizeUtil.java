@@ -65,7 +65,7 @@ public class FileSizeUtil {
     }
     /**
      * 获取指定文件大小
-     * @param f
+     * @param
      * @return
      * @throws Exception
      */
@@ -132,6 +132,7 @@ public class FileSizeUtil {
         }
         return fileSizeString;
     }
+
     /**
      * 转换文件大小,指定转换的类型
      * @param fileS
@@ -160,5 +161,35 @@ public class FileSizeUtil {
                 break;
         }
         return fileSizeLong;
+    }
+
+    /**
+     * 判断大小是否大于指定的int(单位是MB)
+     * @param s1     要进行判断的String大小
+     * @param num    指定的Int大小
+     * @return   返回s1是否比num大
+     */
+    public static boolean IsGreatInt(String s1, int num){
+        String s1Type = "";
+        double s1Int = 0.0;
+        s1Type = s1.substring(s1.length()-2);                   //得到最后两位
+        if(!"GB".equals(s1Type) && !"KB".equals(s1Type) && !"MB".equals(s1Type)){
+            return false;
+        }
+        String tem = s1.substring(0,s1.length()-2);
+        Log.w("111",tem);
+
+        s1Int = Float.parseFloat(tem);
+
+        if( "GB".equals(s1Type)){
+            return true;
+        }else if( "KB".equals(s1Type) ){
+            return false;
+        }else if("MB".equals(s1Type)) {
+            if(s1Int >= num){ return true; }
+        }else {
+            return false;
+        }
+        return  false;
     }
 }
