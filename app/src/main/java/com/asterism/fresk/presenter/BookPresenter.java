@@ -67,7 +67,7 @@ public class BookPresenter extends BasePresenter<IBookContract.View>
     private IBookContract.OnNormalListener onNormalListener;
 
     /**
-     * 给BookPresenter成员变量传值
+     * 实现 给BookPresenter成员变量传值
      *
      * @param imgBookPic 显示书籍封面的ImageView
      * @param tvBookName 显示书名的TextView
@@ -743,7 +743,7 @@ public class BookPresenter extends BasePresenter<IBookContract.View>
     }
 
     /**
-     * 实现长按编辑书籍信息
+     * 实现 长按编辑书籍信息
      */
     @Override
     public void LongPressEditor(){
