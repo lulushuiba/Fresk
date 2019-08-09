@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 
@@ -58,6 +60,7 @@ public class AddBookAutoFragment extends BaseFragment<IAddBookContract.Presenter
     PopupWindow popupWindow =  null;
     final List<Map<String, Object>> fileList = new ArrayList<>();
 
+
     @Override
     protected int setLayoutId() {
         return R.layout.fragment_add_book_auto;
@@ -71,6 +74,9 @@ public class AddBookAutoFragment extends BaseFragment<IAddBookContract.Presenter
     @Override
     protected void initialize() {
 
+
+
+        //显示正在加载窗口
         ShowNowLoadWindow();
 
         BookTypeDao b =  new BookTypeDao(mContext);
@@ -138,6 +144,7 @@ public class AddBookAutoFragment extends BaseFragment<IAddBookContract.Presenter
      * 显示正在加载窗口
      */
     private void ShowNowLoadWindow(){
+
         View contentView = LayoutInflater.from(mContext).inflate(R.layout.poput_now_search, null);
         Button btCancel = contentView.findViewById(R.id.btCancel);
 
@@ -255,7 +262,7 @@ public class AddBookAutoFragment extends BaseFragment<IAddBookContract.Presenter
      *
      * @param view 导入加载按钮
      */
-    @OnClick({R.id.btn_import_select})
+    @OnClick({R.id.btn_import_select, R.id.btn_title_filter})
     public void onClick(View view) {
         switch (view.getId()) {
             // 点击导入选中
@@ -291,6 +298,7 @@ public class AddBookAutoFragment extends BaseFragment<IAddBookContract.Presenter
                         }
                     });
                 }
+                break;
         }
     }
 

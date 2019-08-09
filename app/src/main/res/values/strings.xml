@@ -28,4 +28,8 @@
 
     <!--poput_now_search.xml-->
     <string name="NowSearch">正在搜索</string>
+    
+    <!--poput_filter-->
+    <string name="confirm">确认</string>
+    <string name="anew">重置</string>
 </resources>

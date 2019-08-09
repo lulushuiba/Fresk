@@ -28,5 +28,11 @@
             android:textStyle="bold"/>
 
     </LinearLayout>
-
+    <ImageButton
+        android:id="@+id/btn_title_filter"
+        android:layout_width="58dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:background="@color/background"
+        android:src="@drawable/icon_filter" />
 </RelativeLayout>
