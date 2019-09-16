@@ -119,7 +119,8 @@ public class MainActivity extends BaseActivity<IMainContract.Presenter>
             }
 
             @Override
-            public void onTabReselected(int position) {
+            public void onTabReselected(int position)
+            {
 
             }
         });
