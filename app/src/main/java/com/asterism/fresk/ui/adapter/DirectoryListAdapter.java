@@ -13,14 +13,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.asterism.fresk.R;
-import com.asterism.fresk.dao.BookDao;
-import com.asterism.fresk.dao.bean.BookBean;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * 文件目录ListView适配器类
@@ -162,14 +158,14 @@ public class DirectoryListAdapter extends BaseAdapter {
             holder.ivOption.setVisibility(View.VISIBLE);
             holder.cbOption.setVisibility(View.GONE);
 
-        //当为以添加书籍时
-        }else if("already_file".equals(list.get(position).get("type"))){
+            //当为以添加书籍时
+        } else if ("already_file".equals(list.get(position).get("type"))) {
             holder.ivIcon.setImageResource(R.drawable.icon_file);
             holder.ivOption.setVisibility(View.GONE);
             holder.cbOption.setVisibility(View.GONE);
             holder.tvAlready.setVisibility(View.VISIBLE);
 
-        } else if("file".equals(list.get(position).get("type"))){
+        } else if ("file".equals(list.get(position).get("type"))) {
             holder.ivIcon.setImageResource(R.drawable.icon_file);
             holder.ivOption.setVisibility(View.GONE);
             holder.cbOption.setVisibility(View.VISIBLE);
@@ -181,7 +177,7 @@ public class DirectoryListAdapter extends BaseAdapter {
             } else {
                 holder.cbOption.setChecked(false);
             }
-        }else{
+        } else {
             Log.w("报错！", "没有找到对应的类型");
         }
 

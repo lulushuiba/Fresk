@@ -1,28 +1,19 @@
 package com.asterism.fresk.ui.activity;
 
-import android.util.Log;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.asterism.fresk.R;
 import com.asterism.fresk.contract.IReadContract;
 import com.asterism.fresk.presenter.ReadPresenter;
+import com.asterism.fresk.ui.adapter.ChapterListAdapter;
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.charset.Charset;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import nl.siegmann.epublib.domain.Book;
-import nl.siegmann.epublib.domain.MediaType;
-import nl.siegmann.epublib.domain.Resource;
-import nl.siegmann.epublib.domain.Spine;
-import nl.siegmann.epublib.domain.SpineReference;
-import nl.siegmann.epublib.epub.EpubReader;
-import nl.siegmann.epublib.service.MediatypeService;
 
 /**
  * 阅读Activity类，继承base基类且泛型为当前模块Presenter类型，并实现当前模块View接口
@@ -34,11 +25,26 @@ import nl.siegmann.epublib.service.MediatypeService;
 public class ReadEpubActivity extends BaseActivity<IReadContract.Presenter>
         implements IReadContract.View {
 
-    @BindView(R.id.text)
-    TextView text;
+    @BindView(R.id.iv_book_pic)
+    ImageView ivBookPic;
 
-//    @BindView(R.id.navigation_read)
-//    ScrollViewPager viewPager;
+    @BindView(R.id.tv_book_name)
+    TextView tvBookName;
+
+    @BindView(R.id.tv_book_state)
+    TextView tvBookState;
+
+    @BindView(R.id.tv_chapter_num)
+    TextView tvChapterNum;
+
+    @BindView(R.id.tv_order)
+    TextView tvOrder;
+
+    @BindView(R.id.lv_chapter)
+    ListView lvChapter;
+
+    private Book mBook;
+    private List<String> mTocList;
 
     @Override
     protected int setLayoutId() {
@@ -57,39 +63,21 @@ public class ReadEpubActivity extends BaseActivity<IReadContract.Presenter>
             showErrorToast("未找到文件！");
             finish();
         }
-
-        EpubReader reader = new EpubReader();
-        MediaType[] lazyTypes = {
-                MediatypeService.CSS,
-                MediatypeService.GIF,
-                MediatypeService.JPG,
-                MediatypeService.PNG,
-                MediatypeService.MP3,
-                MediatypeService.MP4
-        };
-
-        try {
-            Book book = reader.readEpubLazy("/storage/emulated/0/Download/三体三部曲_私人典藏版.epub", "UTF-8", Arrays.asList(lazyTypes));
-//            List<Resource> chapterList = book.getContents();
-//            StringBuffer buffer = new StringBuffer();
-//            for (Resource resource : chapterList) {
-//                buffer.append(resource.getTitle());
-//            }
-//            text.setText(buffer.toString());
-
-            Spine spine = book.getSpine();
-
-            List<SpineReference> spineReferences = spine.getSpineReferences();
-            if (spineReferences != null && spineReferences.size() > 0) {
-                Resource resource = spineReferences.get(3).getResource();
-                text.setText(bytes2Hex(resource.getData()));
+        mBook = mPresenter.getEpubBook("/storage/emulated/0/Download/三体三部曲_私人典藏版.epub",
+                "UTF-8");
+        mPresenter.getToc(mBook, new IReadContract.OnGetTocListener() {
+            @Override
+            public void onSuccess(List<String> tocString) {
+                mTocList = tocString;
+                tvChapterNum.setText("共" + mTocList.size() + "章");
+                lvChapter.setAdapter(new ChapterListAdapter(ReadEpubActivity.this, mTocList));
             }
 
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+            @Override
+            public void onError(String message) {
+                showErrorToast("获取目录失败: " + message);
+            }
+        });
     }
 
     @Override
@@ -102,20 +90,8 @@ public class ReadEpubActivity extends BaseActivity<IReadContract.Presenter>
 
     }
 
-    public String bytes2Hex(byte[] bs) {
-        if (bs == null || bs.length <= 0) {
-            return null;
-        }
-        Charset charset = Charset.defaultCharset();
-        ByteBuffer buf = ByteBuffer.wrap(bs);
-        CharBuffer cBuf = charset.decode(buf);
-
-        return cBuf.toString();
-
+    @OnClick(R.id.tv_order)
+    public void onClick() {
 
     }
-
-//    @OnClick(R.id.navigation_read)
-//    public void onClick() {
-//    }
 }

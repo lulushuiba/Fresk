@@ -9,10 +9,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.asterism.fresk.R;
-import com.asterism.fresk.dao.bean.BookBean;
 
 import java.io.File;
 import java.util.List;
+
+import nl.siegmann.epublib.domain.TOCReference;
 
 /**
  * 书架GridView适配器类
@@ -21,14 +22,15 @@ import java.util.List;
  * @email 528118879@qq.com
  * @date on 2019-08-04 16:37
  */
-public class BookshelfGridAdapter extends BaseAdapter {
+public class ChapterListAdapter extends BaseAdapter {
 
-    private List<BookBean> mList;          // 书籍信息集合
     private Context context;                   // 上下文对象
+    private List<String> tocList;        // 书籍信息集合
 
-    public BookshelfGridAdapter(Context context, List<BookBean> list) {
-        this.mList = list;
+
+    public ChapterListAdapter(Context context, List<String> tocList) {
         this.context = context;
+        this.tocList = tocList;
     }
 
     /**
@@ -38,7 +40,7 @@ public class BookshelfGridAdapter extends BaseAdapter {
      */
     @Override
     public int getCount() {
-        return mList.size();
+        return tocList.size();
     }
 
     /**
@@ -50,7 +52,7 @@ public class BookshelfGridAdapter extends BaseAdapter {
      */
     @Override
     public Object getItem(int position) {
-        return mList.get(position);
+        return tocList.get(position);
     }
 
     /**
@@ -78,25 +80,19 @@ public class BookshelfGridAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
-            convertView = View.inflate(context, R.layout.item_grid_book, null);
+            convertView = View.inflate(context, R.layout.item_list_chapter, null);
             holder = new ViewHolder();
-            holder.imgBook = convertView.findViewById(R.id.img_item_book);
-            holder.tvBookName = convertView.findViewById(R.id.tv_item_bookname);
-            holder.tvProgress = convertView.findViewById(R.id.tv_item_progress);
+            holder.tvChapterName = convertView.findViewById(R.id.tv_chapter_name);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.imgBook.setImageURI(Uri.fromFile(new File(mList.get(position).getPicName())));
-        holder.tvBookName.setText(mList.get(position).getName().trim());
-        holder.tvProgress.setText(mList.get(position).getReadProgress() + "%");
+        holder.tvChapterName.setText(tocList.get(position));
         return convertView;
     }
 
     static class ViewHolder {
-        ImageView imgBook;    // 书籍图片 图片框
-        TextView tvBookName;  // 书籍名称 文本框
-        TextView tvProgress;  // 阅读进度 文本框
+        TextView tvChapterName;  // 章节名 文本框
     }
 
 }
