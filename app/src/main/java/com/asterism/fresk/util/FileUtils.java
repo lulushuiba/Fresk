@@ -1,5 +1,6 @@
 package com.asterism.fresk.util;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Environment;
 
@@ -9,6 +10,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /**
  * 文件工具类
@@ -44,6 +47,26 @@ public class FileUtils {
      * @return 返回文件名称字符串（不包括后缀名）
      */
     public static String getFileSimpleName(String path) {
+        //去掉首尾的空格
+        path = path.trim();
+        String[] parts = new File(path).getName().split("\\.");
+        StringBuilder name = new StringBuilder();
+        for (int i = 0; i < parts.length; i++) {
+            if (i != (parts.length - 1)) {
+                name.append(parts[i]);
+            }
+        }
+        return name.toString();
+    }
+
+    /**
+     * 获取文件名称
+     *
+     * @param path 文件路径
+     *
+     * @return 返回文件名称字符串（不包括后缀名）
+     */
+    public static String getFileSimpleName2(String path) {
         //去掉首尾的空格
         path = path.trim();
         String[] parts = new File(path).getName().split("\\.");
@@ -185,5 +208,33 @@ public class FileUtils {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * 得到文件显示时间
+     *
+     * @param path 传入文件路径
+     * @return 返回字符串   示例子: 12-07
+     */
+    public static String GetShowFileTime(String path){
+        // 获取系统SD卡目录
+        File file = new File(path);
+        return GetShowFileTime(file);
+    }
+
+    /**
+     * 得到文件显示时间
+     *
+     * @param file 传入文件
+     * @return 返回字符串   示例子: 12-07
+     */
+    public static String GetShowFileTime(File file){
+
+        //得到文件的日期
+        long time=file.lastModified();
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new
+                SimpleDateFormat("MM-dd");
+
+        return (formatter.format(time));
     }
 }

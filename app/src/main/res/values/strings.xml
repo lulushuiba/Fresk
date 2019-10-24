@@ -23,6 +23,13 @@
     <string name="LoadSelect">导入选中</string>
 
     <!--DirectoryListAdapter-->
-    <string name="AlreadyLoad">以加载</string>
+    <string name="AlreadyLoad">已导入</string>
     <string name="importSelect">导入选中</string>
+
+    <!--poput_now_search.xml-->
+    <string name="NowSearch">正在搜索</string>
+    
+    <!--poput_filter-->
+    <string name="confirm">确认</string>
+    <string name="anew">重置</string>
 </resources>

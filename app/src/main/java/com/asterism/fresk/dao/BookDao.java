@@ -153,4 +153,19 @@ public class BookDao {
         return true;
     }
 
+    /**
+     * 根据书名查询书籍
+     *
+     * @param BookId 书名
+     * @return 书籍实体类
+     */
+    public BookBean getbookbyid(int BookId){
+        BookBean bookBean=null;
+        try {
+            bookBean=dao.queryForId(BookId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookBean;
+    }
 }
