@@ -1,12 +1,26 @@
 package com.asterism.fresk.ui.activity;
 
+import android.content.Context;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 
 import com.asterism.fresk.R;
 import com.asterism.fresk.contract.IAddBookContract;
+import com.asterism.fresk.dao.BookTypeDao;
+import com.asterism.fresk.dao.bean.BookTypeBean;
 import com.asterism.fresk.presenter.AddBookPresenter;
 import com.asterism.fresk.ui.adapter.PagerAdapter;
 import com.asterism.fresk.ui.fragment.AddBookAutoFragment;
@@ -14,7 +28,9 @@ import com.asterism.fresk.ui.fragment.AddBookManualFragment;
 import com.asterism.fresk.ui.widget.ScrollViewPager;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -23,13 +39,16 @@ public class AddBookLocalActivity extends BaseActivity<IAddBookContract.Presente
         implements IAddBookContract.View {
 
     @BindView(R.id.navigation)
-    TabLayout tabLayout;                //
+    TabLayout tabLayout;
 
     @BindView(R.id.content)
     ScrollViewPager viewPager;          // 滚动视图容器
 
     @BindView(R.id.btn_title_return)
     ImageButton btnTitleReturn;         // 返回 按钮
+
+    @BindView(R.id.btn_title_filter)
+    ImageButton btnTitleFilter;         // 筛选 按钮
 
     @Override
     protected int setLayoutId() {
@@ -65,22 +84,21 @@ public class AddBookLocalActivity extends BaseActivity<IAddBookContract.Presente
         // 设置选中时的指示器的颜色
         tabLayout.setSelectedTabIndicatorColor(0xff666666);
         tabLayout.setupWithViewPager(viewPager);
-    }
 
-    @Override
-    public void showAdding() {
 
     }
 
     @Override
-    public void hideAdding() {
-
-    }
+    public Context GetContext() { return this; }
 
     @Override
-    public void showScanning() {
+    public void showAdding() { }
 
-    }
+    @Override
+    public void hideAdding() { }
+
+    @Override
+    public void showScanning() { }
 
     @Override
     public void hideScanning() {
@@ -95,4 +113,6 @@ public class AddBookLocalActivity extends BaseActivity<IAddBookContract.Presente
                 break;
         }
     }
+
+
 }

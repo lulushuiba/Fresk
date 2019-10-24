@@ -22,7 +22,7 @@ public class DirectoryUtils {
 
         for (int i = 0; i < dir.size() - 1; i++) {
             for (int j = 0; j < dir.size() - i - 1; j++) {
-                int num = dir.get(j).get("file").toString().compareToIgnoreCase(dir.get(j + 1).get("file").toString());
+                int num = dir.get(j).get("name").toString().compareToIgnoreCase(dir.get(j + 1).get("name").toString());
                 if (num > 0) {
                     Collections.swap(dir, j, j + 1);
                 }
@@ -31,7 +31,7 @@ public class DirectoryUtils {
 
         for (int i = 0; i < file.size() - 1; i++) {
             for (int j = 0; j < file.size() - i - 1; j++) {
-                int num = file.get(j).get("file").toString().compareToIgnoreCase(file.get(j + 1).get("file").toString());
+                int num = file.get(j).get("name").toString().compareToIgnoreCase(file.get(j + 1).get("name").toString());
                 if (num > 0) {
                     Collections.swap(file, j, j + 1);
                 }

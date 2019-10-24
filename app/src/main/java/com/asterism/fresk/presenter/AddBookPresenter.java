@@ -1,7 +1,9 @@
 package com.asterism.fresk.presenter;
 
 import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Environment;
+import android.support.annotation.RequiresApi;
 
 import com.asterism.fresk.R;
 import com.asterism.fresk.contract.IAddBookContract;
@@ -10,6 +12,7 @@ import com.asterism.fresk.dao.BookTypeDao;
 import com.asterism.fresk.dao.bean.BookBean;
 import com.asterism.fresk.dao.bean.BookTypeBean;
 import com.asterism.fresk.util.DateUtils;
+import com.asterism.fresk.util.FileSizeUtil;
 import com.asterism.fresk.util.FileUtils;
 
 import java.io.File;
@@ -27,7 +30,6 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -85,7 +87,7 @@ public class AddBookPresenter extends BasePresenter<IAddBookContract.View>
         bookBean.setPicName(picPath);
         return bookBean;
     }
-
+    
     /**
      * 文件扫描递归
      *
@@ -106,7 +108,7 @@ public class AddBookPresenter extends BasePresenter<IAddBookContract.View>
                 } else if (typeNameSet.contains(FileUtils.getFileSuffixName(file.getName()))
                         && !file.isHidden()) {
                     // 如果该文件是书籍类型且不为隐藏文件时
-                    emitter.onNext(file.getPath() + file.getName());
+                    emitter.onNext(file.getPath());
                 }
             }
         }
@@ -194,11 +196,11 @@ public class AddBookPresenter extends BasePresenter<IAddBookContract.View>
      */
     @SuppressLint("CheckResult")
     @Override
-    public void getFilesInDir(final File currentDir,
-                              final IAddBookContract.OnGetFilesListener listener) {
+    public void getFilesInDir(final File currentDir, final IAddBookContract.OnGetFilesListener listener) {
         // 被观察者 传递List<Map<String,Object>>类型事件
         Observable<List<Map<String, Object>>> observable
                 = Observable.create(new ObservableOnSubscribe<List<Map<String, Object>>>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void subscribe(ObservableEmitter<List<Map<String, Object>>> emitter) throws Exception {
                 // 先判断当前目录是否存在
@@ -225,14 +227,21 @@ public class AddBookPresenter extends BasePresenter<IAddBookContract.View>
 
                 // 获取当前目录内所有文件类型数组
                 File[] currentFiles = currentDir.listFiles();
-                // 初始化列表集合子项集合
-                Map<String, Object> itemMap = new HashMap<>();
+
                 // 初始化书籍类型表访问器
                 BookTypeDao bookTypeDao = new BookTypeDao(getContext());
+
+                // 初始化列表集合子项集合
+                Map<String, Object> itemMap = null;
 
                 // 遍历当前目录下所有文件
                 for (File file : currentFiles) {
                     String type;
+                    //若为隐藏文件则退出
+                    if(file.isHidden()){
+                        continue;
+                    }
+                    itemMap = new HashMap<>();
                     // 判断类型，如果当前file是文件夹就使用文件夹图标，否则使用书籍文件图标
                     if (file.isDirectory()) {
                         itemMap.put("icon", R.drawable.icon_folder);
@@ -240,14 +249,26 @@ public class AddBookPresenter extends BasePresenter<IAddBookContract.View>
                     } else if (bookTypeDao.isExistsByName(FileUtils.getFileSuffixName(file.getName()))) {
                         itemMap.put("icon", R.drawable.icon_file);
                         type = "file";
-                    } else {
+
+                        try {
+                            BookDao dao = new BookDao(mView.GetContext());
+                            // 判断数据库中是否已经拥有此书籍
+                            if( dao.queryIsExistByPath( currentDir.getCanonicalPath() + File.separator + file.getName())){
+                                // 以用于type设置为already_file
+                                type = "already_file";
+                            }
+                        }catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else {
                         // 除了文件夹和书籍类型文件，其他一律忽略
                         continue;
                     }
 
                     // 记录文件路径
                     try {
-                        itemMap.put("path", currentDir.getCanonicalPath() + File.separator);
+                       itemMap.put("path", currentDir.getCanonicalPath() + File.separator + file.getName());
                     } catch (IOException e) {
                         e.printStackTrace();
                         mView.showErrorToast(e.getMessage());
@@ -256,6 +277,12 @@ public class AddBookPresenter extends BasePresenter<IAddBookContract.View>
                     itemMap.put("name", file.getName());
                     // 记录文件类型
                     itemMap.put("type", type);
+                    //记录文件大小
+                    itemMap.put("size",  FileSizeUtil.getAutoFileOrFilesSize(file.getPath()));
+
+                    //记录文件时间
+                    itemMap.put("time", FileUtils.GetShowFileTime(file));
+
                     // 添加到列表集合
                     itemList.add(itemMap);
                 }
