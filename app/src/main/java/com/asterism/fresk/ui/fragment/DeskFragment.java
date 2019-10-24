@@ -4,13 +4,10 @@ import android.net.Uri;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.asterism.fresk.R;
 import com.asterism.fresk.contract.IBookContract;
-import com.asterism.fresk.dao.BookDao;
 import com.asterism.fresk.dao.bean.BookBean;
 import com.asterism.fresk.presenter.BookPresenter;
-
 import java.io.File;
 
 import butterknife.BindView;
@@ -26,17 +23,22 @@ import butterknife.OnClick;
 public class DeskFragment extends BaseFragment<IBookContract.Presenter>
         implements IBookContract.View {
 
+    private int bookid; // 书籍的编号
+    private Uri bookpicUri; // 书籍图片路径
+    private String selectedImageUri; // 相册选择的图片地址
+    private String bookname; // 书名
+
     @BindView(R.id.img_book_Pic)
-    ImageView imgBookPic;
+    ImageView imgBookPic; // 书籍封面
 
     @BindView(R.id.tv_book_name)
-    TextView tvBookName;
+    TextView tvBookName; // 书名
 
     @BindView(R.id.tv_last_chapter)
-    TextView tvLastChapter;
+    TextView tvLastChapter; // 最近时间读到章节
 
     @BindView(R.id.tv_read_progress)
-    TextView tvReadProgress;
+    TextView tvReadProgress; // 阅读进程
 
     private int pos = 0;
 
@@ -58,10 +60,16 @@ public class DeskFragment extends BaseFragment<IBookContract.Presenter>
         mPresenter.getBookByIndexSortReadDate(pos, new IBookContract.OnBookBeanListener() {
             @Override
             public void onSuccess(BookBean bookBean) {
+                bookid = bookBean.getId();
+                bookname = bookBean.getName();
+                selectedImageUri = bookBean.getPicName();
                 imgBookPic.setImageURI(Uri.fromFile(new File(bookBean.getPicName())));
+                bookpicUri = Uri.fromFile(new File(bookBean.getPicName()));
                 tvBookName.setText(bookBean.getName());
                 tvLastChapter.setText(bookBean.getLastChapter());
                 tvReadProgress.setText(bookBean.getReadProgress() + "%");
+                mPresenter.initData(imgBookPic,tvBookName,onNormalListener,bookid,bookname,selectedImageUri,bookpicUri);
+                mPresenter.LongPressEditor();
             }
 
             @Override
@@ -100,4 +108,17 @@ public class DeskFragment extends BaseFragment<IBookContract.Presenter>
 //                break;
 //        }
     }
+
+    // 修改书名监听事件
+    private IBookContract.OnNormalListener onNormalListener = new IBookContract.OnNormalListener() {
+        @Override
+        public void onSuccess() {
+            showSuccessToast("修改书籍信息成功!");
+        }
+
+        @Override
+        public void onError() {
+            showSuccessToast("修改书籍信息失败!");
+        }
+    };
 }

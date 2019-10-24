@@ -1,8 +1,16 @@
 package com.asterism.fresk.ui.activity;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.asterism.fresk.R;
@@ -99,4 +107,27 @@ public class MainActivity extends BaseActivity<IMainContract.Presenter>
         navigation.setSelectedItemId(R.id.nav_desk);
         navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        SharedPreferences sp=getSharedPreferences("data",MODE_PRIVATE);
+        SharedPreferences.Editor editor=sp.edit();
+        //获取图片路径
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null) {
+            Uri selectedImage = data.getData();
+            Cursor cursor = getContentResolver().query(selectedImage, null, null, null,null);
+            if (cursor != null && cursor.moveToFirst()) {
+                String path = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
+                editor.putString("selectedImage",path);
+                editor.commit();
+            }
+        }
+        else
+        {
+            editor.putString("selectedImage","没选择");
+            editor.commit();
+        }
+    }
+
 }

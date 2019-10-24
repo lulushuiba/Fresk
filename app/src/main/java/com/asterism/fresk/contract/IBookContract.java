@@ -1,5 +1,9 @@
 package com.asterism.fresk.contract;
 
+import android.net.Uri;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import com.asterism.fresk.dao.bean.BookBean;
 
 import java.util.List;
@@ -82,6 +86,43 @@ public interface IBookContract {
          * @param listener 监听器
          */
         void alterBookInfo(BookBean bookBean, OnNormalListener listener);
+
+        /**
+         * 修改数据库内书籍书名信息
+         *
+         * @param bookid 书籍编号
+         * @param newbookname 更改后的书名
+         * @param listener 监听器
+         */
+        void alterBookNameInfo(int bookid,String newbookname,OnNormalListener listener);
+
+        /**
+         * 修改数据库内书籍图片信息
+         *
+         * @param bookid 书籍编号
+         * @param newpic 更改后的图片
+         * @param listener 监听器
+         */
+        void alterBookPicInfo(int bookid,String newpic,OnNormalListener listener);
+
+        /**
+         * 给BookPresenter成员变量传值
+         *
+         * @param imgBookPic 显示书籍封面的ImageView
+         * @param tvBookName 显示书名的TextView
+         * @param onNormalListener 监听器
+         * @param bookid 书籍的编号
+         * @param bookname 书名
+         * @param selectedImageUri 相册选择的图片地址
+         * @param bookpicUri 书籍图片路径
+         */
+        void initData(ImageView imgBookPic, TextView tvBookName, OnNormalListener onNormalListener,
+                      int bookid, String bookname, String selectedImageUri, Uri bookpicUri);
+
+        /**
+         * 实现长按编辑书籍信息
+         */
+        void LongPressEditor();
     }
 
     interface OnBookListListener {
