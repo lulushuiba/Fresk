@@ -10,7 +10,8 @@
     <uses-permission
         android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
         tools:ignore="ProtectedPermissions" />
-
+    <!-- 获取网络权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:name=".AppApplication"
         android:allowBackup="true"
@@ -31,7 +32,8 @@
         </activity>
 
         <activity android:name=".ui.activity.AddBookLocalActivity" />
-
+        <activity android:name=".ui.activity.ReadEpubActivity" />
 
     </application>
+
 </manifest>

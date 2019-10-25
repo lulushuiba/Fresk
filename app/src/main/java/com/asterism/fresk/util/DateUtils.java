@@ -20,7 +20,7 @@ public class DateUtils {
      */
     public static String getNowToString() {
         // 设置日期格式
-        SimpleDateFormat formatter = new SimpleDateFormat("MM-dd hh:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("MM-dd hh:mm:ss");
         return formatter.format(new Date());
     }
 
@@ -34,7 +34,7 @@ public class DateUtils {
      */
     public static int compareDateByString(String s1, String s2) {
         // 设置日期格式
-        SimpleDateFormat formatter = new SimpleDateFormat("MM-dd hh:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("MM-dd hh:mm:ss");
         Date d1 = new Date();
         Date d2 = new Date();
         try {
